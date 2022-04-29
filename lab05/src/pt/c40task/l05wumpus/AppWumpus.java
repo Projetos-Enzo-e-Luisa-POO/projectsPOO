@@ -3,7 +3,7 @@ package pt.c40task.l05wumpus;
 /**
  * 
  * @author ra247069, ra247249
- *
+ * --
  */
 
 public class AppWumpus {
