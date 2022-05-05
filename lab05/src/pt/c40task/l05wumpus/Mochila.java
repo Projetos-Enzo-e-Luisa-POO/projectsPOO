@@ -12,12 +12,22 @@ public class Mochila extends Componente{
 	Componente[] mochila;
 	
 	/**
-	 * Monta mochila com n espaços e recebe um array de m flechas, m sempre menor ou igual a n-1
+	 * Monta mochila com temMoch espaços e recebe um array de numFlechas flechas, presumindo tamMoch >= numFlechas + 2;
 	 */
-	public Mochila(Componente[] aljava, int n, int m) {
-		mochila = new Componente[n];
-		for (int i = 0; i < m; i++)
+	public Mochila(Componente[] aljava, int tamMoch, int numFlechas) {
+		mochila = new Componente[tamMoch];
+		for (int i = 0; i < numFlechas; i++) {
 			mochila[i] = aljava[i];
+			aljava[i] = null;
+		}
+	}
+	
+	/**
+	 * Insere comp na posição solicitada na mochila.
+	 * E se herói solicitar pra inserir em posição já preenchida?
+	 */
+	public void insert(Componente comp, int pos) {
+		
 	}
 	
 	@Override

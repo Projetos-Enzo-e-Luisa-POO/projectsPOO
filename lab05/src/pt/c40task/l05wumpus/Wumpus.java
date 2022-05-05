@@ -33,8 +33,11 @@ public class Wumpus extends Componente{
 		return "Wumpus";
 	}
 
-	// Sobrecarga da função que não acorda Wumpus, somente usada durante construção da caverna
-	public String getComponente(boolean init) {
-		return "Wumpus";
+	/**
+	 * Função de uso exclusivo para durante montagem da caverna, adormece Wumpus
+	 */
+	public void calmWumpus(boolean init) {
+		if (init)
+			this.dormindo = true;
 	}
 }
