@@ -28,6 +28,34 @@ public class Sala {
 	}
 	
 	/**
+	 * Método scaneia todos os compartimentos do vetor Sala e retorna um vetor de Strings
+	 * 		com as identificações adequadas se há algo na sala ou não
+	 * - Caso um componente esteja tentando dar scout em uma sala que não a sua, retorna o erro
+	 * 		"You cannot scout a Room that you're not inside of", código "_".
+	 * 
+	 * @return aux
+	 * @author Frost
+	 */
+	public String[] scan(String requester) {
+		boolean auth = false;
+		String[] aux = new String[Sala.length];
+		for (int i = 0; i < Sala.length; i++) {
+			if (!emptyRooms[i]) {
+				aux[i] = Sala[i].toString();
+				if (aux[i] == requester)
+					auth = true;
+			}
+			else
+				aux[i] = "Nothing";
+		}
+		if (!auth)
+			throw new Error("You cannot scout a Room that you're not inside of");
+		return aux;
+	}
+	
+	
+	
+	/**
 	 * Recebe um Componente e verifica se, de acordo com as regras do jogo, 
 	 * 		o mesmo pode/deve ser inserido na sala em questão. 
 	 * - Gera erros em caso de operação não ser bem sucedida:
@@ -108,6 +136,21 @@ public class Sala {
 				break;
 			}
 		}
+		return retrieve;
+	}
+	
+	/**
+	 * Sobrecarga do método remove que prevê solicitação de remoção do próprio objeto
+	 * - Caso não encontre o objeto desejado, ou remove retorne o próprio objeto, retorna null.
+	 *  
+	 * @param comp, requester
+	 * @return retrieve
+	 * @author Frost
+	 */
+	public Componente remove(String comp, String requester) {
+		Componente retrieve = this.remove(comp);
+		if (retrieve != null && retrieve.toString() == requester)
+			retrieve = null;
 		return retrieve;
 	}
 }

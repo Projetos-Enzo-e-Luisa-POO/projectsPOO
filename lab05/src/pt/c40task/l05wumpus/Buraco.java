@@ -1,7 +1,7 @@
 package pt.c40task.l05wumpus;
 
 /**
- * Componente "ativo" (sabe sua posição e age ativamente na caverna).
+ * Componente "semi-ativo" (sabe sua posição mas não age ativamente na caverna).
  * - Instancia Brisas ao seu redor, calculando suas posições e solicitando que Caverna posicione-as
  * 
  * @author Frost
