@@ -30,11 +30,15 @@ public class Caverna {
 		}
 	}
 
-	private void insertComponentInRoom(int[] pos, Componente comp) {
-		caverna[pos[0]][pos[1]].insert(comp);
+	public void insertInRoom(int[] pos, Componente comp) {
+		try {
+			caverna[pos[0]][pos[1]].insert(comp);
+		} catch (Error erro) {
+			throw new Error(erro.getMessage());
+		}
 	}
 
-	private void removeComponentFromRoom(int[] pos, Componente comp) {
-		caverna[pos[0]][pos[1]].remove(comp.toString());
+	public Componente removeFromRoom(int[] pos, Componente comp) {
+		return caverna[pos[0]][pos[1]].remove(comp.toString());	
 	}
 }
