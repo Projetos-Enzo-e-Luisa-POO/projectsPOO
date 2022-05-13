@@ -1,28 +1,26 @@
 package pt.c40task.l05wumpus;
 
 /**
- * 
- * Componente ativo
- * - Inicializa mochila com uma flecha
+ * Componente "ativo" (sabe sua posição e age ativamente na caverna).
+ * - Possui uma mochila com número de flechas arbitrário e um mapa
  * - Anda de uma sala para outra, pedindo movimento para Caverna
- *    - Pode morrer ao andar!
  * - Inspeciona a sala logo ao entrar na sala
  *    - Pode morrer ao perceber que é um buraco!
- *    - Se encontrar uma flecha, encontra-a quebrada
+ *    - Se encontrar uma flecha, encontra-a quebrada (não havia Wumpus na sala)
  *    - Se sentir fedor, brisa ou ver ouro, atualiza seu mapa!
  * - Arma sua flecha, disparando-a antes do próximo movimento para uma sala
- * - Pega ouro, se viu ouro ao entrar na sala, e o coloca em sua mochila (solicita remoção da caverna)
- *
+ * - Se viu ouro ao entrar na sala, pode pegá-lo e o colocá-lo em sua mochila (solicita remoção da caverna)
  */
 
 public class Heroi extends Componente{
 	
-	int[] pos = new int[1];
+	int[] pos = new int[2];
 
 	/**
-	 * Cria todos os pertences do Herói
-	 * Cria mochila com tamanhoMochila espaços, e numFlechas flechas
-	 * Cria mapa size x size e insere-o na mochila
+	 * Protótipo de construtor:
+	 * - Cria todos os pertences do Herói
+	 * - Cria mochila com (tamanhoMochila) espaços, e (numFlechas ou menor) flechas
+	 * - Cria mapa (size) x (size) e insere-o na mochila
 	 */
 	public Heroi(int[] pos, int size, int tamanhoMochila, int numFlechas) {
 		int k = ((numFlechas < tamanhoMochila) ? numFlechas : tamanhoMochila - 2);
@@ -30,11 +28,14 @@ public class Heroi extends Componente{
 		for (int i = 0; i < k; i++)
 			aljava[k] = new Flecha();
 		Mochila mochilaDoHeroi = new Mochila(aljava, tamanhoMochila, k);
-		mochilaDoHeroi.insert(new Mapa(size), tamanhoMochila - 1);	// Mapa sempre estará na penultima posição, última guardada para ouro
+		mochilaDoHeroi.insere(tamanhoMochila, new Mapa(size));	// Mapa sempre estará na última posição.
+		
+		//..?
+		
 	}
 	
 	@Override
-	public String getComponente() {
+	public String toString() {
 		return "Heroi";
 	}
 

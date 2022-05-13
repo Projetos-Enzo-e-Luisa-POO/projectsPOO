@@ -1,16 +1,15 @@
 package pt.c40task.l05wumpus;
 
 /**
- * 
- * Objeto manejado pelo Herói, inanimado
- * só possui método padrão de ComponenteInterface
- * 
+ * Componente "passivo" (não sabe sua posição e não age).
+ * - Sempre (e somente) será instanciada pelo Herói.
+ * - Manejada pelo herói para tentar matar o Wumpus.
  */
 
 public class Flecha extends Componente{
 
 	@Override
-	public String getComponente() {
+	public String toString() {
 		return "Flecha";
 	}
 

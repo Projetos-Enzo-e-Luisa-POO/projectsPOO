@@ -1,8 +1,10 @@
 package pt.c40task.l05wumpus;
 
 /**
- * Componente possuída pelo Herói
- * Mapa que será apresentado ao user durante o jogo
+ * Componente "passivo" (não sabe sua posição e não age).
+ * - Mapa possuído pelo herói, tem tanta inteligência quando uma folha de papel.
+ * - Contém o vetor de char que será apresentado ao player durante o jogo.
+ * 
  * @author Frost
  */
 
@@ -11,7 +13,8 @@ public class Mapa extends Componente{
 	private char[][] mapa;
 	
 	/**
-	 * Inicializa o mapa para o começo da exploração da caverna
+	 * Inicializa o mapa para o começo da exploração da caverna.
+	 * 
 	 * @param size
 	 * @author Frost
 	 */
@@ -25,6 +28,7 @@ public class Mapa extends Componente{
 	
 	/**
 	 * Registra no mapa o caractere que o Herói solicitou, na posição solicitada.
+	 * 
 	 * @param c, pos
 	 * @author Frost
 	 */
@@ -34,6 +38,7 @@ public class Mapa extends Componente{
 	
 	/**
 	 * Retorna o array de char "mapa".
+	 * 
 	 * @return mapa
 	 * @author Frost
 	 */
@@ -42,7 +47,7 @@ public class Mapa extends Componente{
 	}
 	
 	@Override
-	public String getComponente() {
+	public String toString() {
 		return "Mapa";
 	}
 

@@ -1,16 +1,15 @@
 package pt.c40task.l05wumpus;
 
 /**
- * 
- * Compomente que sempre (e somente) será instanciado pelo Wumpus
- * pseudo "flag", só possui método padrão de Componente
- *
+ * Componente "passivo" (não sabe sua posição e não age).
+ * - Sempre (e somente) será instanciado pelo Wumpus.
+ * - Será sentida pelo herói ao analisar a sala.
  */
 
 public class Fedor extends Componente{
 
 	@Override
-	public String getComponente() {
+	public String toString() {
 		return "Fedor";
 	}
 

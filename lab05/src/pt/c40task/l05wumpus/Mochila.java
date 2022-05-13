@@ -1,10 +1,12 @@
 package pt.c40task.l05wumpus;
 
 /**
+ * Componente "passivo" (não sabe sua posição e não age).
+ * - Mochila possuída pelo herói, tem tanta inteligência quando um armário.
+ * - É inicializada com um número arbitrário de flechas, criando uma mochila de no mínimo
+ * 		2 espaços a mais do que o número de flechas, onde será guardado o ouro e o mapa do herói
  * 
- * Compomente que pertence ao Herói
- * Contém no máximo uma Flecha e Ouro
- *
+ * @author mariecurie
  */
 
 public class Mochila extends Componente {
@@ -12,7 +14,11 @@ public class Mochila extends Componente {
 	private Componente[] mochila;
 	
 	/**
-	 * Monta mochila com tamMochila espaços e recebe um array de numFlechas flechas, presumindo tamMoch >= numFlechas + 2;
+	 * Monta mochila com tamMochila espaços e recebe um array de numFlechas flechas, presumindo tamMoch >= numFlechas + 2.
+	 * 
+	 * @param aljava, tamMochila, numFlechas
+	 * @author Frost
+	 * @author mariecurie
 	 */
 	public Mochila(Componente[] aljava, int tamMochila, int numFlechas) {
 		this.mochila = new Componente[tamMochila];
@@ -23,8 +29,12 @@ public class Mochila extends Componente {
 	}
 	
 	/**
-	 * Insere comp na posição solicitada na mochila.
-	 * E se herói solicitar pra inserir em posição já preenchida?
+	 * Insere componente na posição solicitada na mochila.
+	 * - Retorna erro "Position (pos) is already occupied", código "_" 
+	 * 		no caso da posição solicitada já estar ocupada.
+	 * 
+	 * @param pos, comp
+	 * @author mariecurie
 	 */
 	public void insere(int pos, Componente comp) {
 		if (this.mochila[pos] != null) {
@@ -34,19 +44,26 @@ public class Mochila extends Componente {
 	}
 
 	/**
-	 * Remove um comp da mochila
+	 * Remove um componente da posição solicitada na mochila.
+	 * - Retorna erro "Cannot remove components from last 2 backpack positions", código "_"
+	 * 		no caso do herói tentar remover o ouro ou o mapa de sua mochila, uma vez que
+	 * 		suas posições são por default, as últimas.
+	 * 
+	 * @param pos
+	 * @return this.mochila[pos]
+	 * @author mariecurie
 	 */
 	public Componente remove(int pos) {
 		if (pos == this.mochila.length - 1 || pos == this.mochila.length - 2) {
-			throw new Error("Cannot remove components from last 2 schoolbag positions");
+			throw new Error("Cannot remove components from last 2 backpack positions");
 		}
-		Componente aux = this.mochila[pos];
-		this.mochila[pos] = null;
+		Componente aux = this.mochila[pos - 1];
+		this.mochila[pos - 1] = null;
 		return aux;
 	}
 	
 	@Override
-	public String getComponente() {
+	public String toString() {
 		return "Mochila";
 	}
 
