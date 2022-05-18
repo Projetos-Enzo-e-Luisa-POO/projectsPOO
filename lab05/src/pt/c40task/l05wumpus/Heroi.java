@@ -17,16 +17,16 @@ import java.util.Random;
 
 public class Heroi extends Componente {
 	
-	Caverna caverna;
-	Mochila mochila;
-	int posOuroNaMochila;
-	int posMapaNaMochila;
+	private Caverna caverna;
+	private Mochila mochila;
+	private int posOuroNaMochila;
+	private int posMapaNaMochila;
 
-	String name;
-	int[] pos = new int[2];
-	boolean hasArrowEquipped;
-	boolean killedWumpus;
-	boolean isDead;
+	public String name;
+	public int[] pos = new int[2];
+	public boolean hasArrowEquipped;
+	public boolean killedWumpus;
+	public boolean isDead;
 
 	/**
 	 * Protótipo de construtor:
@@ -43,8 +43,8 @@ public class Heroi extends Componente {
 			aljava[i] = new Flecha();
 		
 		this.mochila = new Mochila(aljava, tamanhoMochila, qtdeFlechas);
-		this.posOuroNaMochila = this.mochila.itens.length - 2;
-		this.posMapaNaMochila = this.mochila.itens.length - 1;
+		this.posOuroNaMochila = tamanhoMochila - 2;
+		this.posMapaNaMochila = tamanhoMochila - 1;
 		mochila.insere(this.posMapaNaMochila, new Mapa(size));
 		
 		this.name = name;
@@ -80,6 +80,12 @@ public class Heroi extends Componente {
         return componentWithHighestPriority;
     }
 
+	private void registerInMap(char characterForRegisterInMapa) {
+		Mapa mapa = (Mapa) this.mochila.remove(this.posMapaNaMochila);
+		mapa.register(characterForRegisterInMapa, this.pos);
+		this.mochila.insere(this.posMapaNaMochila, mapa);
+	}
+
 	public void scanRoom() {
 		try {
 			ComponentDescriptionController componentController = new ComponentDescriptionController();
@@ -103,8 +109,7 @@ public class Heroi extends Componente {
 				}
 			}
 			char characterForRegisterInMapa = componentController.convertToCharacter(componentWithHighestPriority);
-			Mapa mapa = (Mapa) this.mochila.itens[this.posMapaNaMochila];
-			mapa.register(characterForRegisterInMapa, pos);
+			this.registerInMap(characterForRegisterInMapa);
 		} catch (Exception e) {
 			throw new Error("Error when scanning room: " + e.getMessage());
 		}
@@ -129,9 +134,8 @@ public class Heroi extends Componente {
 			
 			ComponentDescriptionController componentController = new ComponentDescriptionController();
 			char heroiCharacter = componentController.convertToCharacter(this.toString());
-			
-			Mapa mapa = (Mapa) this.mochila.itens[this.posMapaNaMochila];
-			mapa.register(heroiCharacter, pos);
+
+			this.registerInMap(heroiCharacter);
 		} catch (Exception e) {
 			throw new Error("Error keeping gold in schoolbag: " + e.getMessage());
 		}
