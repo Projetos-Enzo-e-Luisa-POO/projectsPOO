@@ -13,6 +13,7 @@ package pt.c40task.l05wumpus;
 public class Caverna {
 	
 	private Sala[][] caverna;
+	private int dimensaoCaverna;
 
 	/**
 	 * Construtor da caverna, instancia salas de tamanho (dimensaoSala)
@@ -22,9 +23,10 @@ public class Caverna {
 	 * @param dimensaoSala
 	 */
 	public Caverna(int dimensaoCaverna, int dimensaoSala) {
-		this.caverna = new Sala[dimensaoCaverna][dimensaoCaverna];
-		for (int i = 0; i < dimensaoCaverna; i++) {
-			for (int j = 0; j < dimensaoCaverna; j++) {
+		this.dimensaoCaverna = dimensaoCaverna;
+		this.caverna = new Sala[this.dimensaoCaverna][this.dimensaoCaverna];
+		for (int i = 0; i < this.dimensaoCaverna; i++) {
+			for (int j = 0; j < this.dimensaoCaverna; j++) {
 				caverna[i][j] = new Sala(dimensaoSala);
 			}
 		}
@@ -78,5 +80,12 @@ public class Caverna {
 	 */
 	public Componente removeFromRoom(int[] pos, String comp, String requester) {
 		return caverna[pos[0]][pos[1]].remove(comp, requester);	
+	}
+
+	public void moveHeroiToPosition(Heroi heroi, int[] pos) {
+		if (pos[0] < 0 || pos[0] >= this.dimensaoCaverna || pos[1] < 0 || pos[1] >= this.dimensaoCaverna) {
+			throw new Error("Cannot move hero out of cave limits, please choose a position in [0," + this.dimensaoCaverna + ']');
+		}
+		this.insertInRoom(pos, heroi);
 	}
 }
