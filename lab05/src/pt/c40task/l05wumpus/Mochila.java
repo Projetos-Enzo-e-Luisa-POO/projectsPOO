@@ -11,7 +11,7 @@ package pt.c40task.l05wumpus;
 
 public class Mochila extends Componente {
 
-	private Componente[] mochila;
+	public Componente[] itens;
 	
 	/**
 	 * Monta mochila com tamMochila espaços e recebe um array de numFlechas flechas, presumindo tamMoch >= numFlechas + 2.
@@ -21,10 +21,14 @@ public class Mochila extends Componente {
 	 * @author mariecurie
 	 */
 	public Mochila(Componente[] aljava, int tamMochila, int numFlechas) {
-		this.mochila = new Componente[tamMochila];
-		for (int i = 0; i < numFlechas; i++) {
-			mochila[i] = aljava[i];
-			aljava[i] = null;
+		this.itens = new Componente[tamMochila];
+		for (int i = 0; i < tamMochila; i++) {
+			if (i < numFlechas) {
+				itens[i] = aljava[i];
+				aljava[i] = null;
+			} else {
+				itens[i] = null;
+			}
 		}
 	}
 	
@@ -37,10 +41,10 @@ public class Mochila extends Componente {
 	 * @author mariecurie
 	 */
 	public void insere(int pos, Componente comp) {
-		if (this.mochila[pos] != null) {
+		if (this.itens[pos] != null) {
 			throw new Error("Position " + pos + " is already occupied");
 		}
-		this.mochila[pos] = comp;
+		this.itens[pos] = comp;
 	}
 
 	/**
@@ -54,11 +58,11 @@ public class Mochila extends Componente {
 	 * @author mariecurie
 	 */
 	public Componente remove(int pos) {
-		if (pos == this.mochila.length - 1 || pos == this.mochila.length - 2) {
+		if (pos == this.itens.length - 1 || pos == this.itens.length - 2) {
 			throw new Error("Cannot remove components from last 2 backpack positions");
 		}
-		Componente aux = this.mochila[pos - 1];
-		this.mochila[pos - 1] = null;
+		Componente aux = this.itens[pos - 1];
+		this.itens[pos - 1] = null;
 		return aux;
 	}
 	
