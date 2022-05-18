@@ -9,6 +9,9 @@ package pt.c40task.l05wumpus;
  *
  */
 public class MontadorDaCaverna {
+
+	private Heroi heroi;
+	private Wumpus wumpus;
 	
 	public MontadorDaCaverna(String[][] setup) {
 		

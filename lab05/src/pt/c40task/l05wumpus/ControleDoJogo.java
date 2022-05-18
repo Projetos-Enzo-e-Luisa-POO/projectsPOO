@@ -10,8 +10,9 @@ package pt.c40task.l05wumpus;
 
 public class ControleDoJogo {
 	
+	public String name;
+
 	private Heroi heroi;
-	private int[] posHeroi = new int[2];
 	public int score;
 
 	private int POINTS_FOR_CATURE_GOLD = 1000;
@@ -20,9 +21,9 @@ public class ControleDoJogo {
 	private int POINTS_FOR_USE_ARROW = -100;
 	private int POINTS_FOR_KILL_WUMPUS = 500;
 
-	public ControleDoJogo(Caverna caverna, Heroi heroi, int[] posHeroi) {
+	public ControleDoJogo(String name, Heroi heroi, int[] posHeroi) {
+		this.name = name;
 		this.heroi = heroi;
-		this.posHeroi = posHeroi;
 		this.score = 0;
 	}
 
@@ -66,6 +67,7 @@ public class ControleDoJogo {
 		}
 	}
 
+	//ALTERAR, POIS O SWITCH FOI PARA O HEROIs
 	public void handleMovementCommand(char command) {
 		int[] nextPosition = new int[2];
 		switch(command) {

@@ -1,8 +1,6 @@
 package pt.c40task.l05wumpus;
 import pt.c40task.l05wumpus.configs.ComponentDescriptionController;
 
-import java.util.Random;
-
 /**
  * Componente "ativo" (sabe sua posição e age ativamente na caverna).
  * - Possui uma mochila com número de flechas arbitrário e um mapa
@@ -21,12 +19,8 @@ public class Heroi extends Componente {
 	private Mochila mochila;
 	private int posOuroNaMochila;
 	private int posMapaNaMochila;
-
-	public String name;
+	private Componente flechaEquipada;
 	public int[] pos = new int[2];
-	public boolean hasArrowEquipped;
-	public boolean killedWumpus;
-	public boolean isDead;
 
 	/**
 	 * Protótipo de construtor:
@@ -34,51 +28,57 @@ public class Heroi extends Componente {
 	 * - Cria mochila com (tamanhoMochila) espaços, e (numFlechas ou menor) flechas
 	 * - Cria mapa (size) x (size) e insere-o na última posição da mochila
 	 */
-	public Heroi(Caverna caverna, String name, int[] pos, int size, int tamanhoMochila, int numFlechas) {
+	public Heroi(Caverna caverna, int[] pos, int size, int tamanhoMochila, int numFlechas) {
 		this.caverna = caverna;
 		
 		int qtdeFlechas = (numFlechas <= tamanhoMochila - 2) ? numFlechas : tamanhoMochila - 2;
 		Componente[] aljava = new Componente[qtdeFlechas];
 		for (int i = 0; i < qtdeFlechas; i++)
 			aljava[i] = new Flecha();
-		
 		this.mochila = new Mochila(aljava, tamanhoMochila, qtdeFlechas);
+		
 		this.posOuroNaMochila = tamanhoMochila - 2;
 		this.posMapaNaMochila = tamanhoMochila - 1;
+		
 		mochila.insere(this.posMapaNaMochila, new Mapa(size));
 		
-		this.name = name;
+		this.flechaEquipada = null;
+
 		this.pos = pos;
-		this.hasArrowEquipped = false;
-		this.killedWumpus = false;
-		this.isDead = false;
 	}
 
-	public void move(int[] nextPosition) {
+	public int[] getPosition() {
+		return this.pos;
+	}
+
+	private int[] translateDirection(char command) {
+		int[] nextPosition = new int[2];
+		switch(command) {
+			case 'w':
+				nextPosition[0] = this.pos[0];
+				nextPosition[1] = this.pos[1] - 1;
+			case 's':
+				nextPosition[0] = this.pos[0];
+				nextPosition[1] = this.pos[1] + 1;
+			case 'd':
+				nextPosition[0] = this.pos[0] + 1;
+				nextPosition[1] = this.pos[1];
+			case 'a':
+				nextPosition[0] = this.pos[0];
+				nextPosition[1] = this.pos[1] - 1;
+		}
+		return nextPosition;
+	}
+
+	public void move(Componente comp, char command) {
+		int[] nextPosition = this.translateDirection(command);
 		try {
-			this.caverna.moveComponent(this, nextPosition);
+			this.caverna.moveComponent(comp, nextPosition);
 			this.pos = nextPosition;
 		} catch (Error error) {
-			throw new Error("Error moving hero to position (" + nextPosition[0] + ", " + nextPosition[1] + ")");
+			throw new Error("Error moving " + comp.toString() + " to position (" + nextPosition[0] + ", " + nextPosition[1] + ")");
 		}
 	}
-
-	private String getComponentWithHighestPriority(String[] componentes) {
-        String componentWithHighestPriority = "Brisa";
-        for (int i = 0; i < componentes.length; i++) {
-            if ((componentes[i] == "Ouro") || (componentes[i] == "Buraco") || (componentes[i] == "Wumpus")) {
-                componentWithHighestPriority = componentes[i];
-                break;
-            }
-            else if (componentes[i] == "Heroi") {
-                componentWithHighestPriority = componentes[i];
-            }
-            else if (componentes[i] == "Fedor" && componentWithHighestPriority == "Brisa") {
-                componentWithHighestPriority = componentes[i];
-            }
-        }
-        return componentWithHighestPriority;
-    }
 
 	private void registerInMap(char characterForRegisterInMapa) {
 		Mapa mapa = (Mapa) this.mochila.remove(this.posMapaNaMochila);
@@ -86,73 +86,111 @@ public class Heroi extends Componente {
 		this.mochila.insere(this.posMapaNaMochila, mapa);
 	}
 
-	public void scanRoom() {
+	private String componentPriority(String[] componentes) {
+        String componentPriority = "";
+        boolean heroFound = false, stinkFound = false;
+		for (int i = 0; i < componentes.length; i++) {
+            if ((componentes[i] == "Ouro") || (componentes[i] == "Buraco") || (componentes[i] == "Wumpus")) {
+                componentPriority = componentes[i];
+                break;
+            }
+            else if (componentes[i] == "Heroi") {
+                componentPriority = componentes[i];
+				heroFound = true;
+            }
+            else if (!heroFound && componentes[i] == "Fedor") {
+                componentPriority = componentes[i];
+				stinkFound = true;
+            }
+			else if (!heroFound && !stinkFound && componentes[i] == "Brisa") {
+				componentPriority = componentes[i];
+			}
+        }
+        return componentPriority;
+    }
+
+	public String[] scanRoom() {
 		try {
 			ComponentDescriptionController componentController = new ComponentDescriptionController();
 			String[] componentsInRoom = this.caverna.scanRoom(this.pos, this.toString());
-			String componentWithHighestPriority = this.getComponentWithHighestPriority(componentsInRoom);
-			if (componentWithHighestPriority == "Buraco") {
-				this.isDead = true;
-				return;
-			}
-			if (componentWithHighestPriority == "Wumpus") {
-				if (this.hasArrowEquipped) {
-					Random random = new Random();
-					boolean killedWumpus = random.nextBoolean();  
-					if (killedWumpus) {
-						this.killedWumpus = true;
-						componentWithHighestPriority = this.toString();
-					}
-					this.hasArrowEquipped = false;
-				} else {
-					this.isDead = true;
+			String[] messages = new String[componentsInRoom.length];
+			for (int i = 0; i < componentsInRoom.length; i++) {
+				if (componentsInRoom[i] == "Ouro") {
+					messages[i] = "Ouro a vista!";
+				}
+				if (componentsInRoom[i] == "Wumpus") {
+					messages[i] = "Cuidado que o Wumpus vai te pegar!";
+				}
+				if (componentsInRoom[i] == "Buraco") {
+					messages[i] = "Morreu";
+					this.kill(this.toString());
+				}
+				if (componentsInRoom[i] == "Brisa") {
+					messages[i] = "A brisa eh fresca, mas o buraco esta perto...";
+				}
+				if (componentsInRoom[i] == "Fedor") {
+					messages[i] = "Fedor na caverna";
+				}
+				if (componentsInRoom[i] == "Nothing") {
+					messages[i] = "Silencio ensurdecedor na caverna...";
 				}
 			}
-			char characterForRegisterInMapa = componentController.convertToCharacter(componentWithHighestPriority);
-			this.registerInMap(characterForRegisterInMapa);
+			this.registerInMap(
+				componentController.convertToCharacter(this.componentPriority(componentsInRoom))
+			);
+			return messages;
 		} catch (Error error) {
 			throw new Error("Error when scanning room: " + error.getMessage());
 		}
 	}
 
-	public void equipeArrow() {
-		int arrowPosition = 0;
-		Componente comp = null;
-		try {
-			do {
-				comp = this.mochila.remove(arrowPosition++);
-			} while (comp == null);
-		} catch (Error error) {
-			throw new Error("Error trying to equipe arrow");
-		}
-	}
-	
-	public void captureGold() {
-		try {
-			Componente ouro = this.caverna.removeFromRoom(this.pos, "Ouro");
-			this.insertComponentIntoMochila(this.posOuroNaMochila, ouro);
-			
-			ComponentDescriptionController componentController = new ComponentDescriptionController();
-			char heroiCharacter = componentController.convertToCharacter(this.toString());
-
-			this.registerInMap(heroiCharacter);
-		} catch (Error error) {
-			throw new Error("Error keeping gold in schoolbag: " + error.getMessage());
-		}
-	}
-
-	public boolean hasOuro() {
-		return this.mochila.itens[this.posOuroNaMochila] != null;
-	}
-
-	public void insertComponentIntoMochila(int pos, Componente comp) {
+	private void insertComponentIntoMochila(int pos, Componente comp) {
 		try {
 			this.mochila.insere(pos, comp);
 		} catch (Error error) {
 			throw new Error("Error keeping component " + comp.toString() + " in schoolbag: " + error.getMessage());
 		}
 	}
+	
+	public String captureGold() {
+		try {
+			Componente ouro = this.caverna.removeFromRoom(this.pos, "Ouro", this.toString());
+			this.insertComponentIntoMochila(this.posOuroNaMochila, ouro);
+			
+			ComponentDescriptionController componentController = new ComponentDescriptionController();
+			this.registerInMap(componentController.convertToCharacter(this.toString()));
 
+			return "Ouro capturado!!";
+		} catch (Error error) {
+			throw new Error("Error keeping gold in schoolbag: " + error.getMessage());
+		}
+	}
+
+	public void equipeArrow() {
+		int arrowPosition = 0;
+		try {
+			do {
+				this.flechaEquipada = this.mochila.remove(arrowPosition++);
+			} while (this.flechaEquipada == null);
+		} catch (Error error) {
+			throw new Error("Error trying to equipe arrow");
+		}
+	}
+
+	public void moveArrow(char command) {
+		if (this.flechaEquipada == null) {
+			throw new Error("No arrow equiped");
+		}
+		this.move(this.flechaEquipada, command);
+		this.flechaEquipada = null;
+	}
+
+	private void kill(String comp) {
+		Componente remains = caverna.removeFromRoom(this.pos, comp, this.toString());
+		if (remains != null)
+			remains = null;
+	}
+	
 	@Override
 	public String toString() {
 		return "Heroi";
