@@ -1,7 +1,7 @@
 package pt.c40task.l05wumpus;
-import java.util.Random;
-
 import pt.c40task.l05wumpus.configs.ComponentDescriptionController;
+
+import java.util.Random;
 
 /**
  * Componente "ativo" (sabe sua posição e age ativamente na caverna).
@@ -63,11 +63,28 @@ public class Heroi extends Componente {
 		}
 	}
 
+	private String getComponentWithHighestPriority(String[] componentes) {
+        String componentWithHighestPriority = "Brisa";
+        for (int i = 0; i < componentes.length; i++) {
+            if ((componentes[i] == "Ouro") || (componentes[i] == "Buraco") || (componentes[i] == "Wumpus")) {
+                componentWithHighestPriority = componentes[i];
+                break;
+            }
+            else if (componentes[i] == "Heroi") {
+                componentWithHighestPriority = componentes[i];
+            }
+            else if (componentes[i] == "Fedor" && componentWithHighestPriority == "Brisa") {
+                componentWithHighestPriority = componentes[i];
+            }
+        }
+        return componentWithHighestPriority;
+    }
+
 	public void scanRoom() {
 		try {
 			ComponentDescriptionController componentController = new ComponentDescriptionController();
 			String[] componentsInRoom = this.caverna.scanRoom(this.pos, this.toString());
-			String componentWithHighestPriority = componentController.getComponentWithHighestPriority(componentsInRoom);
+			String componentWithHighestPriority = this.getComponentWithHighestPriority(componentsInRoom);
 			if (componentWithHighestPriority == "Buraco") {
 				this.isDead = true;
 				return;

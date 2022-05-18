@@ -20,21 +20,4 @@ public class ComponentDescriptionController {
                 return '#';
         }
     }
-
-    public String getComponentWithHighestPriority(String[] componentes) {
-        String componentWithHighestPriority = "Brisa";
-        for (int i = 0; i < componentes.length; i++) {
-            if ((componentes[i] == "Ouro") || (componentes[i] == "Buraco") || (componentes[i] == "Wumpus")) {
-                componentWithHighestPriority = componentes[i];
-                break;
-            }
-            else if (componentes[i] == "Heroi") {
-                componentWithHighestPriority = componentes[i];
-            }
-            else if (componentes[i] == "Fedor" && componentWithHighestPriority == "Brisa") {
-                componentWithHighestPriority = componentes[i];
-            }
-        }
-        return componentWithHighestPriority;
-    }
 }
