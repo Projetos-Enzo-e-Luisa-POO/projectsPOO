@@ -56,9 +56,9 @@ public class Heroi extends Componente {
 
 	public void move(int[] nextPosition) {
 		try {
-			this.caverna.moveHeroiToPosition(this, nextPosition);
+			this.caverna.moveComponent(this, nextPosition);
 			this.pos = nextPosition;
-		} catch (Exception e) {
+		} catch (Error error) {
 			throw new Error("Error moving hero to position (" + nextPosition[0] + ", " + nextPosition[1] + ")");
 		}
 	}
@@ -110,8 +110,8 @@ public class Heroi extends Componente {
 			}
 			char characterForRegisterInMapa = componentController.convertToCharacter(componentWithHighestPriority);
 			this.registerInMap(characterForRegisterInMapa);
-		} catch (Exception e) {
-			throw new Error("Error when scanning room: " + e.getMessage());
+		} catch (Error error) {
+			throw new Error("Error when scanning room: " + error.getMessage());
 		}
 	}
 
@@ -122,8 +122,8 @@ public class Heroi extends Componente {
 			do {
 				comp = this.mochila.remove(arrowPosition++);
 			} while (comp == null);
-		} catch (Exception e) {
-			return;
+		} catch (Error error) {
+			throw new Error("Error trying to equipe arrow");
 		}
 	}
 	
@@ -136,8 +136,8 @@ public class Heroi extends Componente {
 			char heroiCharacter = componentController.convertToCharacter(this.toString());
 
 			this.registerInMap(heroiCharacter);
-		} catch (Exception e) {
-			throw new Error("Error keeping gold in schoolbag: " + e.getMessage());
+		} catch (Error error) {
+			throw new Error("Error keeping gold in schoolbag: " + error.getMessage());
 		}
 	}
 
@@ -148,8 +148,8 @@ public class Heroi extends Componente {
 	public void insertComponentIntoMochila(int pos, Componente comp) {
 		try {
 			this.mochila.insere(pos, comp);
-		} catch (Exception e) {
-			throw new Error("Error keeping component " + comp.toString() + " in schoolbag: " + e.getMessage());
+		} catch (Error error) {
+			throw new Error("Error keeping component " + comp.toString() + " in schoolbag: " + error.getMessage());
 		}
 	}
 

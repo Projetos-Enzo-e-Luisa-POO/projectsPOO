@@ -44,8 +44,8 @@ public class ControleDoJogo {
 			if (this.heroi.isDead) {
 				this.score -= this.POINTS_FOR_BEING_DEAD;
 			}
-		} catch (Exception e) {
-			throw new Error("Error moving heroi: " + e.getMessage());
+		} catch (Error error) {
+			throw new Error("Error moving heroi: " + error.getMessage());
 		}
 	}
 
@@ -53,16 +53,16 @@ public class ControleDoJogo {
 		try {
 			this.heroi.equipeArrow();
 			this.score -= this.POINTS_FOR_USE_ARROW;
-		} catch (Exception e) {
-			throw new Error("Error when heroi try to equipe flecha: " + e.getMessage());
+		} catch (Error error) {
+			throw new Error("Error when heroi try to equipe flecha: " + error.getMessage());
 		}
 	}
 
 	private void makeHeroiCaptureGold() {
 		try {
 			this.heroi.captureGold();
-		} catch (Exception e) {
-			throw new Error("Error capturing gold: " + e.getMessage());
+		} catch (Error error) {
+			throw new Error("Error capturing gold: " + error.getMessage());
 		}
 	}
 
