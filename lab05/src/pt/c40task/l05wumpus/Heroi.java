@@ -28,7 +28,7 @@ public class Heroi extends Componente {
 	 * - Cria mochila com (tamanhoMochila) espaços, e (numFlechas ou menor) flechas
 	 * - Cria mapa (size) x (size) e insere-o na última posição da mochila
 	 */
-	public Heroi(Caverna caverna, int[] pos, int size, int tamanhoMochila, int numFlechas) {
+	public Heroi(Caverna caverna, int[] pos, int tamanhoMochila, int numFlechas) {
 		this.caverna = caverna;
 		
 		int qtdeFlechas = (numFlechas <= tamanhoMochila - 2) ? numFlechas : tamanhoMochila - 2;
@@ -40,8 +40,6 @@ public class Heroi extends Componente {
 		this.posOuroNaMochila = tamanhoMochila - 2;
 		this.posMapaNaMochila = tamanhoMochila - 1;
 		
-		mochila.insere(this.posMapaNaMochila, new Mapa(size));
-		
 		this.flechaEquipada = null;
 
 		this.pos = pos;
@@ -49,6 +47,10 @@ public class Heroi extends Componente {
 
 	public int[] getPosition() {
 		return this.pos;
+	}
+
+	public int getMapaPosition() {
+		return this.posMapaNaMochila;
 	}
 
 	private int[] translateDirection(char command) {
@@ -143,8 +145,8 @@ public class Heroi extends Componente {
 			throw new Error("Error when scanning room: " + error.getMessage());
 		}
 	}
-
-	private void insertComponentIntoMochila(int pos, Componente comp) {
+	// INTERFACE
+	public void insertComponentIntoMochila(int pos, Componente comp) {
 		try {
 			this.mochila.insere(pos, comp);
 		} catch (Error error) {

@@ -10,11 +10,17 @@ package pt.c40task.l05wumpus;
  */
 public class MontadorDaCaverna {
 
+	private Mapa mapa;
 	private Heroi heroi;
 	private Wumpus wumpus;
 	
 	public MontadorDaCaverna(String[][] setup) {
 		
+	}
+
+	public void createAndSaveMapa(int size) {
+		this.mapa = new Mapa(size);
+		this.heroi.insertComponentIntoMochila(this.heroi.getMapaPosition(), mapa);
 	}
 	
 }
