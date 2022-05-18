@@ -74,7 +74,7 @@ public class Wumpus extends Componente{
 	private boolean dodge() {
 		boolean outcome = false;
 		Random d2 = new Random();
-		int dexSave = d2.nextInt(1,3);
+		int dexSave = d2.nextInt(2) + 1;
 		if (dexSave == 1) {
 			this.kill("Wumpus");
 			outcome = true;
