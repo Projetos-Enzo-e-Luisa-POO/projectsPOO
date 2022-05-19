@@ -139,7 +139,7 @@ public class MontadorDaCaverna {
 	}
 
 	public boolean isNumberOfHolesInCaveValid() {
-		return this.numberHolesInCave >= this.MAX_NUMBER_HOLES && this.numberHolesInCave <= this.MAX_NUMBER_HOLES;
+		return this.numberHolesInCave >= this.MIN_NUMBER_HOLES && this.numberHolesInCave <= this.MAX_NUMBER_HOLES;
 	}
 
 	public void CreateAndSaveMapInHeroSchoolbag(int size) {
