@@ -1,5 +1,4 @@
 package pt.c40task.l05wumpus;
-import pt.c40task.l05wumpus.configs.ComponentDescriptionController;
 
 /**
  * Componente "ativo" (sabe sua posição e age ativamente na caverna).

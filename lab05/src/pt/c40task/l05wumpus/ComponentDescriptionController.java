@@ -1,7 +1,7 @@
-package pt.c40task.l05wumpus.configs;
+package pt.c40task.l05wumpus;
 
 public class ComponentDescriptionController {
-
+    
     public char convertToCharacter(String componentDescription) {
         switch(componentDescription) {
             case "Heroi":
