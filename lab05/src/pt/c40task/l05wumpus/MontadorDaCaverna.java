@@ -56,8 +56,8 @@ public class MontadorDaCaverna {
 		switch(character) {
 			case 'P':
 				Heroi hero = new Heroi(this.cave, pos, 4, 2);
-				this.CreateAndSaveMapInHeroSchoolbag(this.cave.getDimensaoCaverna());
 				this.hero = hero;
+				this.CreateAndSaveMapInHeroSchoolbag(this.cave.getDimensaoCaverna());
 				return hero;
 			case 'W':
 				Wumpus wumpus = new Wumpus(pos, this.cave);
@@ -77,15 +77,17 @@ public class MontadorDaCaverna {
 		Componente comp = null;
 		try {
 			comp = this.convertToComponent(character, pos);
-			this.cave.insertInRoom(pos, comp);
-			if (comp.toString() == "Ouro") {
-				this.numberGoldInCave++;
-			}
-			else if (comp.toString() == "Buraco") {
-				this.numberHolesInCave++;
+			if (comp != null) {
+				this.cave.insertInRoom(pos, comp);
+				if (comp.toString() == "Ouro") {
+					this.numberGoldInCave++;
+				}
+				else if (comp.toString() == "Buraco") {
+					this.numberHolesInCave++;
+				}
 			}
 		} catch (Error error) {
-			throw new Error("Error inserting component " + comp.toString() + " in position (" + pos[0] + "," + pos[1] + ")");
+			throw new Error("Error inserting component in position (" + pos[0] + "," + pos[1] + ")");
 		}
 	}
 

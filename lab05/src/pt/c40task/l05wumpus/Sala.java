@@ -73,44 +73,45 @@ public class Sala {
 	 * @author Frost
 	 */
 	public void insert(Componente comp) {
-		if (this.full)
-			throw new Error("Room already filled, cannot insert component");
-		else {
-			int occupation = Sala.length;
-			boolean able = true;
-			String newComer = comp.toString();
-			String aux;
-			for (int i = 0; i < Sala.length; i++)
-				if (!emptyRooms[i]) {
-					occupation--;
-					aux = Sala[i].toString();
-					if (newComer == "Ouro")
-						if (aux == "Wumpus" || aux == "Buraco")
-							able = false;
-					else if (newComer == "Wumpus")
-						if (aux == "Ouro" || aux == "Buraco")
-							able = false;
-					else if (newComer == "Buraco")
-						if (aux == "Wumpus" || aux == "Ouro")
-							able = false;
-					else if (newComer == "Brisa")
-						if (aux == "Brisa")
-							able = false;
-					else if (newComer == "Fedor")
-						if (aux == "Fedor")
-							able = false;
+		if (comp != null)
+			if (this.full)
+				throw new Error("Room already filled, cannot insert component");
+			else {
+				int occupation = Sala.length;
+				boolean able = true;
+				String newComer = comp.toString();
+				String aux;
+				for (int i = 0; i < Sala.length; i++)
+					if (!emptyRooms[i]) {
+						occupation--;
+						aux = Sala[i].toString();
+						if (newComer == "Ouro")
+							if (aux == "Wumpus" || aux == "Buraco")
+								able = false;
+						else if (newComer == "Wumpus")
+							if (aux == "Ouro" || aux == "Buraco")
+								able = false;
+						else if (newComer == "Buraco")
+							if (aux == "Wumpus" || aux == "Ouro")
+								able = false;
+						else if (newComer == "Brisa")
+							if (aux == "Brisa")
+								able = false;
+						else if (newComer == "Fedor")
+							if (aux == "Fedor")
+								able = false;
+					}
+				if (able) {
+					int i = 0;
+					while(!emptyRooms[i])
+						i++;
+					Sala[i] = comp;
+					emptyRooms[i] = false;
+					if (occupation - 1 == 0)
+						this.full = true;
 				}
-			if (able) {
-				int i = 0;
-				while(!emptyRooms[i])
-					i++;
-				Sala[i] = comp;
-				emptyRooms[i] = false;
-				if (occupation - 1 == 0)
-					this.full = true;
-			}
-			else
-				throw new Error("Not allowed to insert component due game directives");
+				else
+					throw new Error("Not allowed to insert component due game directives");
 		}
 	}
 	
