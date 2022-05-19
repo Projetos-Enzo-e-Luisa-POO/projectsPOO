@@ -87,7 +87,7 @@ public class MontadorDaCaverna {
 				}
 			}
 		} catch (Error error) {
-			throw new Error("Error inserting component in position (" + pos[0] + "," + pos[1] + ")");
+			throw new Error("Error inserting component in position (" + pos[0] + "," + pos[1] + ")" + error.getMessage());
 		}
 	}
 

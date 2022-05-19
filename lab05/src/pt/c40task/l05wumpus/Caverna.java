@@ -53,13 +53,15 @@ public class Caverna {
 	 * @param comp
 	 */
 	public void insertInRoom(int[] pos, Componente comp) {
-		if (pos[0] < 0 || pos[0] >= this.dimensaoCaverna || pos[1] < 0 || pos[1] >= this.dimensaoCaverna) {
-			throw new Error("Cannot move out of cave limits, please choose a position in [0," + this.dimensaoCaverna + ']');
+		if (pos[0] < 1 || pos[0] > this.dimensaoCaverna || pos[1] < 1 || pos[1] > this.dimensaoCaverna) {
+			throw new Error(pos[0] + "Cannot move out of cave limits, please choose a position between 1 and " + this.dimensaoCaverna);
 		}
-		try {
-			caverna[pos[0]][pos[1]].insert(comp);
-		} catch (Error erro) {
-			throw new Error(erro.getMessage());
+		else {
+			try {
+				caverna[pos[0] - 1][pos[1] - 1].insert(comp);
+			} catch (Error erro) {
+				throw new Error(erro.getMessage());
+			}
 		}
 	}
 
@@ -86,7 +88,7 @@ public class Caverna {
 	}
 
 	public void moveComponent(Componente comp, int[] pos) {
-		if (pos[0] < 0 || pos[0] >= this.dimensaoCaverna || pos[1] < 0 || pos[1] >= this.dimensaoCaverna) {
+		if (pos[0] < 1 || pos[0] > this.dimensaoCaverna || pos[1] < 1 || pos[1] > this.dimensaoCaverna) {
 			throw new Error("Cannot move out of cave limits, please choose a position in [0," + this.dimensaoCaverna + ']');
 		}
 		this.insertInRoom(pos, comp);
