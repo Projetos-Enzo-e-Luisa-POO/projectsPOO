@@ -62,7 +62,6 @@ public class MontadorDaCaverna {
 			case 'W':
 				Wumpus wumpus = new Wumpus(pos, this.cave);
 				wumpus.calmWumpus(true);
-				this.wumpus = wumpus;
 				return wumpus;
 			case 'B':
 				return new Buraco(pos, this.cave);

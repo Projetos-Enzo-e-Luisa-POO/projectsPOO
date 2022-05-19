@@ -27,6 +27,8 @@ public class Buraco extends Componente{
 		while (i < 4) {
 			try {
 				cave.insertInRoom(brisasPos[i], new Brisa());
+			} catch(Error error) {
+				throw new Error("Error inserting brisa in position: " + error.getMessage());
 			} finally {
 				i++;
 			}
