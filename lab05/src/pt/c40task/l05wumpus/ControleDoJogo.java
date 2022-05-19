@@ -11,8 +11,9 @@ package pt.c40task.l05wumpus;
 public class ControleDoJogo {
 	
 	public String name;
-
+	private Wumpus wumpus;
 	private Heroi heroi;
+	private boolean heroiHasOuro;
 	public int score;
 
 	private int POINTS_FOR_CATURE_GOLD = 1000;
@@ -24,30 +25,16 @@ public class ControleDoJogo {
 	public ControleDoJogo(String name, Heroi heroi, int[] posHeroi) {
 		this.name = name;
 		this.heroi = heroi;
+		this.heroiHasOuro = false;
 		this.score = 0;
 	}
 
-	private boolean isExitAvaiable () {
+	private boolean isExitAvaiable() {
 		int[] posExit = {0,0};
-		return (this.posHeroi == posExit) && this.heroi.hasOuro();
+		return (this.heroi.getPosition() == posExit) && this.heroiHasOuro;
 	}
 
-
-	private void moveHeroi(int[] nextPosition) {
-		try {
-			this.score -= this.POINTS_FOR_MOVE;
-			this.heroi.move(nextPosition);
-			this.posHeroi = nextPosition;
-			this.heroi.scanRoom();
-			if (this.heroi.killedWumpus) {
-				this.score += this.POINTS_FOR_KILL_WUMPUS;
-			}
-			if (this.heroi.isDead) {
-				this.score -= this.POINTS_FOR_BEING_DEAD;
-			}
-		} catch (Error error) {
-			throw new Error("Error moving heroi: " + error.getMessage());
-		}
+	private void moveHero(int[] nextPosition) {
 	}
 
 	private void equipeHeroiWithArrow() {
