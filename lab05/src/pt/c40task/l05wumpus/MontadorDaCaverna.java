@@ -1,5 +1,4 @@
 package pt.c40task.l05wumpus;
-import java.util.ArrayList;
 /**
  * 
  * Classe montadora da Caverna
@@ -73,74 +72,20 @@ public class MontadorDaCaverna {
 		}
 	}
 
-	private boolean hasExcludedComponentsInRoom(Componente comp, int[] roomPosition) {
-		String[] componentsInRoom = this.cave.scanRoom(roomPosition, "MontadorDaCaverna");
-		
-		ArrayList<String> components = new ArrayList<String>(componentsInRoom.length);
-		for (int i = 0; i < componentsInRoom.length; i++) {
-			components.add(componentsInRoom[i]);
-		}
-
-		String[] excludedComponents = new String[2];
-		if (comp.toString() == "Heroi") {
-			excludedComponents[0] = "Ouro";
-			excludedComponents[1] = "Wumpus";
-		}
-		else if (comp.toString() == "Wumpus") {
-			excludedComponents[0] = "Ouro";
-			excludedComponents[1] = "Heroi";
-		}
-		else if (comp.toString() == "Ouro") {
-			excludedComponents[0] = "Heroi";
-			excludedComponents[1] = "Wumpus";
-		}
-		else {
-			excludedComponents[0] = "";
-			excludedComponents[1] = "";
-		}
-		
-		return components.contains(excludedComponents[0]) || components.contains(excludedComponents[1]);
-	}
-
-	private boolean canInsertComponentInPosition(Componente comp, int[] pos) {
-		boolean canInsert = true;
-		if (comp.toString() == "Heroi" && (this.hero != null || hasExcludedComponentsInRoom(comp, pos))) {
-			canInsert = false;
-		}
-		else if (comp.toString() == "Wumpus" && (this.wumpus != null || hasExcludedComponentsInRoom(comp, pos))) {
-			canInsert = false;
-		}
-		else if (comp.toString() == "Buraco" && this.numberHolesInCave > this.MAX_NUMBER_HOLES && !hasExcludedComponentsInRoom(comp, pos)) {
-			canInsert = false;
-		}
-		else if (comp.toString() == "Ouro" && this.numberGoldInCave > this.EXPECTED_NUMBER_GOLD) {
-			canInsert = false;
-		}
-		return canInsert;
-	}
-
 	public void saveComponentInPosition(char character, int[] pos) {
 		Componente comp = null;
 		try {
 			comp = this.convertToComponent(character, pos);
-			if (canInsertComponentInPosition(comp, pos)) { //não precisava conferir aqui, a inserção na sala já confere <-------
-				this.cave.insertInRoom(pos, comp);
-				if (comp.toString() == "Ouro") {
-					this.numberGoldInCave++;
-				}
-				else if (comp.toString() == "Buraco") {
-					this.numberHolesInCave++;
-				}
-			} else {
-				throw new Error("Position (" + pos[0] + "," + pos[1] + ") is invalid for insert component " + comp.toString());
+			this.cave.insertInRoom(pos, comp);
+			if (comp.toString() == "Ouro") {
+				this.numberGoldInCave++;
+			}
+			else if (comp.toString() == "Buraco") {
+				this.numberHolesInCave++;
 			}
 		} catch (Error error) {
 			throw new Error("Error inserting component " + comp.toString() + " in position (" + pos[0] + "," + pos[1] + ")");
 		}
-		/* boolean isWumpusComponent = character == 'W';
-		if (isWumpusComponent) {
-			this.wumpus.calmWumpus(true);
-		} */
 	}
 
 	public void buildCaveByCSVFileContent(String config[][]) {
@@ -156,7 +101,8 @@ public class MontadorDaCaverna {
 			} catch (Error error) {
 			   throw new Error("Error building cave by .csv file: " + error.getMessage());
 			}
-		 } // acalma wumpus aqui <-------
+		 }
+		 this.wumpus.calmWumpus(true);
 	}
 
 	public boolean isCaveBuildedValid() {
