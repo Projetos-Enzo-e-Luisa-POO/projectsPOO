@@ -22,7 +22,7 @@ public class ControleDoJogo {
 	private int POINTS_FOR_USE_ARROW = -100;
 	private int POINTS_FOR_KILL_WUMPUS = 500;
 
-	public ControleDoJogo(String name, Heroi heroi, int[] posHeroi) {
+	public ControleDoJogo(String name, Heroi heroi) {
 		this.name = name;
 		this.heroi = heroi;
 		this.heroiHasOuro = false;
