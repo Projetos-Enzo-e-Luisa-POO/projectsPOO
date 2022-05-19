@@ -11,6 +11,7 @@ public class ControleDoJogo {
 	private Heroi heroi;
 	private boolean heroiHasOuro;
 	private boolean equipedArrow;
+	private boolean gameEnd;
 	private int score;
 
 	private int POINTS_FOR_CATURE_GOLD = 1000;
@@ -23,7 +24,7 @@ public class ControleDoJogo {
 		this.name = name;
 		this.heroi = heroi;
 		this.wumpus = wumpus;
-		this.heroiHasOuro = this.equipedArrow = false;
+		this.heroiHasOuro = this.equipedArrow = this.gameEnd = false;
 		this.score = 0;
 	}
 
@@ -68,6 +69,11 @@ public class ControleDoJogo {
 							outcome[aux++] = erro.getMessage();
 						}
 					case 'q':	// quita
+						this.gameEnd = true;
+						if (this.winnableGame())
+							outcome[aux++] = "Mal posso esperar a festança que me espera!"; //def
+						else
+							outcome[aux++] = "Game end";
 				}
 			}
 		} else {
@@ -85,6 +91,11 @@ public class ControleDoJogo {
 				case 'c':	// capura ouro
 					outcome[aux++] = "Atirar no baú não deve funcionar..."; //def
 				case 'q':	// quita
+					this.gameEnd = true;
+					if (this.winnableGame())
+						outcome[aux++] = "Mal posso esperar a festança que me espera!"; //def
+					else
+						outcome[aux++] = "Game end";
 			}
 		if (wumpus.isDormindo()) {
 			outcome[aux++] = wumpus.scout();
@@ -122,5 +133,14 @@ public class ControleDoJogo {
 	
 	public String getName() {
 		return this.name;
+	}
+	
+	public char getStatus() {
+		char c = 'P';
+		if (this.winnableGame() && this.gameEnd)
+			c = 'W';
+		else if (this.gameEnd)
+			c = 'L';
+		return c;
 	}
 }

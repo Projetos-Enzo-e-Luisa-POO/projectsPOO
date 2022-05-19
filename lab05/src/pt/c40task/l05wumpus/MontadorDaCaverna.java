@@ -56,6 +56,7 @@ public class MontadorDaCaverna {
 		switch(character) {
 			case 'P':
 				Heroi hero = new Heroi(this.cave, pos, 4, 2);
+				this.CreateAndSaveMapInHeroSchoolbag(this.cave.getDimensaoCaverna());
 				this.hero = hero;
 				return hero;
 			case 'W':

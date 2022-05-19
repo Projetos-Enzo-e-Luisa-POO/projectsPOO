@@ -88,4 +88,8 @@ public class Caverna {
 		}
 		this.insertInRoom(pos, comp);
 	}
+	
+	public int getDimensaoCaverna() {
+		return this.dimensaoCaverna;
+	}
 }
