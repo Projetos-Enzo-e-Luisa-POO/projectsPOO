@@ -116,23 +116,23 @@ public class Heroi extends Componente {
 			String[] messages = new String[componentsInRoom.length];
 			for (int i = 0; i < componentsInRoom.length; i++) {
 				if (componentsInRoom[i] == "Ouro") {
-					messages[i] = "Ouro a vista!";
+					messages[i] = "Aquilo é um baú?"; //def
 				}
 				if (componentsInRoom[i] == "Wumpus") {
-					messages[i] = "Cuidado que o Wumpus vai te pegar!";
+					messages[i] = "O herói para estático diante do grande monstro."; //def
 				}
 				if (componentsInRoom[i] == "Buraco") {
-					messages[i] = "Morreu";
+					messages[i] = "AAAAAAAaaaaaa......"; //def
 					this.kill(this.toString());
 				}
 				if (componentsInRoom[i] == "Brisa") {
-					messages[i] = "A brisa eh fresca, mas o buraco esta perto...";
+					messages[i] = "A brisa assovia na sala..."; //def
 				}
 				if (componentsInRoom[i] == "Fedor") {
-					messages[i] = "Fedor na caverna";
+					messages[i] = "Que podridão! Será que tem um cadáver por aqui?"; //def
 				}
 				if (componentsInRoom[i] == "Nothing") {
-					messages[i] = "Silencio ensurdecedor na caverna...";
+					messages[i] = "O silêncio na caverna é ensurdecedor...";
 				}
 			}
 			this.registerInMap(
@@ -148,41 +148,46 @@ public class Heroi extends Componente {
 		try {
 			this.mochila.insere(pos, comp);
 		} catch (Error error) {
-			throw new Error("Error keeping component " + comp.toString() + " in schoolbag: " + error.getMessage());
+			throw new Error("Error storing component " + comp.toString() + " in backpack: " + error.getMessage());
 		}
 	}
 	
 	public String captureGold() {
 		try {
+			String outcome = "Quanto ouro pra um baúzinho só!"; //def;
 			Componente ouro = this.caverna.removeFromRoom(this.pos, "Ouro", this.toString());
-			this.insertComponentIntoMochila(this.posOuroNaMochila, ouro);
-			
-			ComponentDescriptionController componentController = new ComponentDescriptionController();
-			this.registerInMap(componentController.convertToCharacter(this.toString()));
-
-			return "Ouro capturado!!";
+			if (ouro == null)
+				outcome = "Ah, tudo que eu queria era um baú cheio de ouro...";
+			else {
+				this.insertComponentIntoMochila(this.posOuroNaMochila, ouro);
+				ComponentDescriptionController componentController = new ComponentDescriptionController();
+				this.registerInMap(componentController.convertToCharacter(this.toString()));
+			}
+			return outcome;
 		} catch (Error error) {
-			throw new Error("Error keeping gold in schoolbag: " + error.getMessage());
+			throw new Error(error.getMessage());
 		}
 	}
 
-	public void equipeArrow() {
+	public String equipeArrow() {
 		int arrowPosition = 0;
 		try {
 			do {
 				this.flechaEquipada = this.mochila.remove(arrowPosition++);
 			} while (this.flechaEquipada == null);
 		} catch (Error error) {
-			throw new Error("Error trying to equipe arrow");
+			throw new Error("Minhas flechas acabaram?!"); //def
 		}
+		return "Em que sala ele deve estar?..."; //def
 	}
 
-	public void moveArrow(char command) {
+	public String moveArrow(char command) {
 		if (this.flechaEquipada == null) {
 			throw new Error("No arrow equiped");
 		}
 		this.move(this.flechaEquipada, command);
 		this.flechaEquipada = null;
+		return "*swooosh* faz a flecha voando de uma sala para a outra"; //def;
 	}
 
 	private void kill(String comp) {

@@ -16,9 +16,9 @@ import java.util.Random;
 
 public class Wumpus extends Componente{
 
-	int[] pos = new int[2];
-	boolean dormindo = true;
-	Caverna cave;
+	private int[] pos = new int[2];
+	private boolean dormindo = true;
+	private Caverna cave;
 	
 	/**
 	 * Construtor, instancia fedores ao seu redor
@@ -55,10 +55,10 @@ public class Wumpus extends Componente{
 			for (int i = 0; i < saw.length; i++) {
 				if (saw[i] == "Flecha") 
 					if (this.dodge())
-						outcome = "Wumpus has been killed";
+						outcome = "A flecha voa como um raio pela sala, varando a cabeça do Wumpus antes que pudesse reagir."; //def
 				else if (saw[i] == "Heroi") {
 					this.kill("Heroi");
-					outcome = "Hero has been killed";
+					outcome = "Wumpus atacou, e não restou nada..."; //def
 				}
 			}
 		} catch (Error erro) {
@@ -118,5 +118,12 @@ public class Wumpus extends Componente{
 	public void calmWumpus(boolean init) {
 		if (init)
 			this.dormindo = true;
+	}
+
+	/**
+	 * @return the dormindo
+	 */
+	public boolean isDormindo() {
+		return dormindo;
 	}
 }
