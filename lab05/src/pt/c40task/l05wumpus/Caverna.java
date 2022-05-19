@@ -84,7 +84,7 @@ public class Caverna {
 
 	public void moveComponent(Componente comp, int[] pos) {
 		if (pos[0] < 0 || pos[0] >= this.dimensaoCaverna || pos[1] < 0 || pos[1] >= this.dimensaoCaverna) {
-			throw new Error("Cannot move hero out of cave limits, please choose a position in [0," + this.dimensaoCaverna + ']');
+			throw new Error("Cannot move out of cave limits, please choose a position in [0," + this.dimensaoCaverna + ']');
 		}
 		this.insertInRoom(pos, comp);
 	}

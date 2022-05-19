@@ -50,16 +50,15 @@ public class Mochila extends Componente {
 	/**
 	 * Remove um componente da posição solicitada na mochila.
 	 * - Retorna erro "Cannot remove components from last 2 backpack positions", código "_"
-	 * 		no caso do herói tentar remover o ouro ou o mapa de sua mochila, uma vez que
-	 * 		suas posições são por default, as últimas.
+	 * 		no caso do herói tentar remover o ouro de sua mochila.
 	 * 
 	 * @param pos
 	 * @return this.mochila[pos]
 	 * @author mariecurie
 	 */
 	public Componente remove(int pos) {
-		if (pos == this.itens.length - 1 || pos == this.itens.length - 2) {
-			throw new Error("Cannot remove components from last 2 backpack positions");
+		if (pos == this.itens.length - 2) {
+			throw new Error("Cannot remove gold from backpack");
 		}
 		Componente aux = this.itens[pos - 1];
 		this.itens[pos - 1] = null;

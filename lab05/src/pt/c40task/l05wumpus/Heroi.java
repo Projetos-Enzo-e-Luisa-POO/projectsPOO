@@ -132,7 +132,7 @@ public class Heroi extends Componente {
 					messages[i] = "Que podridão! Será que tem um cadáver por aqui?"; //def
 				}
 				if (componentsInRoom[i] == "Nothing") {
-					messages[i] = "O silêncio na caverna é ensurdecedor...";
+					messages[i] = "O silêncio na caverna é ensurdecedor..."; //def
 				}
 			}
 			this.registerInMap(
@@ -157,7 +157,7 @@ public class Heroi extends Componente {
 			String outcome = "Quanto ouro pra um baúzinho só!"; //def;
 			Componente ouro = this.caverna.removeFromRoom(this.pos, "Ouro", this.toString());
 			if (ouro == null)
-				outcome = "Ah, tudo que eu queria era um baú cheio de ouro...";
+				outcome = "Ah, tudo que eu queria era um baú cheio de ouro..."; //def
 			else {
 				this.insertComponentIntoMochila(this.posOuroNaMochila, ouro);
 				ComponentDescriptionController componentController = new ComponentDescriptionController();
