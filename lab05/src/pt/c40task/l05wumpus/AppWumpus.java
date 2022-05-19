@@ -35,14 +35,24 @@ public class AppWumpus {
       System.out.println("Digite seu nome, por favor:");
       return AppWumpus.keyboard.nextLine();
    }
+
+   public static void readAndHandleCommandsInKeyboard() {
+      String command;
+      do {
+         command = AppWumpus.keyboard.nextLine();
+         AppWumpus.controleDoJogo.handleMovementCommand(command.charAt(0));
+         // função de impressão da caverna + nome Player + score + status + mensagem opcional
+         //obs -> status = 'w' para venceu; 'n' para perdeu; 'x' intermediárias
+      } while(AppWumpus.controleDoJogo.getStatus() != "Fim");
+      //como vamos identificar o fim do jogo? pensei em criar uma flag "status" no controleDoJogo, que vai valer "Fim" ou algo do tipo quando acabar
+      // R: pelas mensagens que vão ser retornadas de cada movimento, vou codar o controle do jogo e comentar lá como são as saídas pra vc pegar elas aqui
+      // R.2: boa demaiss
+   }
    
    public static void executaJogo(String arquivoCaverna, String arquivoSaida,
                                   String arquivoMovimentos) {
 	   
       Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, arquivoMovimentos);
-      
-      // tem que conferir se arquivoMovimentos == null aqui pra distinguir os modos de jogo <------------------
-      // Saquei q vc fez a sobrecarga, teria que chamar ela  aqui caso seja null, e lá na sobrecarga não precisa do tk start (*), dps te explico melhor
       
       String cave[][] = tk.retrieveCave();
       
@@ -57,47 +67,18 @@ public class AppWumpus {
       System.out.println("=== Caverna");
       // função de impressão da caverna + nome Player + score + mensagem opcional (ok, vou buildar)
       
-
-      
-      String movements = tk.retrieveMovements();
-      for (int j = 0; j < movements.length(); j++) {
-         AppWumpus.controleDoJogo.handleMovementCommand(movements.charAt(j));
-         // função de impressão da caverna + nome Player + score + status + mensagem opcional
-         //obs -> status = 'w' para venceu; 'n' para perdeu; 'x' intermediárias
+      if (arquivoMovimentos == null) { //acha que esse if resolve a questão dos métodos de jogo diferentes?
+         AppWumpus.readAndHandleCommandsInKeyboard();
+      } else {
+         String movements = tk.retrieveMovements();
+         for (int j = 0; j < movements.length(); j++) {
+            AppWumpus.controleDoJogo.handleMovementCommand(movements.charAt(j));
+            // função de impressão da caverna + nome Player + score + status + mensagem opcional
+            //obs -> status = 'w' para venceu; 'n' para perdeu; 'x' intermediárias
+         }
       }
       
       tk.writeBoard(AppWumpus.controleDoJogo.getCave(), AppWumpus.controleDoJogo.getScore(), AppWumpus.controleDoJogo.getStatus()); // precisa ser chamado dentro do for, não?
-      
-      tk.stop();
-   }
-
-   public static void executaJogoInterativo(String arquivoCaverna, String arquivoSaida) {
-      Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, null); // esse aqui (*)
-      
-      String cave[][] = tk.retrieveCave();
-      
-      AppWumpus.montadorDaCaverna.buildCaveByCSVFileContent(cave);
-
-      if(!AppWumpus.montadorDaCaverna.isCaveBuildedValid()) {
-         System.out.println("Configuracoes invalidas foram passadas na construcao da caverna");
-         System.out.println("Infelizmente nao poderemos seguir com o jogo...");
-         return;
-      }
-
-      System.out.println("=== Caverna");
-      // função de impressão da caverna + nome Player + score + mensagem opcional
-      
-      String command;
-      do {
-         command = AppWumpus.keyboard.nextLine();
-         AppWumpus.controleDoJogo.handleMovementCommand(command.charAt(0));
-         // função de impressão da caverna + nome Player + score + status + mensagem opcional
-         //obs -> status = 'w' para venceu; 'n' para perdeu; 'x' intermediárias
-      } while(AppWumpus.controleDoJogo.getStatus() != "Fim");
-      //como vamos identificar o fim do jogo? pensei em criar uma flag "status" no controleDoJogo, que vai valer "Fim" ou algo do tipo quando acabar
-      // R: pelas mensagens que vão ser retornadas de cada movimento, vou codar o controle do jogo e comentar lá como são as saídas pra vc pegar elas aqui
-      
-      tk.writeBoard(AppWumpus.controleDoJogo.getCave(), AppWumpus.controleDoJogo.getScore(), AppWumpus.controleDoJogo.getStatus()); // tb precisaria estar dentro do loop <---
       
       tk.stop();
    }
