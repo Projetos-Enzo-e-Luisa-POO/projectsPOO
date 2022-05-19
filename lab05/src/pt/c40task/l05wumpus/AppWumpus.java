@@ -21,8 +21,8 @@ public class AppWumpus {
 
       String playerName = AppWumpus.getPlayerName();
       int[] initialHeroPosition = {0,0};
-      Heroi hero = new Heroi(AppWumpus.montadorDaCaverna.getCaverna(), initialHeroPosition, 4, 2);
-      AppWumpus.controleDoJogo = new ControleDoJogo(playerName, hero);
+      Heroi hero = new Heroi(AppWumpus.montadorDaCaverna.getCaverna(), initialHeroPosition, 3, 1); // talvez aqui tb
+      AppWumpus.controleDoJogo = new ControleDoJogo(playerName, hero); // < vou mecher aqui
 
       AppWumpus.executaJogo(
             (args.length > 0) ? args[0] : null,
@@ -38,7 +38,11 @@ public class AppWumpus {
    
    public static void executaJogo(String arquivoCaverna, String arquivoSaida,
                                   String arquivoMovimentos) {
+	   
       Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, arquivoMovimentos);
+      
+      // tem que conferir se arquivoMovimentos == null aqui pra distinguir os modos de jogo <------------------
+      // Saquei q vc fez a sobrecarga, teria que chamar ela  aqui caso seja null, e lá na sobrecarga não precisa do tk start (*), dps te explico melhor
       
       String cave[][] = tk.retrieveCave();
       
@@ -51,7 +55,9 @@ public class AppWumpus {
       }
 
       System.out.println("=== Caverna");
-      // função de impressão da caverna + nome Player + score + mensagem opcional
+      // função de impressão da caverna + nome Player + score + mensagem opcional (ok, vou buildar)
+      
+
       
       String movements = tk.retrieveMovements();
       for (int j = 0; j < movements.length(); j++) {
@@ -60,13 +66,13 @@ public class AppWumpus {
          //obs -> status = 'w' para venceu; 'n' para perdeu; 'x' intermediárias
       }
       
-      tk.writeBoard(AppWumpus.controleDoJogo.getCave(), AppWumpus.controleDoJogo.getScore(), AppWumpus.controleDoJogo.getStatus());
+      tk.writeBoard(AppWumpus.controleDoJogo.getCave(), AppWumpus.controleDoJogo.getScore(), AppWumpus.controleDoJogo.getStatus()); // precisa ser chamado dentro do for, não?
       
       tk.stop();
    }
 
    public static void executaJogoInterativo(String arquivoCaverna, String arquivoSaida) {
-      Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, null);
+      Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, null); // esse aqui (*)
       
       String cave[][] = tk.retrieveCave();
       
@@ -89,8 +95,9 @@ public class AppWumpus {
          //obs -> status = 'w' para venceu; 'n' para perdeu; 'x' intermediárias
       } while(AppWumpus.controleDoJogo.getStatus() != "Fim");
       //como vamos identificar o fim do jogo? pensei em criar uma flag "status" no controleDoJogo, que vai valer "Fim" ou algo do tipo quando acabar
+      // R: pelas mensagens que vão ser retornadas de cada movimento, vou codar o controle do jogo e comentar lá como são as saídas pra vc pegar elas aqui
       
-      tk.writeBoard(AppWumpus.controleDoJogo.getCave(), AppWumpus.controleDoJogo.getScore(), AppWumpus.controleDoJogo.getStatus());
+      tk.writeBoard(AppWumpus.controleDoJogo.getCave(), AppWumpus.controleDoJogo.getScore(), AppWumpus.controleDoJogo.getStatus()); // tb precisaria estar dentro do loop <---
       
       tk.stop();
    }

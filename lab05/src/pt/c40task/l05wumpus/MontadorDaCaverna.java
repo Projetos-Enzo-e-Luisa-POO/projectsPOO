@@ -123,7 +123,7 @@ public class MontadorDaCaverna {
 		Componente comp = null;
 		try {
 			comp = this.convertToComponent(character, pos);
-			if (canInsertComponentInPosition(comp, pos)) {
+			if (canInsertComponentInPosition(comp, pos)) { //não precisava conferir aqui, a inserção na sala já confere <-------
 				this.cave.insertInRoom(pos, comp);
 				if (comp.toString() == "Ouro") {
 					this.numberGoldInCave++;
@@ -156,12 +156,12 @@ public class MontadorDaCaverna {
 			} catch (Error error) {
 			   throw new Error("Error building cave by .csv file: " + error.getMessage());
 			}
-		 }
+		 } // acalma wumpus aqui <-------
 	}
 
 	public boolean isCaveBuildedValid() {
 		return this.hero != null
-				&& this.wumpus != null
+				&& this.wumpus != null // presume 1 wumpus só
 				&& this.numberGoldInCave == this.EXPECTED_NUMBER_GOLD
 				&& this.numberHolesInCave >= this.MIN_NUMBER_HOLES && this.numberHolesInCave <= this.MAX_NUMBER_HOLES;
 	}

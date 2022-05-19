@@ -25,7 +25,6 @@ public class Heroi extends Componente {
 	 * Protótipo de construtor:
 	 * - Cria todos os pertences do Herói
 	 * - Cria mochila com (tamanhoMochila) espaços, e (numFlechas ou menor) flechas
-	 * - Cria mapa (size) x (size) e insere-o na última posição da mochila
 	 */
 	public Heroi(Caverna caverna, int[] pos, int tamanhoMochila, int numFlechas) {
 		this.caverna = caverna;
