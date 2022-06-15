@@ -1,3 +1,8 @@
+package com.badlogic.amnesia.modelScratch.Elements.Movable;
+
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.MoveAccess;
+import com.badlogic.amnesia.modelScratch.Elements.Element;
+
 /* Padrão de movimentação na matriz
  * Superclasse que implementa funções de movimentação para um Elemento.
  * Todo Movable é orientado. Sua orientação é explícita através de um vetor de booleans
@@ -28,7 +33,7 @@ public class Movable extends Element {
 		if (direction == 0 && !this.orientation[0] || 
 			direction == 1 && !this.orientation[1] ||
 			direction == 2 && !this.orientation[2] ||
-			direction == 3 && !this.orientation[3] ||
+			direction == 3 && !this.orientation[3]
 			)
 			this.orientate(direction);
 		else

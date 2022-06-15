@@ -1,3 +1,10 @@
+package com.badlogic.amnesia.modelScratch;
+
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.ControlAccess;
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.Interactable;
+import com.badlogic.amnesia.modelScratch.Elements.Movable.MovableViewElement.Songster;
+import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
+
 public class MPControl{
 
 	private ControlAccess r;

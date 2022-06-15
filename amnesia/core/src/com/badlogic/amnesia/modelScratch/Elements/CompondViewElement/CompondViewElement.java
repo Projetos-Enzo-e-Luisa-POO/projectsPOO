@@ -1,10 +1,13 @@
+package com.badlogic.amnesia.modelScratch.Elements.CompondViewElement;
+import com.badlogic.amnesia.modelScratch.Elements.Element;
+
 import java.util.ArrayList;
 
 /* Superclasse Cell
  * Precursor para overlay de imagens na mesma célula
  * Idealmente recebe as imagens na mesma ordem em que devem ser sobrepostas
  */
-public class CompondViewElement extends Element{
+public class CompondViewElement extends Element {
 
 	protected ArrayList<String> imgs;
 	// <Elemento de visualização>
@@ -15,7 +18,11 @@ public class CompondViewElement extends Element{
 	}
 
 	protected String[] getImgs(){
-		return imgs.toArray();
+		String[] stringImgs = new String[this.imgs.size()];
+		for (int i = 0; i < this.imgs.size(); i++) {
+			stringImgs[i] = this.imgs.get(i);
+		}
+		return stringImgs;
 	}
 
 }

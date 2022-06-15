@@ -1,3 +1,4 @@
+package com.badlogic.amnesia.modelScratch.ControlInterfaces;
 
 /*	Filtro de visão padrão da célula
  * Interface que define as permissões de acesso à cada célula

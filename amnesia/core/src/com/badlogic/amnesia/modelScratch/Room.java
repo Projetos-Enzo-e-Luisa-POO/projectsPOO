@@ -1,3 +1,11 @@
+package com.badlogic.amnesia.modelScratch;
+
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.ControlAccess;
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.Interactable;
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.MoveAccess;
+import com.badlogic.amnesia.modelScratch.Elements.CompondViewElement.Cell;
+import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
+
 /*	Espaço matricial
  * Agrupamento de células, define espaços matriciais do jogo e media comunicações/movimentos
  */
@@ -40,14 +48,14 @@ public class Room implements MoveAccess, ControlAccess{
 
 	public void cellConnect(int cellID, Cell c){
 		IDTrans t = new IDTrans();
-		int[] aux = t.IDToPos(ID);
+		int[] aux = t.IDToPos(cellID);
 		this.space[aux[0]][aux[1]] = c;
 	}
 	
 	public boolean isWalkable(int cellID){
 		IDTrans t = new IDTrans();
 		int aux[] = t.IDToPos(cellID);
-		return this.space[aux[0]][aux[1]].isWalkable;
+		return this.space[aux[0]][aux[1]].isWalkable();
 	}
 
 	public boolean isInteractable(int cellID){
@@ -57,6 +65,7 @@ public class Room implements MoveAccess, ControlAccess{
 	}
 
 	public int[] size(){
-		return {this.space.length, this.space[0].length};
+		int[] aux = { this.space.length, this.space[0].length };
+		return aux;
 	}
 }

@@ -1,3 +1,5 @@
+package com.badlogic.amnesia.modelScratch.ControlInterfaces;
+
 /*	Acesso ao Room por um Movable
  * Restringe e direciona o acesso do objeto que se move à matriz com os dados completos
  */

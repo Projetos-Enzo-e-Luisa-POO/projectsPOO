@@ -1,3 +1,5 @@
+package com.badlogic.amnesia.modelScratch.Toolkit;
+
 /*	Auxiliar para conversão de IDs de posição
  * l: Tamanho da sala no eixo x
  * A conversão para ID começa com índice 1, enquanto as formas (x,y) começam em 0

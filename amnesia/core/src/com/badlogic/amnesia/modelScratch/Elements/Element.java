@@ -1,3 +1,5 @@
+package com.badlogic.amnesia.modelScratch.Elements;
+
 /*	Elemento básico do jogo
  * Superclasse mais genérica, define um Elemento básico do jogo.
  * Todo elemento possui um ID:

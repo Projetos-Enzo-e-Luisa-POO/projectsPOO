@@ -1,3 +1,7 @@
+package com.badlogic.amnesia.modelScratch.Elements.CompondViewElement;
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.Placeable;
+import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
+
 import java.util.ArrayList;
 /*	Célula
  * Unidade básica que contém Placeables para a construção do cenário e limitar movimentos do protagonista
@@ -16,7 +20,7 @@ public class Cell extends CompondViewElement{
 		this.imgs = new ArrayList<String>();
 	}
 
-	public place(Placeable element){
+	public void place(Placeable element){
 		this.elements.add(element);
 		this.imgConnect(element.getImg());
 	}
@@ -24,7 +28,7 @@ public class Cell extends CompondViewElement{
 	public boolean isWalkable(){
 		boolean aux = true;
 		for (int i = 0; i < this.elements.size(); i++)
-			if (!this.elementsget(i).isWalkable){
+			if (!this.elements.get(i).isWalkable()){
 				aux = false;
 				break;
 			}

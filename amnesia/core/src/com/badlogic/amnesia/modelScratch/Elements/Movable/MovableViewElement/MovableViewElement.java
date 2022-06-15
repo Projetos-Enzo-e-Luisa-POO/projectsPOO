@@ -1,3 +1,5 @@
+package com.badlogic.amnesia.modelScratch.Elements.Movable.MovableViewElement;
+import com.badlogic.amnesia.modelScratch.Elements.Movable.Movable;
 /*	Superclasse do protagonista
  * Banco de dados maior para uma classe que precisa ser exibida no view e também se move.
  * Não é capaz de alterar view, somente possui dados
@@ -10,7 +12,7 @@ public class MovableViewElement extends Movable {
 
 	protected void updateImg(boolean isMov){
 		for (int i = 0; i < 4; i++)
-			if(this.orientation){
+			if(this.orientation[i]){
 				if (isMov)
 					this.activeImg = this.movByOr[i];
 			else

@@ -1,3 +1,10 @@
+package com.badlogic.amnesia.modelScratch.Elements.Movable.MovableViewElement;
+
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.Interactable;
+import com.badlogic.amnesia.modelScratch.ControlInterfaces.MoveAccess;
+import com.badlogic.amnesia.modelScratch.Inventory;
+import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
+
 /*
  * Protagonista
  */
@@ -41,10 +48,10 @@ public class Songster extends MovableViewElement{
 	public int getOrientation(){
 		int i;
 		for (i = 0; i < 4; i++){
-			if(this.orientation)
+			if(this.orientation[i])
 				break;
 		}
-		return i
+		return i;
 	}
 
 	@Override
@@ -58,16 +65,16 @@ public class Songster extends MovableViewElement{
 
 	public void changeActiveSlot(int slot){
 		this.inventory.setActiveSlot(slot);
-		this.ActiveItem = this.inventory.getActiveItem();
+		this.activeItem = this.inventory.getActiveItem();
 	}
 
 	public Interactable getActiveItem(){
-		return this.ActiveItem;
+		return this.activeItem;
 	}
 
 	// método para colocar objetos no "chão"
 	public Interactable dropActiveItem(){
-		return this.inventory.dropItem(this.activeItem.getID);
+		return this.inventory.dropItem(this.activeItem.getID());
 	}
 
 	public void storeItem(Interactable item){

@@ -1,3 +1,5 @@
+package com.badlogic.amnesia.modelScratch.ControlInterfaces;
+
 /*  Acesso ao Room pelo MPControl
  * Restringe e direciona acesso ao Room
  */
