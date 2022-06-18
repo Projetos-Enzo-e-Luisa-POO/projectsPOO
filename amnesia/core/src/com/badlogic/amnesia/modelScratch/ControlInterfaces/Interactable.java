@@ -10,4 +10,6 @@ public interface Interactable extends Placeable {
 
     public int[] getInterfaces();
 
+    public boolean[] getStatus();
+
 }
