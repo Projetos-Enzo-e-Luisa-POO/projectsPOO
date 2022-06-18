@@ -8,9 +8,4 @@ public class Barrier extends ViewElement implements Placeable {
 	public boolean isWalkable(){
 		return false;
 	}
-
-	public boolean isInteractable(){
-		return false;
-	}
-    
 }

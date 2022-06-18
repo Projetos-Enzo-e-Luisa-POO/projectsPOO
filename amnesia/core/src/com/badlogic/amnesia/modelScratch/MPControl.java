@@ -53,7 +53,6 @@ public class MPControl{
 	}
 
 	public void interact(){
-		IDTrans t = new IDTrans();
 		int ID = this.getNextCell(this.p.getOrientation());
 		if (this.r.isInteractable(ID))
 			this.deepInteract(this.r.getElement(ID));

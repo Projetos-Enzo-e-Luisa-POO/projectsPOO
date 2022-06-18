@@ -7,7 +7,7 @@ import com.badlogic.amnesia.modelScratch.Elements.Element;
  */
 public class ViewElement extends Element {
 
-	protected String img;
+	private String img;
 
 	public void imgConnect (String img){
 		this.img = img;
