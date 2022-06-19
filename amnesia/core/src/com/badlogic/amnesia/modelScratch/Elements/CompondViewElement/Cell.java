@@ -1,4 +1,6 @@
 package com.badlogic.amnesia.modelScratch.Elements.CompondViewElement;
+
+import com.badlogic.amnesia.graphicInterface.GameScreen;
 import com.badlogic.amnesia.modelScratch.ControlInterfaces.Placeable;
 import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
 
@@ -13,16 +15,21 @@ public class Cell extends CompondViewElement{
 
 	private ArrayList<Placeable> elements;
 
-	public Cell (int[] pos){
+	public Cell (GameScreen game, int[] pos){
 		IDTrans t = new IDTrans();
 		this.ID = t.posToID(pos);
 		this.elements = new ArrayList<Placeable>();
 		this.imgs = new ArrayList<String>();
+		this.game = game;
 	}
 
 	public void place(Placeable element){
+		IDTrans t = new IDTrans();
+		int[] cellPosition = t.IDToPos(this.ID);
+		
 		this.elements.add(element);
-		this.imgConnect(element.getImg());
+		
+		this.imgConnect(element.getImg(), cellPosition);
 	}
 
 	public boolean isWalkable(){
