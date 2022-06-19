@@ -6,7 +6,7 @@ public class Floor1 extends Floor{
 
     public Floor1(){
         this.imgConnect("floor1.png");
-        this.ID = -1;
+        this.ID = -5;
     }
 
 }

@@ -6,7 +6,7 @@ public class RUCorner1 extends Barrier{
 
     public RUCorner1(){
         this.imgConnect("rucorner1.png");
-        this.ID = -7;
+        this.ID = -4;
     }
 
 }

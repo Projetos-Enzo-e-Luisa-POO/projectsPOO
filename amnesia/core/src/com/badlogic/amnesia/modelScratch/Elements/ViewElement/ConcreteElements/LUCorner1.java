@@ -6,7 +6,7 @@ public class LUCorner1 extends Barrier{
 
     public LUCorner1(){
         this.imgConnect("lucorner1.png");
-        this.ID = -8;
+        this.ID = -6;
     }
 
 }

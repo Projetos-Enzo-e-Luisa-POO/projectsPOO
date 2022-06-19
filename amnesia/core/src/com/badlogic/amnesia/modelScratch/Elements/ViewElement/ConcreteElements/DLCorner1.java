@@ -6,7 +6,7 @@ public class DLCorner1 extends Barrier{
 
     public DLCorner1(){
         this.imgConnect("dlcorner1.png");
-        this.ID = -5;
+        this.ID = -12;
     }
 
 }

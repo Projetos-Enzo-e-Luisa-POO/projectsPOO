@@ -6,7 +6,7 @@ public class Wall1 extends Barrier{
 
     public Wall1(){
         this.imgConnect("wall1.png");
-        this.ID = -2;
+        this.ID = -9;
     }
 
 }

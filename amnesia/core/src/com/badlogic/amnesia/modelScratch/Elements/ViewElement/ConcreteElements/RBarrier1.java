@@ -2,11 +2,11 @@ package com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements;
 
 import com.badlogic.amnesia.modelScratch.Elements.ViewElement.Barrier;
 
-public class URCorner1 extends Barrier{
+public class RBarrier1 extends Barrier{
 
-    public URCorner1(){
-        this.imgConnect("urcorner1.png");
-        this.ID = -1;
+    public RBarrier1(){
+        this.imgConnect("rbarrier1.png");
+        this.ID = -7;
     }
 
 }
