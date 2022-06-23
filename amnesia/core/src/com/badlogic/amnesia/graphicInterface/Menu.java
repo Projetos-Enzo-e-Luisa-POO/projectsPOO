@@ -1,12 +1,9 @@
 package com.badlogic.amnesia.graphicInterface;
 
-import com.badlogic.amnesia.services.FileController.error.CopyFileException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,45 +11,56 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class MainMenu implements Screen {
+public class Menu implements Screen {
     //------------------------------------------------------------------------------------
     private static GameControll gameControll;
     
-    private Texture backgroundImage;
-    private Sprite menuBackground;
-    private SpriteBatch spriteBatch;
+    private Texture backgroundImage = new Texture(Gdx.files.internal("menuBackground.png"));
+    private Viewport viewport;
     
-    private OrthographicCamera orthographicCamera;
+    private OrthographicCamera Camera;
     
     private Vector3 touchPosition = new Vector3();
 
     private Rectangle newGameButton;
     private Rectangle configButton;
+    private Rectangle Title;
     //------------------------------------------------------------------------------------
-    public MainMenu (GameControll game) {
-        MainMenu.gameControll = game;
+    public Menu (GameControll game) {
+        Menu.gameControll = game;
 
-        orthographicCamera = new OrthographicCamera();
-        orthographicCamera.setToOrtho(false, 700, 500);
+        this.Camera = new OrthographicCamera();
+        this.Camera.position.set(0,0,0);
+        this.Camera.update();
+
+        this.viewport = new FitViewport(1280, 720, this.Camera);
+
+        Title = new Rectangle();
+        Title.width = 3*Gdx.graphics.getWidth()/5;
+        Title.height = Gdx.graphics.getHeight()/6;
+        Title.x = Gdx.graphics.getWidth()/2 - Title.width/2;
+        Title.y = 3*Gdx.graphics.getHeight()/4 - Title.height/2;
+
 
         newGameButton = new Rectangle();
-        newGameButton.x = 212;
-        newGameButton.y = 256;
-        newGameButton.width = 271;
-        newGameButton.height = 33;
+        newGameButton.width = Gdx.graphics.getWidth()/5;
+        newGameButton.height = Gdx.graphics.getHeight()/8;
+        newGameButton.x = Gdx.graphics.getWidth()/2 - newGameButton.width/2;
+        newGameButton.y = Gdx.graphics.getHeight()/2 - newGameButton.height/2;
 
         configButton = new Rectangle();
-        configButton.x = 158;
-        configButton.y = 339;
-        configButton.width = 401;
-        configButton.height = 34;
+        configButton.width = Gdx.graphics.getWidth()/5;
+        configButton.height = Gdx.graphics.getHeight()/8;
+        configButton.x = Gdx.graphics.getWidth()/2 - configButton.width/2;
+        configButton.y = Gdx.graphics.getHeight()/4 - configButton.height/2;
 
     }
     //------------------------------------------------------------------------------------
     private void renderMenuBackground() {
-        backgroundImage = new Texture(Gdx.files.internal("menuBackground.png"));
-        gameControll.batch.draw(backgroundImage, 0, 0);
+        gameControll.batch.draw(this.backgroundImage, 0, 0);
     }
     //------------------------------------------------------------------------------------
     private void confirmGameMode() {
@@ -64,9 +72,9 @@ public class MainMenu implements Screen {
         Dialog dialogGameMode = new Dialog("Modo de Jogo", skin, "dialog") {
             public void result(Object obj) {
                 if (obj.equals("confirmButton")) {
-                    MainMenu.gameControll.configFile = "ResetSaveFile.csv";
+                    Menu.gameControll.configFile = "ResetSaveFile.csv";
                 } else if (obj.equals("cancelButton")) {
-                    MainMenu.gameControll.configFile = "ResetSaveFile.csv";
+                    Menu.gameControll.configFile = "ResetSaveFile.csv";
                 }
             }
         };
@@ -82,8 +90,10 @@ public class MainMenu implements Screen {
     //------------------------------------------------------------------------------------
     @Override
     public void render(float delta) {
-        orthographicCamera.update();
-        gameControll.batch.setProjectionMatrix(orthographicCamera.combined);
+        ScreenUtils.clear(0,0,0,1);
+
+        this.Camera.update();
+        gameControll.batch.setProjectionMatrix(this.Camera.combined);
 
         gameControll.batch.begin();
         renderMenuBackground();
@@ -91,7 +101,7 @@ public class MainMenu implements Screen {
 
         if (Gdx.input.justTouched()) {
             touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            orthographicCamera.unproject(touchPosition);
+            this.Camera.unproject(touchPosition);
             
             if (newGameButton.contains(touchPosition.x, touchPosition.y)) {
                 this.confirmGameMode();
@@ -107,12 +117,12 @@ public class MainMenu implements Screen {
                 //this.showBindConfigScreen();
             }
         }
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
     }
     //------------------------------------------------------------------------------------
     @Override
     public void dispose() {
         backgroundImage.dispose();
-        spriteBatch.dispose();
     }
     //------------------------------------------------------------------------------------
     @Override

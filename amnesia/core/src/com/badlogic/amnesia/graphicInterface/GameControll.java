@@ -19,36 +19,36 @@ public class GameControll extends Game {
     public void create() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-        camera.setToOrtho(false, 700, 500);
+        camera.setToOrtho(false, 1280, 720);
         
         font = new BitmapFont();
         
-        this.setScreen(new MainMenu(this));
+        this.setScreen(new Menu(this));
     }
     //------------------------------------------------------------------------------------
-    private String[] getRoomSourceFromFile(String fileName) throws Exception {
-        FileController fc = new FileController();
-        try {
-            return fc.getFileContent(fileName);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
+    //private String[] getRoomSourceFromFile(String fileName) throws Exception {
+        //FileController fc = new FileController();
+        //try {
+        //    return fc.getFileContent(fileName);
+        //} catch (Exception e) {
+        //    throw new Exception(e.getMessage());
+        //}
+    //}
     //------------------------------------------------------------------------------------
-    private GameScreen buildRoomBySource(String[] source) {
-        GameScreen gameScreen = new GameScreen(this.configFile);
-
-        RoomBuilder roomBuilder = new RoomBuilder();
-        roomBuilder.buildRoom(gameScreen, source);
-
-        return gameScreen;
-    }
+    //private GameScreen buildRoomBySource(String[] source) {
+    //    GameScreen gameScreen = new GameScreen(this.configFile);
+//
+     //   RoomBuilder roomBuilder = new RoomBuilder();
+     //   roomBuilder.buildRoom(gameScreen, source);
+//
+    //    return gameScreen;
+    //}
     //------------------------------------------------------------------------------------
     public void loadNewRoom() throws Exception {
         try {
-            String[] source = this.getRoomSourceFromFile("Room" + (actualRoom++) + ".csv");
-            GameScreen newRoomScreen = this.buildRoomBySource(source);
-            this.setScreen(newRoomScreen);
+    //        String[] source = this.getRoomSourceFromFile("Room" + (actualRoom++) + ".csv");
+    //        GameScreen newRoomScreen = this.buildRoomBySource(source);
+    //        this.setScreen(newRoomScreen);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());
