@@ -2,16 +2,25 @@ package com.badlogic.amnesia.services.FlagManagment;
 
 import java.util.ArrayList;
 
-import com.badlogic.amnesia.modelScratch.ControlInterfaces.Interactable;
-import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
+import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
+import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 
-public class FlagDepot implements FlagManage, FlagRead{
+public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags{
     private int roomNumber;
     private int songsterPos;
     private int songsterOrientation;
     private ArrayList<ElementMemento> status = new ArrayList<ElementMemento>();
 
-    public FlagDepot(String[] source){
+    private FlagDepot(){}
+    private static class Holder{
+        static final FlagDepot instance = new FlagDepot();
+    }
+
+    public static FlagDepot getInstance(){
+        return Holder.instance;
+    }
+
+    public void initialize(String[] source){
         this.setRoomNumber(Integer.valueOf(source[0]));
         this.setSongsterPos(Integer.valueOf(source[1]));
         this.setSongsterOrientation(Integer.valueOf(source[2]));

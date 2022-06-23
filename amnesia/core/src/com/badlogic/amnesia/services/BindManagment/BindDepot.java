@@ -1,8 +1,6 @@
 package com.badlogic.amnesia.services.BindManagment;
 
 import com.badlogic.amnesia.services.FileController.FileController;
-import com.badlogic.amnesia.services.FileController.error.FileNotFoundException;
-import com.badlogic.amnesia.services.FileController.error.ReadingFileException;
 
 public class BindDepot implements BindSetup, BindRead{
     private int[] keyBindValues = new int[12];
@@ -20,20 +18,11 @@ public class BindDepot implements BindSetup, BindRead{
     }
 
     public void updateBinds(){
-        FileController f = new FileController();
-        String[] source;
-        try {
-            source = f.getFileContent("KeyBindValues.csv");
-            int k = 0;
-            for (String s : source){
-                this.keyBindValues[k++] = Integer.valueOf(s);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Bind Intialize failed: File not found");
-            e.printStackTrace();
-        } catch (ReadingFileException e) {
-            System.out.println("Bind Intialize failed: Couldn't read file correctly");
-            e.printStackTrace();
+        FileController fc = new FileController("KeyBindValues.csv");
+        String[] source = fc.getFileContent();
+        int k = 0;
+        for (String s : source){
+            this.keyBindValues[k++] = Integer.valueOf(s.split(":")[1]);
         }
     }
 

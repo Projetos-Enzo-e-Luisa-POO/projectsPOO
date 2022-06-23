@@ -13,7 +13,7 @@ public class ElementMemento {
     }
 
     public String toString(){
-        return this.ID + ',' + this.posID + ',' +  this.status.toString() + ',';
+        return this.ID + ',' + this.posID + ',' +  this.status.toString().substring(1,this.status.toString().length() - 1) + ',';
     }
 
 }

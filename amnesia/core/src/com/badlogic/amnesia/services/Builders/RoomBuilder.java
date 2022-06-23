@@ -1,25 +1,28 @@
 package com.badlogic.amnesia.services.Builders;
 
+import com.badlogic.amnesia.Model.Room;
+import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
+import com.badlogic.amnesia.Model.ControlInterfaces.Placeable;
+import com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.DBarrier1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.DLCorner1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.DRCorner1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Floor1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.LBarrier1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.LUCorner1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.LightSwitch;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.RBarrier1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.RUCorner1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Table1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.UBarrier1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.ULCorner1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.URCorner1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.VoidElement;
+import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Wall1;
+import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.graphicInterface.GameScreen;
-import com.badlogic.amnesia.modelScratch.Room;
-import com.badlogic.amnesia.modelScratch.ControlInterfaces.Placeable;
-import com.badlogic.amnesia.modelScratch.Elements.CompondViewElement.Cell;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.DBarrier1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.DLCorner1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.DRCorner1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.Floor1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.LBarrier1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.LUCorner1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.LightSwitch;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.RBarrier1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.RUCorner1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.Table1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.UBarrier1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.ULCorner1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.URCorner1;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.VoidElement;
-import com.badlogic.amnesia.modelScratch.Elements.ViewElement.ConcreteElements.Wall1;
-import com.badlogic.amnesia.modelScratch.Toolkit.IDTrans;
+import com.badlogic.amnesia.services.FileController.FileController;
+import com.badlogic.gdx.utils.Array;
 
 public class RoomBuilder {
 
@@ -33,8 +36,24 @@ public class RoomBuilder {
         return Holder.instance;
     }
 
-    public Room buildRoom(GameScreen gameScreen, String[] source){
+    public Room buildRoom(GameScreen gameScreen, int roomNumber, String[] interactableData){
+        //Prep
+        String s = "";
+        switch (roomNumber){
+            case 1:
+                s = "Room1.csv";
+            case 2:
+                s = "Room2.csv";
+            case 3:
+                s = "Room3.csv";
+        }
+        FileController fc = new FileController(s);
+        String[] aux = fc.getFileContent();
+        String[] source = new String[aux.length + interactableData.length];
+        System.arraycopy(aux, 0, source, 0, aux.length);  
+        System.arraycopy(interactableData, 0, source, aux.length, interactableData.length);
         IDTrans t = new IDTrans();
+        //Start
         int x = Integer.valueOf(source[0]), 
             y =Integer.valueOf(source[1]);
         Room r = new Room(x, y);
@@ -46,6 +65,17 @@ public class RoomBuilder {
                 r.cellConnect(t.posToID(pos), this.buildCell(gameScreen, pos, data));
                 k++;
             }
+        while(k < source.length){
+            int ID = Integer.parseInt(source[k]), posID = Integer.parseInt(source[k + 1]);
+            Array<Boolean> state = new Array<Boolean>();
+            String[] sSplit = source[k + 2].split(";");
+            while(sSplit[1].length() > 0){
+               state.add(Boolean.parseBoolean(sSplit[0]));
+               sSplit = sSplit[1].split(";");
+            }
+            r.elementConnect(posID, interactableFactory(ID, state.toArray())); 
+            k += 3;
+        }
         return r;
     }
 
@@ -53,7 +83,7 @@ public class RoomBuilder {
         Cell c = new Cell(gameScreen, pos);
         int[] IDs = this.translateIDs(data);
         for (int n : IDs)
-            c.place(this.elementFactory(n));
+            c.place(this.placeableFactory(n));
         return c;
     }
 
@@ -65,7 +95,7 @@ public class RoomBuilder {
         return IDs;
     }
 
-    private Placeable elementFactory(int n){
+    private Placeable placeableFactory(int n){
         Placeable aux = null;
         switch(n){
             /*
@@ -82,7 +112,6 @@ public class RoomBuilder {
              * 10: downright corner 1
              * 11: down barrier 1
              * 12: downleft corner 1
-             * 13: light switch 1
              * 14: table 1
              */
             case 0:
@@ -111,12 +140,22 @@ public class RoomBuilder {
                 aux = new DBarrier1();
             case 12:
                 aux = new DLCorner1();
-            case 13:
-                aux = new LightSwitch(false);
             case 14:
                 aux = new Table1();
         }
         return aux;
     }
 
+
+    private Interactable interactableFactory(int n, Boolean[] state){
+        Interactable aux = null;
+        switch(n){
+            /*
+             * 13: light switch 1
+             */
+            case 13:
+                aux = new LightSwitch(state);
+        }
+        return aux;
+    }
 }
