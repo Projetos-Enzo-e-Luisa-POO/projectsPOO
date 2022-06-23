@@ -3,7 +3,6 @@ package com.badlogic.amnesia.graphicInterface;
 import com.badlogic.amnesia.services.Builders.RoomBuilder;
 import com.badlogic.amnesia.services.FileController.FileController;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -59,7 +58,6 @@ public class GameControll extends Game {
     public void render() {
         super.render();
 
-        ScreenUtils.clear(0, 0, 0.2f, 1);
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);

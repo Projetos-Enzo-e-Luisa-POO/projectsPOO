@@ -1,5 +1,6 @@
 package com.badlogic.amnesia.graphicInterface;
 
+import com.badlogic.amnesia.services.FileController.error.CopyFileException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenu implements Screen {
     //------------------------------------------------------------------------------------
@@ -23,7 +25,7 @@ public class MainMenu implements Screen {
     
     private OrthographicCamera orthographicCamera;
     
-    private Vector3 touchPosition;
+    private Vector3 touchPosition = new Vector3();
 
     private Rectangle newGameButton;
     private Rectangle configButton;
@@ -45,11 +47,12 @@ public class MainMenu implements Screen {
         configButton.y = 339;
         configButton.width = 401;
         configButton.height = 34;
+
     }
     //------------------------------------------------------------------------------------
     private void renderMenuBackground() {
         backgroundImage = new Texture(Gdx.files.internal("menuBackground.png"));
-        gameControll.batch.draw(menuBackground, 0, 0);
+        gameControll.batch.draw(backgroundImage, 0, 0);
     }
     //------------------------------------------------------------------------------------
     private void confirmGameMode() {
@@ -100,7 +103,8 @@ public class MainMenu implements Screen {
             }
             
             if (configButton.contains(touchPosition.x, touchPosition.y)) {
-                this.showBindConfigScreen();
+                System.out.println("config!");
+                //this.showBindConfigScreen();
             }
         }
     }
