@@ -27,7 +27,6 @@ public class Menu implements Screen {
                     noTexture = new Texture(Gdx.files.internal("NO.png")),
                     yesTexture = new Texture(Gdx.files.internal("Yes.png"));
 
-
     private Rectangle newGameButton;
     private Rectangle loadGameButton;
     private Rectangle configButton;
@@ -41,6 +40,9 @@ public class Menu implements Screen {
     //------------------------------------------------------------------------------------
     public Menu (GameControll game) {
         Menu.gameControll = game;
+    }
+    //------------------------------------------------------------------------------------
+    public void Setup(){
 
         this.Camera.position.set(0,0,0);
         this.Camera.update();
@@ -54,19 +56,12 @@ public class Menu implements Screen {
 
         //x, y, width, height
         Title = new Rectangle(6*w/32, 11*h/16, 10*w/16, 2*h/9);
-
         newGameButton = new Rectangle(11*w/32, 8*h/16, 5*w/16, h/9);
-
         loadGameButton = new Rectangle(11*w/32, 5*h/16, 5*w/16, h/9);
-
         configButton = new Rectangle(11*w/32, 2*h/16, 5*w/16, h/9);
-
         SaveMenu = new Rectangle(w/2, h/2, 0, 0);
-
         Yes = new Rectangle(27*w/64, 13*h/32, 4*h/16, w/16);
-
         No = new Rectangle(27*w/64, 8*h/32, 4*h/16, w/16);
-
     }
     //------------------------------------------------------------------------------------
     @Override
@@ -114,24 +109,25 @@ public class Menu implements Screen {
         gameControll.batch.end();
 
         if (Gdx.input.justTouched()) {
-            touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             this.viewport.unproject(touchPosition);
             if(!this.newGamePressed){
                 if (newGameButton.contains(touchPosition.x, touchPosition.y)) {
-                    if(mb.saveExists()) this.newGamePressed= true;
-                    else System.out.println("newGame!");
+                    if(this.mb.saveExists()) this.newGamePressed= true;
+                    else this.mb.setLoading("SaveFile.csv", Menu.gameControll); // Loading if completely new game
                 }
-                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) System.out.println("loadGame!");
-                if (configButton.contains(touchPosition.x, touchPosition.y)) System.out.println("config!");
+                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.mb.setLoading("SaveFile.csv", Menu.gameControll); // Loading with possible load file
+                if (configButton.contains(touchPosition.x, touchPosition.y)) System.out.println("config!"); //Menu.gameControll.setScreen(Settings);
             }
             else {
                 if (Yes.contains(touchPosition.x, touchPosition.y)){
-                    System.out.println("loadGame!");
                     this.newGamePressed = false;
+                    this.mb.setLoading("SaveFile.csv", Menu.gameControll);
                 }
                 else if (No.contains(touchPosition.x, touchPosition.y)) {
-                    System.out.println("newGame!");
                     this.newGamePressed = false;
+                    this.mb.OverwriteSaveFile();
+                    this.mb.setLoading("SaveFile.csv", Menu.gameControll);
                 }
                 else if (SaveMenu.contains(touchPosition.x, touchPosition.y)){}
                 else this.newGamePressed = false;
@@ -143,11 +139,18 @@ public class Menu implements Screen {
     @Override
     public void dispose() {
         backgroundImage.dispose();
+        titleTexture.dispose();
+        newGameButtonTexture.dispose();
+        loadGameButtonTexture.dispose();
+        SaveTexture.dispose();
+        configButtonTexture.dispose();
+        noTexture.dispose();
+        yesTexture.dispose();
     }
     //------------------------------------------------------------------------------------
     @Override
     public void show() {
-        // TODO Auto-generated method stub
+        this.Setup();
         
     }
     @Override
@@ -167,7 +170,6 @@ public class Menu implements Screen {
     }
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-        
+        this.dispose();
     }
 }
