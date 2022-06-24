@@ -21,7 +21,7 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.VoidElem
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Wall1;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.graphicInterface.GameScreen;
-import com.badlogic.amnesia.services.FileController.FileController;
+import com.badlogic.amnesia.services.FileManagment.FileController;
 import com.badlogic.gdx.utils.Array;
 
 public class RoomBuilder {

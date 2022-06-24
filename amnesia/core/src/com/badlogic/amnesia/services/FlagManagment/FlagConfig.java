@@ -1,7 +1,7 @@
 package com.badlogic.amnesia.services.FlagManagment;
 
 import com.badlogic.amnesia.Model.ControlInterfaces.SaveAccess;
-import com.badlogic.amnesia.services.FileController.FileController;
+import com.badlogic.amnesia.services.FileManagment.FileController;
 
 public class FlagConfig {
 

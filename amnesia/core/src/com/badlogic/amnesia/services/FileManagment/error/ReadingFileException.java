@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.services.FileController.error;
+package com.badlogic.amnesia.services.FileManagment.error;
 
 public class ReadingFileException extends Exception {
     

@@ -1,6 +1,6 @@
 package com.badlogic.amnesia.services.BindManagment;
 
-import com.badlogic.amnesia.services.FileController.FileController;
+import com.badlogic.amnesia.services.FileManagment.FileController;
 
 public class BindConfig {
     private BindSetup b = BindDepot.getInstance();

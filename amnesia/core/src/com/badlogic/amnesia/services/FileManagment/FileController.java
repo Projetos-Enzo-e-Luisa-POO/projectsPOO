@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.services.FileController;
+package com.badlogic.amnesia.services.FileManagment;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
