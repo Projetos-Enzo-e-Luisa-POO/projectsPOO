@@ -1,8 +1,9 @@
-package com.badlogic.amnesia.graphicInterface;
+package com.badlogic.amnesia.GraphicInterface;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -11,11 +12,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Menu implements Screen {
-    //------------------------------------------------------------------------------------
-    private static GameControll gameControll;
+    
+    private static Curtain curtain;
 
     private Viewport viewport;
     private Vector3 touchPosition = new Vector3();
+    private SpriteBatch batch = new SpriteBatch();
     private OrthographicCamera Camera = new OrthographicCamera();;
 
     private Texture backgroundImage = new Texture(Gdx.files.internal("menuBackground.png")),
@@ -37,11 +39,11 @@ public class Menu implements Screen {
 
     private MenuBrain mb = new MenuBrain();
     private boolean newGamePressed = false;
-    //------------------------------------------------------------------------------------
-    public Menu (GameControll game) {
-        Menu.gameControll = game;
+    
+    public Menu (Curtain curtain) {
+        Menu.curtain = curtain;
     }
-    //------------------------------------------------------------------------------------
+    
     public void Setup(){
 
         this.Camera.position.set(0,0,0);
@@ -63,7 +65,7 @@ public class Menu implements Screen {
         Yes = new Rectangle(27*w/64, 13*h/32, 4*h/16, w/16);
         No = new Rectangle(27*w/64, 8*h/32, 4*h/16, w/16);
     }
-    //------------------------------------------------------------------------------------
+    
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
@@ -73,19 +75,19 @@ public class Menu implements Screen {
                 w = this.viewport.getWorldWidth();
 
         this.Camera.update();
-        gameControll.batch.setProjectionMatrix(this.Camera.combined);
+        batch.setProjectionMatrix(this.Camera.combined);
 
-        gameControll.batch.begin();
+        batch.begin();
 
-        gameControll.batch.draw(this.backgroundImage, 0, 0);
-        gameControll.batch.draw(titleTexture, Title.x, Title.y, Title.width, Title.height);
+        batch.draw(this.backgroundImage, 0, 0);
+        batch.draw(titleTexture, Title.x, Title.y, Title.width, Title.height);
 
-        gameControll.batch.draw(newGameButtonTexture, newGameButton.x, newGameButton.y, newGameButton.width, newGameButton.height);
-        gameControll.batch.draw(loadGameButtonTexture, loadGameButton.x, loadGameButton.y, loadGameButton.width, loadGameButton.height);
-        gameControll.batch.draw(configButtonTexture, configButton.x, configButton.y, configButton.width, configButton.height);
+        batch.draw(newGameButtonTexture, newGameButton.x, newGameButton.y, newGameButton.width, newGameButton.height);
+        batch.draw(loadGameButtonTexture, loadGameButton.x, loadGameButton.y, loadGameButton.width, loadGameButton.height);
+        batch.draw(configButtonTexture, configButton.x, configButton.y, configButton.width, configButton.height);
 
         if(this.newGamePressed){
-            gameControll.batch.draw(SaveTexture, SaveMenu.x, SaveMenu.y, SaveMenu.width, SaveMenu.height);
+            batch.draw(SaveTexture, SaveMenu.x, SaveMenu.y, SaveMenu.width, SaveMenu.height);
 
             if(SaveMenu.width < 4*w/12)
                 SaveMenu.width+=16*2*2;
@@ -96,8 +98,8 @@ public class Menu implements Screen {
             if(SaveMenu.y > 2*h/12)
                 SaveMenu.y-=9*3;
             else{
-                gameControll.batch.draw(yesTexture, Yes.x, Yes.y, Yes.width, Yes.height);
-                gameControll.batch.draw(noTexture, No.x, No.y, No.width, No.height);
+                batch.draw(yesTexture, Yes.x, Yes.y, Yes.width, Yes.height);
+                batch.draw(noTexture, No.x, No.y, No.width, No.height);
             }
         }
         else {
@@ -106,7 +108,7 @@ public class Menu implements Screen {
             SaveMenu.x = w/2;
             SaveMenu.y = h/2;
         }
-        gameControll.batch.end();
+        batch.end();
 
         if (Gdx.input.justTouched()) {
             this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -114,20 +116,20 @@ public class Menu implements Screen {
             if(!this.newGamePressed){
                 if (newGameButton.contains(touchPosition.x, touchPosition.y)) {
                     if(this.mb.saveExists()) this.newGamePressed= true;
-                    else this.mb.setLoading("SaveFile.csv", Menu.gameControll); // Loading if completely new game
+                    else this.mb.setLoading("SaveFile.csv", Menu.curtain); // Loading if completely new game
                 }
-                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.mb.setLoading("SaveFile.csv", Menu.gameControll); // Loading with possible load file
-                if (configButton.contains(touchPosition.x, touchPosition.y)) System.out.println("config!"); //Menu.gameControll.setScreen(Settings);
+                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.mb.setLoading("SaveFile.csv", Menu.curtain); // Loading with possible load file
+                if (configButton.contains(touchPosition.x, touchPosition.y)) System.out.println("config!"); //Menu.curtain.setScreen(Settings);
             }
             else {
                 if (Yes.contains(touchPosition.x, touchPosition.y)){
                     this.newGamePressed = false;
-                    this.mb.setLoading("SaveFile.csv", Menu.gameControll);
+                    this.mb.setLoading("SaveFile.csv", Menu.curtain);
                 }
                 else if (No.contains(touchPosition.x, touchPosition.y)) {
                     this.newGamePressed = false;
                     this.mb.OverwriteSaveFile();
-                    this.mb.setLoading("SaveFile.csv", Menu.gameControll);
+                    this.mb.setLoading("SaveFile.csv", Menu.curtain);
                 }
                 else if (SaveMenu.contains(touchPosition.x, touchPosition.y)){}
                 else this.newGamePressed = false;
@@ -135,7 +137,6 @@ public class Menu implements Screen {
             }
     }
 
-    //------------------------------------------------------------------------------------
     @Override
     public void dispose() {
         backgroundImage.dispose();
@@ -147,27 +148,27 @@ public class Menu implements Screen {
         noTexture.dispose();
         yesTexture.dispose();
     }
-    //------------------------------------------------------------------------------------
+
     @Override
     public void show() {
         this.Setup();
-        
     }
+
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
+        // TODO Auto-generated method stub    
     }
+
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
-        
+        // TODO Auto-generated method stub    
     }
+
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
-        
+        // TODO Auto-generated method stub    
     }
+
     @Override
     public void hide() {
         this.dispose();

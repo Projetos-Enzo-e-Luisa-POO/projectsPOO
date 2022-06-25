@@ -1,7 +1,7 @@
 package com.badlogic.amnesia.Model.Elements.CompondViewElement;
 
+import com.badlogic.amnesia.GraphicInterface.Level;
 import com.badlogic.amnesia.Model.Elements.Element;
-import com.badlogic.amnesia.graphicInterface.GameScreen;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class CompondViewElement extends Element {
 
-	protected GameScreen game;
+	protected Level game;
 	protected ArrayList<String> imgs;
 	protected ArrayList<Texture> textures;
 

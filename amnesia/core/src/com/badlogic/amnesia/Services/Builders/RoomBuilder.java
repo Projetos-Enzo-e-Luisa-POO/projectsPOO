@@ -1,5 +1,6 @@
-package com.badlogic.amnesia.services.Builders;
+package com.badlogic.amnesia.Services.Builders;
 
+import com.badlogic.amnesia.GraphicInterface.Level;
 import com.badlogic.amnesia.Model.Room;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.Placeable;
@@ -20,8 +21,7 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.URCorner
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.VoidElement;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Wall1;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
-import com.badlogic.amnesia.graphicInterface.GameScreen;
-import com.badlogic.amnesia.services.FileManagment.FileController;
+import com.badlogic.amnesia.Services.FileManagment.FileController;
 import com.badlogic.gdx.utils.Array;
 
 public class RoomBuilder {
@@ -36,7 +36,7 @@ public class RoomBuilder {
         return Holder.instance;
     }
 
-    public Room buildRoom(GameScreen gameScreen, int roomNumber, String[] interactableData){
+    public Room buildRoom(Level gameScreen, int roomNumber, String[] interactableData){
         //Prep
         String s = "";
         switch (roomNumber){
@@ -79,7 +79,7 @@ public class RoomBuilder {
         return r;
     }
 
-    private Cell buildCell(GameScreen gameScreen, int[] pos, String data){
+    private Cell buildCell(Level gameScreen, int[] pos, String data){
         Cell c = new Cell(gameScreen, pos);
         int[] IDs = this.translateIDs(data);
         for (int n : IDs)

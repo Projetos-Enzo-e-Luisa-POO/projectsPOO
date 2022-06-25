@@ -1,6 +1,6 @@
 package com.amnesia;
 
-import com.badlogic.amnesia.graphicInterface.GameControll;
+import com.badlogic.amnesia.GraphicInterface.Curtain;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -9,6 +9,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("Amnesia");
-		new Lwjgl3Application(new GameControll(), config);
+		new Lwjgl3Application(new Curtain(), config);
 	}
 }

@@ -4,7 +4,7 @@ import com.badlogic.amnesia.Model.ControlInterfaces.ControlAccess;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
-import com.badlogic.amnesia.services.FlagManagment.FlagConfig;
+import com.badlogic.amnesia.Services.FlagManagment.FlagConfig;
 
 public class MPControl{
 

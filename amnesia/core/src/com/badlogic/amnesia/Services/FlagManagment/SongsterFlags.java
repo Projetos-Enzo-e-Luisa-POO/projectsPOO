@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.services.FlagManagment;
+package com.badlogic.amnesia.Services.FlagManagment;
 
 public interface SongsterFlags {
     public void setSongsterPos(int cellID);

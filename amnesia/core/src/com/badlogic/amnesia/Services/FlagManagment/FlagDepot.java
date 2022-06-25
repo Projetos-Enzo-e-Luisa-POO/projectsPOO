@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.services.FlagManagment;
+package com.badlogic.amnesia.Services.FlagManagment;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,7 @@ public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags{
     private ArrayList<ElementMemento> status = new ArrayList<ElementMemento>();
 
     private FlagDepot(){}
+    
     private static class Holder{
         static final FlagDepot instance = new FlagDepot();
     }

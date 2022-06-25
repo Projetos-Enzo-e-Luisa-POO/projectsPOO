@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.services.FlagManagment;
+package com.badlogic.amnesia.Services.FlagManagment;
 
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 

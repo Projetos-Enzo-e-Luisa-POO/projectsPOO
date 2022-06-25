@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.services.FileManagment.error;
+package com.badlogic.amnesia.Services.FileManagment.error;
 
 public class CopyFileException extends Exception {
     public CopyFileException (String originFilePath, String destinationFilePath, String errorMessage) {

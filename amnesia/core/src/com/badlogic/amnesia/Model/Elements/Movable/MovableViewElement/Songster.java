@@ -4,7 +4,7 @@ import com.badlogic.amnesia.Model.Inventory;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.MoveAccess;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
-import com.badlogic.amnesia.services.FlagManagment.SongsterFlags;
+import com.badlogic.amnesia.Services.FlagManagment.SongsterFlags;
 
 /*
  * Protagonista

@@ -1,14 +1,14 @@
-package com.badlogic.amnesia.services.FileManagment;
+package com.badlogic.amnesia.Services.FileManagment;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Array;
+//import com.badlogic.gdx.utils.Array;
 
 public class FileController {
 
    private FileHandle fh;
 
    public static String PATH = System.getProperty("user.dir") +
-   "/core/src/com/badlogic/amnesia/configs/";
+   "/core/src/com/badlogic/amnesia/ConfigFiles/";
 
    public FileController(String fileName){
       this.fh = new FileHandle(fileName);
@@ -16,14 +16,14 @@ public class FileController {
    }
 
    public String[] getFileContent(){
-      Array<String> aux = new Array<String>();
-      String s = fh.readString();
-      String[] sSplit = s.split(",");
-      while(sSplit[1].length() > 0){
+      String content = fh.readString();
+      String[] contentSplitted = content.split(",");
+      /* while(sSplit[1].length() > 0){
          aux.add(sSplit[0]);
          sSplit = sSplit[1].split(",");
       }
-      return aux.toArray();
+      return aux.toArray(); */
+      return contentSplitted;
    }
 
    public void copyFileContent (FileHandle fh){

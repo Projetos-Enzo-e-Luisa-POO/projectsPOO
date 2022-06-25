@@ -1,6 +1,6 @@
-package com.badlogic.amnesia.services.BindManagment;
+package com.badlogic.amnesia.Services.BindManagment;
 
-import com.badlogic.amnesia.services.FileManagment.FileController;
+import com.badlogic.amnesia.Services.FileManagment.FileController;
 
 public class BindDepot implements BindSetup, BindRead{
     private int[] keyBindValues = new int[12];

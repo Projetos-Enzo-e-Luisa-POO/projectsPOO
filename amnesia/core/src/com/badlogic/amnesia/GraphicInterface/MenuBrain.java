@@ -1,6 +1,6 @@
-package com.badlogic.amnesia.graphicInterface;
+package com.badlogic.amnesia.GraphicInterface;
 
-import com.badlogic.amnesia.services.FileManagment.FileController;
+import com.badlogic.amnesia.Services.FileManagment.FileController;
 import com.badlogic.gdx.files.FileHandle;
 
 public class MenuBrain {
@@ -17,8 +17,8 @@ public class MenuBrain {
         fc1.Overwrite(fc2.toString());
     }
 
-    public void setLoading(String fileName, GameControll gc){
-        //GameControll.setLoadingString(fileName); < Implementar
+    public void setLoading(String fileName, Curtain curtain){
+        curtain.loadGame(fileName);
     }
 
 }

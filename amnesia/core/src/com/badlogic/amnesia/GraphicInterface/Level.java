@@ -1,4 +1,4 @@
-package com.badlogic.amnesia.graphicInterface;
+package com.badlogic.amnesia.GraphicInterface;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public class GameScreen implements Screen {
+public class Level implements Screen {
     //------------------------------------------------------------------------------------
     public SpriteBatch batch;
     private BitmapFont font;
@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
 
     private String configFile; //TODO: use flags saved in SaveFile.csv or ResetSaveFile.csv for initialize flags database
     //------------------------------------------------------------------------------------
-    public GameScreen(String configFileName) {
+    public Level(String configFileName) {
         batch = new SpriteBatch();
 		camera = new OrthographicCamera();
         camera.setToOrtho(false, 700, 500);
@@ -37,6 +37,10 @@ public class GameScreen implements Screen {
         songster.height = 32;
 
         configFile = configFileName;
+    }
+    //------------------------------------------------------------------------------------
+    public String toString () {
+        return "Level";
     }
     //------------------------------------------------------------------------------------
     public Texture createAndDisplayTextureInScreen(String imgFileName, int[] pos) {
