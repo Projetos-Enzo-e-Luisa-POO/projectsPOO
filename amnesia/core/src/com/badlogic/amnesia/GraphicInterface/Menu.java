@@ -43,6 +43,11 @@ public class Menu implements Screen {
     public Menu (Curtain curtain) {
         Menu.curtain = curtain;
     }
+
+    private void loadGame() {
+        this.dispose();
+        this.mb.setLoading("SaveFile.csv", Menu.curtain);
+    }
     
     public void Setup(){
 
@@ -53,8 +58,6 @@ public class Menu implements Screen {
         
         float   h = this.viewport.getWorldHeight(),
                 w = this.viewport.getWorldWidth();
-        System.out.println(h);
-        System.out.println(w);
 
         //x, y, width, height
         Title = new Rectangle(6*w/32, 11*h/16, 10*w/16, 2*h/9);
@@ -116,20 +119,20 @@ public class Menu implements Screen {
             if(!this.newGamePressed){
                 if (newGameButton.contains(touchPosition.x, touchPosition.y)) {
                     if(this.mb.saveExists()) this.newGamePressed= true;
-                    else this.mb.setLoading("SaveFile.csv", Menu.curtain); // Loading if completely new game
+                    else this.loadGame(); // Loading if completely new game
                 }
-                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.mb.setLoading("SaveFile.csv", Menu.curtain); // Loading with possible load file
+                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.loadGame(); // Loading with possible load file
                 if (configButton.contains(touchPosition.x, touchPosition.y)) System.out.println("config!"); //Menu.curtain.setScreen(Settings);
             }
             else {
                 if (Yes.contains(touchPosition.x, touchPosition.y)){
                     this.newGamePressed = false;
-                    this.mb.setLoading("SaveFile.csv", Menu.curtain);
+                    this.loadGame();
                 }
                 else if (No.contains(touchPosition.x, touchPosition.y)) {
                     this.newGamePressed = false;
-                    this.mb.OverwriteSaveFile();
-                    this.mb.setLoading("SaveFile.csv", Menu.curtain);
+                    this.mb.overwriteSaveFile();
+                    this.loadGame();
                 }
                 else if (SaveMenu.contains(touchPosition.x, touchPosition.y)){}
                 else this.newGamePressed = false;
@@ -155,19 +158,13 @@ public class Menu implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub    
-    }
+    public void resize(int width, int height) {}
 
     @Override
-    public void pause() {
-        // TODO Auto-generated method stub    
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-        // TODO Auto-generated method stub    
-    }
+    public void resume() {}
 
     @Override
     public void hide() {

@@ -31,11 +31,12 @@ public class Curtain extends Game {
     }
 
     public void loadGame(String configFileName) {
-        Curtain.loading.startLoading(configFileName);
+        Curtain.loading.loadGameConfig(configFileName);
+        Curtain.loading.loadRoom(configFileName, "Room1.csv");
     }
 
     public void loadRoom(String configFileName, String roomFile) {
-        Curtain.loading.startLoading(configFileName, roomFile);
+        Curtain.loading.loadRoom(configFileName, roomFile);
     }
 
     public void disposeScreen(Screen screen) {

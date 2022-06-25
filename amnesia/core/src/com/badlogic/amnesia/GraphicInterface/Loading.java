@@ -11,13 +11,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Loading implements Screen {
     
     private static Curtain curtain;
     private ProcessesToLoad processInLoading;
 
-    private FitViewport viewport;
+    private Viewport viewport;
     private SpriteBatch batch = new SpriteBatch();
     private OrthographicCamera Camera = new OrthographicCamera();
     private Texture backgroundImage = new Texture(Gdx.files.internal("loadingBackground.png"));
@@ -45,13 +46,12 @@ public class Loading implements Screen {
         this.dispose();
     }
     
-    public void startLoading(String configFileName) {
+    public void loadGameConfig(String configFileName) {
         processInLoading = ProcessesToLoad.INITIALIZE_GAME;
         this.initializeGameConfigs(configFileName);
-        this.dispose();
     }
 
-    public void startLoading(String configFileName, String roomFile) {
+    public void loadRoom(String configFileName, String roomFile) {
         processInLoading = ProcessesToLoad.INITIALIZE_ROOM;
         Level room = this.createRoom(configFileName, roomFile);
         curtain.changeToScreen(room);
@@ -61,7 +61,7 @@ public class Loading implements Screen {
     private void saveGameFlags() {
         String configs = FlagDepot.getInstance().toString();
         FileController fc = new FileController("ResetSaveFile.csv");
-        fc.Overwrite(configs);
+        fc.overwrite(configs);
     }
 
     private void initializeGameConfigs(String configFileName) {
@@ -96,8 +96,8 @@ public class Loading implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
-        
-        this.viewport = new FitViewport(1280, 720, this.Camera);
+
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         this.Camera.update();    
         batch.setProjectionMatrix(this.Camera.combined);
@@ -105,6 +105,8 @@ public class Loading implements Screen {
         batch.begin();
         batch.draw(this.backgroundImage, 0, 0);
         batch.end();
+
+        System.out.println("Render chamado!!");
     }
 
     @Override

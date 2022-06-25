@@ -18,8 +18,6 @@ public class Level implements Screen {
 
     private Texture songsterImage;
     private Rectangle songster;
-
-    private String configFile; //TODO: use flags saved in SaveFile.csv or ResetSaveFile.csv for initialize flags database
     //------------------------------------------------------------------------------------
     public Level(String configFileName) {
         batch = new SpriteBatch();
@@ -35,8 +33,6 @@ public class Level implements Screen {
         songster.y = 200;
         songster.width = 32;
         songster.height = 32;
-
-        configFile = configFileName;
     }
     //------------------------------------------------------------------------------------
     public String toString () {
@@ -76,23 +72,17 @@ public class Level implements Screen {
     }
     //------------------------------------------------------------------------------------
     @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
+    public void show() {}
+    
     @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub   
-    }
+    public void resize(int width, int height) {}
+
     @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
+    public void pause() {}
+
     @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
+    public void resume() {}
+
     @Override
-    public void hide() {
-        // TODO Auto-generated method stub   
-    }
+    public void hide() {}
 }

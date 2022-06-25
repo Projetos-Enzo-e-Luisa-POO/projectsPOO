@@ -22,9 +22,9 @@ public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags{
     }
 
     public void initialize(String[] source){
-        this.setRoomNumber(Integer.valueOf(source[0]));
-        this.setSongsterPos(Integer.valueOf(source[1]));
-        this.setSongsterOrientation(Integer.valueOf(source[2]));
+        this.setRoomNumber(Integer.parseInt(source[0]));
+        this.setSongsterPos(Integer.parseInt(source[1]));
+        this.setSongsterOrientation(Integer.parseInt(source[2]));
     }
 
     //Exclusive methods for inicialization

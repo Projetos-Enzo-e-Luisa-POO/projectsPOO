@@ -22,7 +22,7 @@ public class BindDepot implements BindSetup, BindRead{
         String[] source = fc.getFileContent();
         int k = 0;
         for (String s : source){
-            this.keyBindValues[k++] = Integer.valueOf(s.split(":")[1]);
+            this.keyBindValues[k++] = Integer.parseInt(s.split(":")[1]);
         }
     }
 

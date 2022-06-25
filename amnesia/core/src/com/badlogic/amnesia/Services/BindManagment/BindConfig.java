@@ -11,7 +11,7 @@ public class BindConfig {
         String[] s = source[i].split(":");
         s[1] = Integer.toString(v);
         source[i] = s[0] + ":" + s[1];
-        fc.Overwrite(String.join(",", source));
+        fc.overwrite(String.join(",", source));
         this.b.updateBinds();
     }
 

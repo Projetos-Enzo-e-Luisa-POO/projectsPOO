@@ -14,7 +14,7 @@ public class FlagConfig {
 
     public void saveGame(){
         FileController fc = new FileController("SaveFile.csv");
-        fc.Overwrite(f.toString(r.getElements()));
+        fc.overwrite(f.toString(r.getElements()));
     }
     
 }
