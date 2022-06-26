@@ -1,8 +1,10 @@
-package com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements;
+package com.badlogic.amnesia.Model.Elements.ViewElement.Interactables;
 
 import com.badlogic.amnesia.Model.Elements.ViewElement.InteractableElement;
+import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces.turnOffI;
+import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces.turnOnI;
 
-public class LightSwitch extends InteractableElement{
+public class LightSwitch extends InteractableElement implements turnOnI, turnOffI{
 
     // rever questões da interface gráfica
 
@@ -19,7 +21,9 @@ public class LightSwitch extends InteractableElement{
 
     @Override
     public int[] getInterfaces() {
-        int[] aux = {3};
+        int[] aux = new int[1];
+        if(this.state) aux[0] = 3; // Desligar
+        else aux[0] = 5; // Ligar
         return aux;
     }
 

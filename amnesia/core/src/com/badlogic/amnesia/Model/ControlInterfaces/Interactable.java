@@ -12,4 +12,6 @@ public interface Interactable extends Placeable {
 
     public boolean[] getStatus();
 
+    public String getClassName();
+
 }

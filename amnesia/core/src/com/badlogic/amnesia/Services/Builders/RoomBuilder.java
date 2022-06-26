@@ -10,7 +10,6 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.DRCorner
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Floor1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.LBarrier1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.LUCorner1;
-import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.LightSwitch;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.RBarrier1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.RUCorner1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Table1;
@@ -19,6 +18,7 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.ULCorner
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.URCorner1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.VoidElement;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Wall1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.LightSwitch;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
 import com.badlogic.gdx.utils.Array;
