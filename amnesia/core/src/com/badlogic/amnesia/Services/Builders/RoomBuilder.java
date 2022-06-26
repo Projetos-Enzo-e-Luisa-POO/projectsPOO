@@ -1,6 +1,5 @@
 package com.badlogic.amnesia.Services.Builders;
 
-import com.badlogic.amnesia.GraphicInterface.Level;
 import com.badlogic.amnesia.Model.Room;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.Placeable;
@@ -36,7 +35,7 @@ public class RoomBuilder {
         return Holder.instance;
     }
 
-    public Room buildRoom(Level gameScreen, int roomNumber, String[] interactableData){
+    public Room buildRoom(int roomNumber, String[] interactableData){
         //Prep
         String s;
         switch (roomNumber){
@@ -47,24 +46,31 @@ public class RoomBuilder {
             default:
                 s = "Room1.csv";
         }
+
         FileController fc = new FileController(s);
         String[] aux = fc.getFileContent();
+        
         String[] source = new String[aux.length + interactableData.length];
         System.arraycopy(aux, 0, source, 0, aux.length);  
         System.arraycopy(interactableData, 0, source, aux.length, interactableData.length);
+
         IDTrans t = new IDTrans();
+
         //Start
-        int x = Integer.parseInt(source[0]), 
-            y =Integer.parseInt(source[1]);
-        Room r = new Room(x, y);
+        int x = Integer.parseInt(source[0]),
+            y = Integer.parseInt(source[1]);
+
+        Room r = new Room(y, x);
+        
         int k = 2;
         for(int i = 0; i < y; i++)
-            for(int j = 0; j < x; j++){
+            for(int j = 0; j < x; j++) {
                 String data = source[k];
                 int[] pos = {i, j};
-                r.cellConnect(t.posToID(pos), this.buildCell(gameScreen, pos, data));
+                r.cellConnect(t.posToID(pos), this.buildCell(pos, data));
                 k++;
-            }
+        }
+        
         while(k < source.length){
             int ID = Integer.parseInt(source[k]), posID = Integer.parseInt(source[k + 1]);
             Array<Boolean> state = new Array<Boolean>();
@@ -79,8 +85,8 @@ public class RoomBuilder {
         return r;
     }
 
-    private Cell buildCell(Level gameScreen, int[] pos, String data){
-        Cell c = new Cell(gameScreen, pos);
+    private Cell buildCell(int[] pos, String data){
+        Cell c = new Cell(pos);
         int[] IDs = this.translateIDs(data);
         for (int n : IDs) {
             c.place(this.placeableFactory(n)); }
@@ -88,7 +94,7 @@ public class RoomBuilder {
     }
 
     private int[] translateIDs(String data){
-        String[] str = data.split("", ((data.length() > 3) ? data.length()/2 : 1));
+        String[] str = data.split("(?<=\\G..)");
         int[] IDs = new int[str.length];
         for(int i = 0; i < str.length; i++)
             IDs[i] = Integer.parseInt(str[i].trim().replaceFirst("^0+(?!$)", ""));
@@ -156,6 +162,8 @@ public class RoomBuilder {
             case 14:
                 aux = new Table1();
                 break;
+            default:
+                aux = new Floor1();
         }
         return aux;
     }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -71,8 +70,6 @@ public class Menu implements Screen {
     
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,1);
-
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         float   h = this.viewport.getWorldHeight(),
                 w = this.viewport.getWorldWidth();

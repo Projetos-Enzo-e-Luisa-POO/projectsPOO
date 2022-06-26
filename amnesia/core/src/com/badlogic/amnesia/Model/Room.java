@@ -69,8 +69,11 @@ public class Room implements MoveAccess, ControlAccess{
 		return aux;
 	}
 
-	@Override
 	public Interactable[][] getElements() {
 		return this.elements;
+	}
+
+	public Cell[][] getSpace() {
+		return this.space;
 	}
 }

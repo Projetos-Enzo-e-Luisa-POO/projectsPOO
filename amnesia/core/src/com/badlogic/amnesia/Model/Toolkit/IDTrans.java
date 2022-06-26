@@ -16,14 +16,14 @@ public class IDTrans {
 	 * Traduz uma posição (x,y) para um ID
 	 */
 	public int posToID(int[] pos){
-		return 2*(pos[0]+IDTrans.l*pos[1]+1);
+		return 2 * (pos[0] + IDTrans.l * pos[1] + 1);
 	}
 
 	/*
 	 * Traduz um ID par para uma posição (x,y)
 	 */
 	public int[] IDToPos(int ID){
-		int[] aux = {((ID/2)%IDTrans.l - 1), ((ID/2)/IDTrans.l)};
+		int[] aux = { ((ID / 2) - 1) % IDTrans.l, (((ID / 2) - 1) / IDTrans.l)};
 		return aux;
 	}
     

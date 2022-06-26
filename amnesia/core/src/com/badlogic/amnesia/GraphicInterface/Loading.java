@@ -1,6 +1,6 @@
 package com.badlogic.amnesia.GraphicInterface;
 
-import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
+import com.badlogic.amnesia.Model.Room;
 import com.badlogic.amnesia.Services.BindManagment.BindDepot;
 import com.badlogic.amnesia.Services.Builders.RoomBuilder;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -37,35 +36,23 @@ public class Loading implements Screen {
         switch(process) {
             case CHANGE_SCREEN:
                 Loading.curtain.changeToScreen(screen);
+            
             case DISPOSE_SCREEN:
                 screen.dispose();
+            
             case END_GAME:
                 saveGameFlags();
                 screen.dispose();
+            
             default:
+                break;
         }
         this.dispose();
     }
     
     public void loadGameConfig(String configFileName) {
         processInLoading = ProcessesToLoad.INITIALIZE_GAME;
-        this.initializeGameConfigs(configFileName);
-    }
-
-    public void loadRoom(String configFileName, String roomFile) {
-        processInLoading = ProcessesToLoad.INITIALIZE_ROOM;
-        Level room = this.createRoom(configFileName, roomFile);
-        curtain.changeToScreen(room);
-        this.dispose();
-    }
-
-    private void saveGameFlags() {
-        String configs = FlagDepot.getInstance().toString();
-        FileController fc = new FileController("ResetSaveFile.csv");
-        fc.overwrite(configs);
-    }
-
-    private void initializeGameConfigs(String configFileName) {
+        
         FileController fc = new FileController(configFileName);
         String[] source = fc.getFileContent();
 
@@ -73,18 +60,29 @@ public class Loading implements Screen {
         BindDepot.getInstance().updateBinds();
     }
 
-    private Level createRoom(String configFileName, String roomFile) {
-        int roomNumber = roomFile.charAt(4);
-    
-        Level level = new Level();
+    public void loadRoom(String configFileName, String roomFile) {
+        processInLoading = ProcessesToLoad.INITIALIZE_ROOM;
+        
+        Level roomScreen = this.createRoomScreen(configFileName, roomFile);
+        
+        curtain.changeToScreen(roomScreen);
+    }
 
-        FileController fc = new FileController(roomFile);
-        String[] interactableData = fc.getFileContent();
+    private Level createRoomScreen(String configFileName, String roomFile) {
+        int roomNumber = roomFile.charAt(4);
 
         RoomBuilder roomBuilder = new RoomBuilder();
-        roomBuilder.buildRoom(level, roomNumber, interactableData);
+        Room room = roomBuilder.buildRoom(roomNumber, new String[0]);
 
-        return level;
+        Level roomScreen = new Level(room);
+
+        return roomScreen;
+    }
+
+    private void saveGameFlags() {
+        String configs = FlagDepot.getInstance().toString();
+        FileController fc = new FileController("ResetSaveFile.csv");
+        fc.overwrite(configs);
     }
 
     private void Setup() {
@@ -96,8 +94,6 @@ public class Loading implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,1);
-
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         this.Camera.update();    

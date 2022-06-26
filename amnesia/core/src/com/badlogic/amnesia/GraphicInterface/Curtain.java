@@ -13,7 +13,7 @@ public class Curtain extends Game {
     public void create() {
         Curtain.loading = new Loading(this);
         this.actualScreen = new Menu(this);
-        this.setScreen(actualScreen);
+        this.setScreen(this.actualScreen);
     }
 
     public String getActualScreenName() {
@@ -31,6 +31,7 @@ public class Curtain extends Game {
     }
 
     public void loadGame(String configFileName) {
+        this.setScreen(Curtain.loading);
         Curtain.loading.loadGameConfig(configFileName);
         Curtain.loading.loadRoom(configFileName, "Room1.csv");
     }

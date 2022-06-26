@@ -1,6 +1,5 @@
 package com.badlogic.amnesia.Model.Elements.CompondViewElement;
 
-import com.badlogic.amnesia.GraphicInterface.Level;
 import com.badlogic.amnesia.Model.ControlInterfaces.Placeable;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 
@@ -15,12 +14,11 @@ public class Cell extends CompondViewElement{
 
 	private ArrayList<Placeable> elements;
 
-	public Cell (Level game, int[] pos){
+	public Cell (int[] pos){
 		IDTrans t = new IDTrans();
 		this.ID = t.posToID(pos);
 		this.elements = new ArrayList<Placeable>();
 		this.imgs = new ArrayList<String>();
-		this.game = game;
 	}
 
 	public void place(Placeable element){
