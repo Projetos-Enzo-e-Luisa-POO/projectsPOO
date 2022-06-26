@@ -1,5 +1,6 @@
 package com.badlogic.amnesia.GraphicInterface;
 
+import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
 import com.badlogic.amnesia.Services.BindManagment.BindDepot;
 import com.badlogic.amnesia.Services.Builders.RoomBuilder;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
@@ -21,7 +22,7 @@ public class Loading implements Screen {
     private Viewport viewport;
     private SpriteBatch batch = new SpriteBatch();
     private OrthographicCamera Camera = new OrthographicCamera();
-    private Texture backgroundImage = new Texture(Gdx.files.internal("loadingBackground.png"));
+    private Texture backgroundImage = new Texture(Gdx.files.internal("loading/loadingBackground.png"));
 
     public Loading(Curtain curtain) {
         Loading.curtain = curtain;
@@ -75,7 +76,7 @@ public class Loading implements Screen {
     private Level createRoom(String configFileName, String roomFile) {
         int roomNumber = roomFile.charAt(4);
     
-        Level level = new Level(configFileName);
+        Level level = new Level();
 
         FileController fc = new FileController(roomFile);
         String[] interactableData = fc.getFileContent();
@@ -105,8 +106,6 @@ public class Loading implements Screen {
         batch.begin();
         batch.draw(this.backgroundImage, 0, 0);
         batch.end();
-
-        System.out.println("Render chamado!!");
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.Barrier;
 public class VoidElement extends Barrier{
 
     public VoidElement(){
-        this.imgConnect("void.png");
+        this.imgConnect("concreteElement/void.png");
         this.ID = 0;
     }
 

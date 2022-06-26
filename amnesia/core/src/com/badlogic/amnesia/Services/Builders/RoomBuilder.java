@@ -38,14 +38,14 @@ public class RoomBuilder {
 
     public Room buildRoom(Level gameScreen, int roomNumber, String[] interactableData){
         //Prep
-        String s = "";
+        String s;
         switch (roomNumber){
-            case 1:
-                s = "Room1.csv";
-            case 2:
-                s = "Room2.csv";
             case 3:
                 s = "Room3.csv";
+            case 2:
+                s = "Room2.csv";
+            default:
+                s = "Room1.csv";
         }
         FileController fc = new FileController(s);
         String[] aux = fc.getFileContent();
@@ -54,8 +54,8 @@ public class RoomBuilder {
         System.arraycopy(interactableData, 0, source, aux.length, interactableData.length);
         IDTrans t = new IDTrans();
         //Start
-        int x = Integer.valueOf(source[0]), 
-            y =Integer.valueOf(source[1]);
+        int x = Integer.parseInt(source[0]), 
+            y =Integer.parseInt(source[1]);
         Room r = new Room(x, y);
         int k = 2;
         for(int i = 0; i < y; i++)
@@ -82,8 +82,8 @@ public class RoomBuilder {
     private Cell buildCell(Level gameScreen, int[] pos, String data){
         Cell c = new Cell(gameScreen, pos);
         int[] IDs = this.translateIDs(data);
-        for (int n : IDs)
-            c.place(this.placeableFactory(n));
+        for (int n : IDs) {
+            c.place(this.placeableFactory(n)); }
         return c;
     }
 
@@ -91,7 +91,7 @@ public class RoomBuilder {
         String[] str = data.split("", ((data.length() > 3) ? data.length()/2 : 1));
         int[] IDs = new int[str.length];
         for(int i = 0; i < str.length; i++)
-            IDs[i] = Integer.valueOf(str[i]);
+            IDs[i] = Integer.parseInt(str[i].trim().replaceFirst("^0+(?!$)", ""));
         return IDs;
     }
 
@@ -116,32 +116,46 @@ public class RoomBuilder {
              */
             case 0:
                 aux = new VoidElement();
+                break;
             case 1:
                 aux = new URCorner1();
+                break;
             case 2:
                 aux = new UBarrier1();
+                break;
             case 3:
                 aux = new ULCorner1();
+                break;
             case 4:
                 aux = new RUCorner1();
+                break;
             case 5:
                 aux = new Floor1();
+                break;
             case 6:
                 aux = new LUCorner1();
+                break;
             case 7:
                 aux = new RBarrier1();
+                break;
             case 8:
                 aux = new LBarrier1();
+                break;
             case 9:
                 aux = new Wall1();
+                break;
             case 10:
                 aux = new DRCorner1();
+                break;
             case 11:
                 aux = new DBarrier1();
+                break;
             case 12:
                 aux = new DLCorner1();
+                break;
             case 14:
                 aux = new Table1();
+                break;
         }
         return aux;
     }
@@ -155,6 +169,7 @@ public class RoomBuilder {
              */
             case 13:
                 aux = new LightSwitch(state);
+                break;
         }
         return aux;
     }

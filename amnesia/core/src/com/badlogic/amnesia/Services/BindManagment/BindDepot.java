@@ -4,6 +4,20 @@ import com.badlogic.amnesia.Services.FileManagment.FileController;
 
 public class BindDepot implements BindSetup, BindRead{
     private int[] keyBindValues = new int[12];
+    public String[] commandValues = {
+        "pause",
+        "free hand",
+        "move up",
+        "quick interact",
+        "move left",
+        "move down",
+        "move right",
+        "select",
+        "up select",
+        "first slot",
+        "second slot",
+        "down select"
+    };
 
     private BindDepot(){
         this.updateBinds();
@@ -56,5 +70,4 @@ public class BindDepot implements BindSetup, BindRead{
         }
         return aux;
     }
-
 }

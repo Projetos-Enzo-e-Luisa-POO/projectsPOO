@@ -20,14 +20,14 @@ public class Menu implements Screen {
     private SpriteBatch batch = new SpriteBatch();
     private OrthographicCamera Camera = new OrthographicCamera();;
 
-    private Texture backgroundImage = new Texture(Gdx.files.internal("menuBackground.png")),
-                    titleTexture = new Texture(Gdx.files.internal("Title.png")),
-                    newGameButtonTexture = new Texture(Gdx.files.internal("NewGameButton.png")),
-                    loadGameButtonTexture = new Texture(Gdx.files.internal("LoadGameButton.png")),
-                    SaveTexture = new Texture(Gdx.files.internal("RecoverLastSave.png")),
-                    configButtonTexture = new Texture(Gdx.files.internal("SettingsButton.png")),
-                    noTexture = new Texture(Gdx.files.internal("NO.png")),
-                    yesTexture = new Texture(Gdx.files.internal("Yes.png"));
+    private Texture backgroundImage = new Texture(Gdx.files.internal("menu/menuBackground.png")),
+                    titleTexture = new Texture(Gdx.files.internal("menu/Title.png")),
+                    newGameButtonTexture = new Texture(Gdx.files.internal("menu/NewGameButton.png")),
+                    loadGameButtonTexture = new Texture(Gdx.files.internal("menu/LoadGameButton.png")),
+                    SaveTexture = new Texture(Gdx.files.internal("menu/RecoverLastSave.png")),
+                    configButtonTexture = new Texture(Gdx.files.internal("menu/SettingsButton.png")),
+                    noTexture = new Texture(Gdx.files.internal("menu/NO.png")),
+                    yesTexture = new Texture(Gdx.files.internal("menu/Yes.png"));
 
     private Rectangle newGameButton;
     private Rectangle loadGameButton;
@@ -118,7 +118,7 @@ public class Menu implements Screen {
             this.viewport.unproject(touchPosition);
             if(!this.newGamePressed){
                 if (newGameButton.contains(touchPosition.x, touchPosition.y)) {
-                    if(this.mb.saveExists()) this.newGamePressed= true;
+                    if(this.mb.saveExists()) this.newGamePressed = true;
                     else this.loadGame(); // Loading if completely new game
                 }
                 if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.loadGame(); // Loading with possible load file

@@ -1,78 +1,70 @@
 package com.badlogic.amnesia.GraphicInterface;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class Level implements Screen {
-    //------------------------------------------------------------------------------------
-    public SpriteBatch batch;
+    
     private BitmapFont font;
-    private OrthographicCamera camera;
+    private Viewport viewport;
+    public SpriteBatch batch;
+    private OrthographicCamera Camera;
 
-    private Texture songsterImage;
-    private Rectangle songster;
-    //------------------------------------------------------------------------------------
-    public Level(String configFileName) {
-        batch = new SpriteBatch();
-		camera = new OrthographicCamera();
-        camera.setToOrtho(false, 700, 500);
-        
-        font = new BitmapFont();
-        
-        songsterImage = new Texture(Gdx.files.internal("songster.png"));
-
-        songster = new Rectangle();
-        songster.x = 200;
-        songster.y = 200;
-        songster.width = 32;
-        songster.height = 32;
+    public Songster songster;
+    
+    public Level() {
+        this.font = new BitmapFont();
+        this.batch = new SpriteBatch();
+        this.Camera = new OrthographicCamera();
     }
-    //------------------------------------------------------------------------------------
-    public String toString () {
-        return "Level";
-    }
-    //------------------------------------------------------------------------------------
+    
     public Texture createAndDisplayTextureInScreen(String imgFileName, int[] pos) {
-        batch.begin();
+        System.out.println("cheguei aquii");
+        System.out.println("data received: " + imgFileName + " | " + pos[0] + " " + pos[1]);
+        this.batch.begin();
         Texture t = new Texture(Gdx.files.internal(imgFileName));
-        batch.draw(t, pos[0], pos[1]);
-        batch.end();
+        this.batch.draw(t, pos[0], pos[1]);
+        this.batch.end();
         return t;
     }
-    //------------------------------------------------------------------------------------
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
 
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+    private void Setup() {
+        this.Camera.position.set(0,0,0);
+        this.Camera.update();
+
+        this.viewport = new FitViewport(1280, 720, this.Camera);
+    }
+    
+    public void render(float delta) {
+        ScreenUtils.clear(0,0,0,1);
+
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        this.Camera.update();
+        batch.setProjectionMatrix(this.Camera.combined);
 
         batch.begin();
-        batch.draw(songsterImage, songster.x, songster.y);
+        //batch.draw(songsterImage, songster.x, songster.y);
         batch.end();
-
-        if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-            songster.x += 32;
-        }
-
-        if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-            songster.x -= 32;
-        }
     }
-    //------------------------------------------------------------------------------------
+    
     public void dispose() {
         batch.dispose();
         font.dispose();
     }
-    //------------------------------------------------------------------------------------
+    
     @Override
-    public void show() {}
+    public void show() {
+        this.Setup();
+    }
     
     @Override
     public void resize(int width, int height) {}

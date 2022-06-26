@@ -19,9 +19,9 @@ public class Settings implements Screen {
     private Vector3 touchPosition = new Vector3();
     private OrthographicCamera Camera = new OrthographicCamera();
 
-    private BitmapFont font = new BitmapFont(Gdx.files.internal("pixelemulator.fnt"), Gdx.files.internal("pixelemulator.png"),false);
+    private BitmapFont font = new BitmapFont(Gdx.files.internal("font/pixelemulator.fnt"), Gdx.files.internal("font/pixelemulator.png"),false);
 
-    private Texture backgroundImage = new Texture(Gdx.files.internal("settingsBackground.png"));
+    private Texture backgroundImage = new Texture(Gdx.files.internal("settings/settingsBackground.png"));
 
     private Rectangle background;
 

@@ -9,7 +9,7 @@ public class LightSwitch extends InteractableElement{
     private boolean state;
 
     public LightSwitch(Boolean[] state2){
-        this.imgConnect("lightSwitch.png");
+        this.imgConnect("concreteElement/lightSwitch.png");
         this.ID = 13;
         if (state2[0])
             this.turnOn();
