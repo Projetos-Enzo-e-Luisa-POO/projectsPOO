@@ -1,5 +1,9 @@
 package com.badlogic.amnesia.GraphicInterface;
 
+import com.badlogic.amnesia.Model.MPControl;
+import com.badlogic.amnesia.Model.Room;
+import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
+import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.BindManagment.BindDepot;
 import com.badlogic.amnesia.Services.Builders.RoomBuilder;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
@@ -17,13 +21,29 @@ public class LoadingBrain {
     }
 
     public Screen tune(Viewport v) {
+
+        BindDepot.getInstance().updateBinds();
+
         FileController fc = new FileController("SaveFile.csv");
         String[] source = fc.getFileContent();
-        FlagDepot.getInstance().initialize(source);//não é todo o vetor
-        BindDepot.getInstance().updateBinds();
+        String[] s = {source[0], source[1], source[2]};
+        FlagDepot.getInstance().initialize(s);
+
+        IDTrans t = new IDTrans();
+
         FlagRead fr = FlagDepot.getInstance();
         RoomBuilder rb = RoomBuilder.getInstance();
-        return new Level(this.c, rb.buildRoom(fr.getRoomNumber(), new String[0]), v);
+        String[] aux = new String[0];
+        if (source.length > 3)
+            System.arraycopy(source, 3, aux, 0, source.length - 3);  
+        Room r = rb.buildRoom(fr.getRoomNumber(), aux);
+
+        String[] imgByOr = {"BackwardCut.png", "RightwardVut.png", "FowardCut.png", "LeftwardCut.png"},
+                    movByOr = {"bwcut.gif", "rwcut.gif", "fwcut.gif", "lwcut.gif"};
+
+        MPControl mpc = new MPControl(r, new Songster(imgByOr, movByOr, Integer.parseInt(source[2]), t.IDToPos(Integer.parseInt(source[1])), r, FlagDepot.getInstance()), Integer.parseInt(source[1]));
+        
+        return new Level(this.c, r, v, mpc);
     }
     
 }
