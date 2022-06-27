@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Settings implements Screen {
     //------------------------------------------------------------------------------------
-    private final Curtain gameControll;
+    private final Curtain curtain;
 
     private Viewport viewport;
     private Vector3 touchPosition = new Vector3();
@@ -26,10 +26,11 @@ public class Settings implements Screen {
     private Rectangle background;
 
     private SettingsBrain sb = new SettingsBrain();
+
     private boolean setted = false;
     //------------------------------------------------------------------------------------
     public Settings (Curtain game) {
-        this.gameControll = game;
+        this.curtain = game;
     }
     //------------------------------------------------------------------------------------
     public void Setup(){
@@ -41,8 +42,6 @@ public class Settings implements Screen {
         
         float   h = this.viewport.getWorldHeight(),
                 w = this.viewport.getWorldWidth();
-        System.out.println(h);
-        System.out.println(w);
 
         //x, y, width, height
         background = new Rectangle(0, h, w, h);
@@ -80,32 +79,25 @@ public class Settings implements Screen {
         }
     }
 
-    //------------------------------------------------------------------------------------
     @Override
     public void dispose() {
         backgroundImage.dispose();
     }
-    //------------------------------------------------------------------------------------
+    
     @Override
     public void show() {
-        this.Setup();
-        
+        this.Setup();    
     }
+
     @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void resize(int width, int height) {}
+
     @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
+    public void pause() {}
+    
     @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
+    public void resume() {}
+    
     @Override
     public void hide() {
         this.dispose();

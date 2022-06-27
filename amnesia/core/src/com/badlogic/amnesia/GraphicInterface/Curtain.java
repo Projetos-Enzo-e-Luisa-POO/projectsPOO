@@ -7,13 +7,17 @@ public class Curtain extends Game {
     
     private static Loading loading;
     
-    private Screen actualScreen, previousScreen;
+    private Screen menuScreen, actualScreen;
     private static String PATH_TO_SCREENS = "com.badlogic.amnesia.GraphicInterface.";
 
     public void create() {
         Curtain.loading = new Loading(this);
-        this.actualScreen = new Menu(this);
-        this.setScreen(this.actualScreen);
+        this.menuScreen = this.actualScreen = new Menu(this);
+        this.setScreen(this.menuScreen);
+    }
+
+    public Screen getMenuScreen() {
+        return this.menuScreen;
     }
 
     public String getActualScreenName() {
@@ -23,9 +27,7 @@ public class Curtain extends Game {
     }
 
     public void changeToScreen(Screen screen) {
-        this.previousScreen = this.actualScreen;
-        this.actualScreen.dispose();
-
+        screen.hide();
         this.setScreen(screen);
         this.actualScreen = screen;
     }
@@ -42,7 +44,6 @@ public class Curtain extends Game {
 
     public void disposeScreen(Screen screen) {
         screen.dispose();
-        this.setScreen(previousScreen);
     }
 
     public void render() {
