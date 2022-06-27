@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * isWalkable retorna se há algum objeto obstruindo a movimentação naquela célula
  * take retira um determinado Placeable de dentro da célula
  */
-public class Cell extends CompondViewElement{
+public class Cell extends CompondViewElement {
 
 	private ArrayList<Placeable> elements;
 

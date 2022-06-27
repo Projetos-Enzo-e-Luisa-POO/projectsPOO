@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Precursor para overlay de imagens na mesma célula
  * Idealmente recebe as imagens na mesma ordem em que devem ser sobrepostas
  */
-public class CompondViewElement extends Element implements RenderStrategy{
+public class CompondViewElement extends Element implements RenderStrategy {
 
 	protected ArrayList<String> imgs;
 
@@ -51,7 +51,5 @@ public class CompondViewElement extends Element implements RenderStrategy{
 							);
 		}
 	}
-
-
 
 }

@@ -1,6 +1,7 @@
 package com.badlogic.amnesia.GraphicInterface;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.amnesia.Model.MPControl;
 import com.badlogic.amnesia.Model.ControlInterfaces.RenderAccess;
 import com.badlogic.amnesia.Model.ControlInterfaces.RenderStrategy;
 import com.badlogic.amnesia.Services.BindManagment.BindDepot;
@@ -17,7 +18,7 @@ public class Level implements Screen {
 
     private static Curtain c;
     private static RenderAccess room;
-    //public Songster songster;
+    private static MPControl commandFacade;
 
     private Viewport v;
     private Vector3 touchPosition = new Vector3();
@@ -34,10 +35,11 @@ public class Level implements Screen {
     
     //----------------------------------------------------------------------------------------------------------------
 
-    public Level(Curtain c, RenderAccess room, Viewport v) {
+    public Level(Curtain c, RenderAccess room, Viewport v, MPControl mpc) {
         Level.c = c;
         Level.room = room;
         this.v = v;
+        Level.commandFacade = mpc;
     }
 
     private int getImageSize() {
@@ -56,6 +58,14 @@ public class Level implements Screen {
         for (RenderStrategy[] collumn : Level.room.getCells()) {
             for (RenderStrategy c : collumn) {
                 c.render(this.batch, this.getImageSize());
+            }
+        }
+
+        for (RenderStrategy[] collumn : Level.room.getInteractables()) {
+            for (RenderStrategy c : collumn) {
+                if (c != null) {
+                    c.render(this.batch, this.getImageSize());
+                }
             }
         }
 

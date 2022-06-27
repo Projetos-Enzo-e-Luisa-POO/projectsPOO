@@ -11,7 +11,7 @@ import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 /*	Espaço matricial
  * Agrupamento de células, define espaços matriciais do jogo e media comunicações/movimentos
  */
-public class Room implements MoveAccess, ControlAccess, RenderAccess{
+public class Room implements MoveAccess, ControlAccess, RenderAccess {
 
 	private Cell[][] space;
 	private Interactable[][] elements;
@@ -72,6 +72,11 @@ public class Room implements MoveAccess, ControlAccess, RenderAccess{
 	}
 
 	public Interactable[][] getElements() {
+		return this.elements;
+	}
+
+	@Override
+	public RenderStrategy[][] getInteractables() {
 		return this.elements;
 	}
 
