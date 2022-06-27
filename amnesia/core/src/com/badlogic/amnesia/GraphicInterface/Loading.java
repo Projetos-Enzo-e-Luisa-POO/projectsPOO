@@ -74,7 +74,7 @@ public class Loading implements Screen {
         RoomBuilder roomBuilder = new RoomBuilder();
         Room room = roomBuilder.buildRoom(roomNumber, new String[0]);
 
-        Level roomScreen = new Level(room);
+        Level roomScreen = new Level(Loading.curtain, room);
 
         return roomScreen;
     }
