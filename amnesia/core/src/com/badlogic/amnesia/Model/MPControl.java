@@ -5,9 +5,10 @@ import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FlagManagment.FlagConfig;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Array;
 
-public class MPControl{
+public class MPControl implements SongsterView {
 
 	private ControlAccess r;
 	private Songster p;
@@ -108,4 +109,8 @@ public class MPControl{
 		fc.saveGame();
 	}
 
+	@Override
+	public void renderSongster(Batch batch, float imgSize) {
+		this.p.render(batch, imgSize);
+	}
 }

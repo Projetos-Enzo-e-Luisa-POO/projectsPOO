@@ -18,11 +18,12 @@ public class Level implements Screen {
 
     private static Curtain c;
     private static RenderAccess room;
+    private static BindDepot bd = BindDepot.getInstance();
     private static MPControl commandFacade;
 
     private Viewport v;
     private Vector3 touchPosition = new Vector3();
-    private BitmapFont font = new BitmapFont();
+    private BitmapFont font = new BitmapFont(Gdx.files.internal("font/pixelemulator.fnt"), Gdx.files.internal("font/pixelemulator.png"),false);
     public SpriteBatch batch = new SpriteBatch();
 
     private Texture pauseMenuBackground = new Texture(Gdx.files.internal("pauseMenu/pauseMenuBackground.png")),
@@ -31,7 +32,8 @@ public class Level implements Screen {
 
     private Rectangle pauseMenu, resumeButton, quitButton;
 
-    private boolean isGamePaused = false;
+    private boolean renderPauseMenu = false,
+                    renderInteractMenu = true;
     
     //----------------------------------------------------------------------------------------------------------------
 
@@ -69,6 +71,8 @@ public class Level implements Screen {
             }
         }
 
+        Level.commandFacade.renderSongster(this.batch, this.getImageSize());
+
         batch.end();
 
         float h = this.v.getWorldHeight(),
@@ -79,35 +83,87 @@ public class Level implements Screen {
         quitButton = new Rectangle(w/2 - 130, h/2 - 202, 260, 102);
     }
 
+    private boolean isInputKeyForCommand (String command) {
+        return Gdx.input.isKeyJustPressed(Level.bd.getKeyValueOf(command));
+    }
+
     @Override
     public void render(float delta) {
 
         batch.begin();
         
-        if (this.isGamePaused) {
+        if (this.renderPauseMenu) {
             batch.draw(pauseMenuBackground, pauseMenu.x, pauseMenu.y, pauseMenu.width, pauseMenu.height);
             batch.draw(resume, resumeButton.x, resumeButton.y, resumeButton.width, resumeButton.height);
             batch.draw(quit, quitButton.x, quitButton.y, quitButton.width, quitButton.height);
         }
 
-        batch.end();
-        
-        if (Gdx.input.isKeyJustPressed(BindDepot.getInstance().getKeyValueOf("pause"))) {
-            this.isGamePaused = !this.isGamePaused;
+        if (this.renderInteractMenu) {
+            font.draw(batch, "Testando", this.v.getWorldWidth() / 2, this.v.getWorldHeight() / 2);
         }
 
-        if (this.isGamePaused){
+        batch.end();
+        
+        if (isInputKeyForCommand("pause")) {
+            this.renderPauseMenu = !this.renderPauseMenu;
+            this.Setup();
+        }
+        
+        if (isInputKeyForCommand("free hand")) {
+            Level.commandFacade.changeActiveSlot(-1);
+        }
+
+        if (isInputKeyForCommand("move up")) {
+            Level.commandFacade.move(0);
+        }
+
+        else if (isInputKeyForCommand("quick interact")){
+            Level.commandFacade.quickInteract();
+        }
+
+        else if (isInputKeyForCommand("move left")){
+            Level.commandFacade.move(1);
+        }
+
+        else if (isInputKeyForCommand("move down")){
+            Level.commandFacade.move(2);
+        }
+
+        else if (isInputKeyForCommand("move right")){
+            Level.commandFacade.move(3);
+        }
+
+        else if (isInputKeyForCommand("select")){
+            Level.commandFacade.interact();
+        }
+
+        else if (isInputKeyForCommand("up select")){
+            
+        }
+
+        else if (isInputKeyForCommand("first slot")){
+            Level.commandFacade.changeActiveSlot(0);
+        }
+
+        else if (isInputKeyForCommand("second slot")){
+            Level.commandFacade.changeActiveSlot(1);
+        }
+
+        else if (isInputKeyForCommand("down select")){
+            
+        }
+
+        if (this.renderPauseMenu){
             if (Gdx.input.justTouched()) {
                 this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
                 this.v.unproject(touchPosition);
-                if (this.isGamePaused) {
-                    if (quitButton.contains(touchPosition.x, touchPosition.y)) {
-                        Level.c.callScreen(new Menu(Level.c, this.v));
-                    }
-                    else if (resumeButton.contains(touchPosition.x, touchPosition.y) ||
-                                !pauseMenu.contains(touchPosition.x, touchPosition.y)) {
-                        this.isGamePaused = false;
-                    }
+                if (quitButton.contains(touchPosition.x, touchPosition.y)) {
+                    Level.c.callScreen(new Menu(Level.c, this.v));
+                }
+                else if (resumeButton.contains(touchPosition.x, touchPosition.y) ||
+                            !pauseMenu.contains(touchPosition.x, touchPosition.y)) {
+                    this.renderPauseMenu = false;
+                    this.Setup();
                 }
             }
         }
