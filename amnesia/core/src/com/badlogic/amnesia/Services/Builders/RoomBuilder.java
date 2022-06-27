@@ -21,7 +21,6 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Wall1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.LightSwitch;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
-import com.badlogic.gdx.utils.Array;
 
 public class RoomBuilder {
 
@@ -73,13 +72,18 @@ public class RoomBuilder {
         
         while(k < source.length){
             int ID = Integer.parseInt(source[k]), posID = Integer.parseInt(source[k + 1]);
-            Array<Boolean> state = new Array<Boolean>();
             String[] sSplit = source[k + 2].split(";");
-            while(sSplit[1].length() > 0){
-               state.add(Boolean.parseBoolean(sSplit[0]));
-               sSplit = sSplit[1].split(";");
+            Boolean[] state = new Boolean[sSplit.length];
+            int i = 0;
+            while(sSplit.length > 1){
+                if (sSplit[0] == "false") state[i] = false;
+                else if (sSplit[0] == "true") state[i] = true;
+                sSplit = sSplit[1].split(";", 2);
+                i++;
             }
-            r.elementConnect(posID, interactableFactory(ID, state.toArray())); 
+            if (sSplit[0] == "false") state[i] = false;
+            else if (sSplit[0] == "true") state[i] = true;
+            r.elementConnect(posID, interactableFactory(ID, state)); 
             k += 3;
         }
         return r;

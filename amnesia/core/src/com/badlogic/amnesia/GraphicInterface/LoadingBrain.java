@@ -33,7 +33,7 @@ public class LoadingBrain {
 
         FlagRead fr = FlagDepot.getInstance();
         RoomBuilder rb = RoomBuilder.getInstance();
-        String[] aux = new String[0];
+        String[] aux = new String[10];//voltar
         if (source.length > 3)
             System.arraycopy(source, 3, aux, 0, source.length - 3);  
         Room r = rb.buildRoom(fr.getRoomNumber(), aux);
