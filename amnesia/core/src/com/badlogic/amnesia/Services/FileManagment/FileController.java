@@ -14,7 +14,7 @@ public class FileController {
    public static String PATH = "/core/src/com/badlogic/amnesia/ConfigFiles/";
 
    public FileController(String fileName){
-      this.fh = Gdx.files.local(PATH + fileName);
+      this.fh = Gdx.files.local(fileName);
    }
 
    public String toString() {
@@ -27,7 +27,7 @@ public class FileController {
 
    public String[] getFileContent(){
       String content;
-      try {
+      try{
          content = fh.readString();
       } catch (GdxRuntimeException e) {
          throw new ReadingFileException(this.fh.path(), e.getMessage());

@@ -3,13 +3,15 @@ package com.badlogic.amnesia.Model;
 import com.badlogic.amnesia.Model.ControlInterfaces.ControlAccess;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.MoveAccess;
+import com.badlogic.amnesia.Model.ControlInterfaces.RenderAccess;
+import com.badlogic.amnesia.Model.ControlInterfaces.RenderStrategy;
 import com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 
 /*	Espaço matricial
  * Agrupamento de células, define espaços matriciais do jogo e media comunicações/movimentos
  */
-public class Room implements MoveAccess, ControlAccess{
+public class Room implements MoveAccess, ControlAccess, RenderAccess{
 
 	private Cell[][] space;
 	private Interactable[][] elements;
@@ -73,7 +75,8 @@ public class Room implements MoveAccess, ControlAccess{
 		return this.elements;
 	}
 
-	public Cell[][] getSpace() {
+	@Override
+	public RenderStrategy[][] getCells() {
 		return this.space;
 	}
 }

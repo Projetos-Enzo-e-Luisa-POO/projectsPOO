@@ -1,21 +1,119 @@
 package com.badlogic.amnesia.GraphicInterface;
 
-import com.badlogic.amnesia.Model.Room;
-import com.badlogic.amnesia.Services.BindManagment.BindDepot;
-import com.badlogic.amnesia.Services.Builders.RoomBuilder;
-import com.badlogic.amnesia.Services.FileManagment.FileController;
-import com.badlogic.amnesia.Services.FlagManagment.FlagDepot;
+import java.util.concurrent.TimeUnit;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Loading implements Screen {
+
+    private static Curtain c;
+    private ProcessesToLoad ptl;
+    private LoadingBrain lb;
+
+    private Viewport v;
+    private SpriteBatch batch = new SpriteBatch();
+    private Texture backgroundImage = new Texture(Gdx.files.internal("loading/loadingBackground.png"));
+
+    private boolean rendered = false;
+
+    public Loading(Curtain c, ProcessesToLoad ptl, Viewport v){
+        Loading.c = c;
+        this.ptl = ptl;
+        this.v = v;
+        this.lb = new LoadingBrain(Loading.c);
+    }
+
+    @Override
+    public void show() {}
+
+    @Override
+    public void render(float delta) {
+
+        v.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        this.v.getCamera().update();    
+        batch.setProjectionMatrix(this.v.getCamera().combined);
+
+        if (this.rendered)
+            switch (this.ptl){
+                case END_GAME:
+                    Loading.c.callScreen(new Menu(Loading.c, this.v));
+                case INITIALIZE_GAME:
+                    Loading.c.callScreen(this.lb.tune(this.v));
+                default:
+                    break;
+            }
+
+        ScreenUtils.clear(0,0,0,1);
+
+        batch.begin();
+        batch.draw(this.backgroundImage, 0, 0);
+        batch.end();
+
+        this.rendered = true;
+        
+        try {
+            TimeUnit.SECONDS.sleep((long) 0.5);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void hide() {
+        this.dispose();
+        
+    }
+
+    @Override
+    public void dispose() {
+        backgroundImage.dispose();
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
-    private static Curtain curtain;
+    /*private static Curtain curtain;
     private ProcessesToLoad processInLoading;
 
     private Viewport viewport;
@@ -129,3 +227,4 @@ public class Loading implements Screen {
         this.dispose();
     }
 }
+ */

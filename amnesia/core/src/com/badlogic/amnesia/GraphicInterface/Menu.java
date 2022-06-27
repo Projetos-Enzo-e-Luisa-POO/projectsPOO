@@ -1,23 +1,21 @@
 package com.badlogic.amnesia.GraphicInterface;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Menu implements Screen {
-    
-    private static Curtain curtain;
 
-    private Viewport viewport;
+    private static Curtain c;
+
+    private Viewport v;
     private Vector3 touchPosition = new Vector3();
     private SpriteBatch batch = new SpriteBatch();
-    private OrthographicCamera Camera = new OrthographicCamera();;
 
     private Texture backgroundImage = new Texture(Gdx.files.internal("menu/menuBackground.png")),
                     titleTexture = new Texture(Gdx.files.internal("menu/Title.png")),
@@ -28,35 +26,21 @@ public class Menu implements Screen {
                     noTexture = new Texture(Gdx.files.internal("menu/NO.png")),
                     yesTexture = new Texture(Gdx.files.internal("menu/Yes.png"));
 
-    private Rectangle newGameButton;
-    private Rectangle loadGameButton;
-    private Rectangle configButton;
-    private Rectangle Title;
-    private Rectangle SaveMenu;
-    private Rectangle No;
-    private Rectangle Yes;
+    private Rectangle newGameButton, loadGameButton, configButton, 
+                        Title, SaveMenu, No, Yes;
 
     private MenuBrain mb = new MenuBrain();
     private boolean newGamePressed = false;
     
-    public Menu (Curtain curtain) {
-        Menu.curtain = curtain;
-    }
-
-    private void loadGame() {
-        this.dispose();
-        this.mb.setLoading("SaveFile.csv", Menu.curtain);
+    public Menu (Curtain c, Viewport v) {
+        Menu.c = c;
+        this.v = v;
     }
     
     public void Setup(){
-
-        this.Camera.position.set(0,0,0);
-        this.Camera.update();
-
-        this.viewport = new FitViewport(1280, 720, this.Camera);
         
-        float   h = this.viewport.getWorldHeight(),
-                w = this.viewport.getWorldWidth();
+        float   h = this.v.getWorldHeight(),
+                w = this.v.getWorldWidth();
 
         //x, y, width, height
         Title = new Rectangle(6*w/32, 11*h/16, 10*w/16, 2*h/9);
@@ -66,16 +50,16 @@ public class Menu implements Screen {
         SaveMenu = new Rectangle(w/2, h/2, 0, 0);
         Yes = new Rectangle(27*w/64, 13*h/32, 4*h/16, w/16);
         No = new Rectangle(27*w/64, 8*h/32, 4*h/16, w/16);
+
     }
     
     @Override
     public void render(float delta) {
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-        float   h = this.viewport.getWorldHeight(),
-                w = this.viewport.getWorldWidth();
 
-        this.Camera.update();
-        batch.setProjectionMatrix(this.Camera.combined);
+        ScreenUtils.clear(0,0,0,1);
+
+        float   h = this.v.getWorldHeight(),
+                w = this.v.getWorldWidth();
 
         batch.begin();
 
@@ -112,29 +96,28 @@ public class Menu implements Screen {
 
         if (Gdx.input.justTouched()) {
             this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            this.viewport.unproject(touchPosition);
+            this.v.unproject(touchPosition);
             if(!this.newGamePressed){
                 if (newGameButton.contains(touchPosition.x, touchPosition.y)) {
                     if(this.mb.saveExists()) this.newGamePressed = true;
-                    else this.loadGame(); // Loading if completely new game
+                    else c.callScreen(new Loading(Menu.c, ProcessesToLoad.getInitializeGame(), this.v));
                 }
-                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) this.loadGame(); // Loading with possible load file
-                if (configButton.contains(touchPosition.x, touchPosition.y)) System.out.println("config!"); //Menu.curtain.setScreen(Settings);
+                if (loadGameButton.contains(touchPosition.x, touchPosition.y)) c.callScreen(new Loading(Menu.c, ProcessesToLoad.getInitializeGame(), this.v));
+                if (configButton.contains(touchPosition.x, touchPosition.y)) c.callScreen(new Settings(Menu.c, this.v));
             }
             else {
                 if (Yes.contains(touchPosition.x, touchPosition.y)){
                     this.newGamePressed = false;
-                    this.loadGame();
+                    c.callScreen(new Loading(Menu.c, ProcessesToLoad.getInitializeGame(), this.v));
                 }
                 else if (No.contains(touchPosition.x, touchPosition.y)) {
                     this.newGamePressed = false;
                     this.mb.overwriteSaveFile();
-                    this.loadGame();
+                    c.callScreen(new Loading(Menu.c, ProcessesToLoad.getInitializeGame(), this.v));
                 }
-                else if (SaveMenu.contains(touchPosition.x, touchPosition.y)){}
-                else this.newGamePressed = false;
-                }
+                else if (!SaveMenu.contains(touchPosition.x, touchPosition.y)) this.newGamePressed = false;
             }
+        }
     }
 
     @Override
@@ -155,7 +138,12 @@ public class Menu implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+        v.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        this.v.getCamera().update();
+        batch.setProjectionMatrix(this.v.getCamera().combined);
+    }
 
     @Override
     public void pause() {}

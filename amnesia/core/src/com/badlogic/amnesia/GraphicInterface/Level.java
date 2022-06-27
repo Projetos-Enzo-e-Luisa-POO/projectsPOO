@@ -1,92 +1,68 @@
 package com.badlogic.amnesia.GraphicInterface;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.amnesia.Model.Room;
-import com.badlogic.amnesia.Model.Toolkit.IDTrans;
+import com.badlogic.amnesia.Model.ControlInterfaces.RenderAccess;
+import com.badlogic.amnesia.Model.ControlInterfaces.RenderStrategy;
 import com.badlogic.amnesia.Services.BindManagment.BindDepot;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell;
-import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class Level implements Screen {
-    
-    private boolean isGamePaused = false;
 
-    private static Curtain curtain;
-    private static Room room;
-    public Songster songster;
+    private static Curtain c;
+    private static RenderAccess room;
+    //public Songster songster;
 
-    private Viewport viewport;
+    private Viewport v;
     private Vector3 touchPosition = new Vector3();
     private BitmapFont font = new BitmapFont();
     public SpriteBatch batch = new SpriteBatch();
-    private OrthographicCamera Camera = new OrthographicCamera();
 
     private Texture pauseMenuBackground = new Texture(Gdx.files.internal("pauseMenu/pauseMenuBackground.png")),
                     resume = new Texture(Gdx.files.internal("pauseMenu/resumeButton.png")),
                     quit = new Texture(Gdx.files.internal("pauseMenu/quitButton.png"));
 
     private Rectangle pauseMenu, resumeButton, quitButton;
+
+    private boolean isGamePaused = false;
     
     //----------------------------------------------------------------------------------------------------------------
 
-    public Level(Curtain curtain, Room room) {
-        Level.curtain = curtain;
+    public Level(Curtain c, RenderAccess room, Viewport v) {
+        Level.c = c;
         Level.room = room;
-        this.Setup();
+        this.v = v;
     }
 
     private int getImageSize() {
-        int width = (int) this.viewport.getWorldWidth() / Level.room.getSpace()[0].length;
-        int height = (int) this.viewport.getWorldHeight() / Level.room.getSpace().length;
+        int width = (int) this.v.getWorldWidth() / Level.room.size()[0];
+        int height = (int) this.v.getWorldHeight() / Level.room.size()[1];
         return (width < height) ? width : height;
     }
 
     private void Setup() {
         ScreenUtils.clear(0,0,0,1);
 
-        this.Camera.position.set(0,0,0);
-        this.Camera.update();
-
-        this.viewport = new FitViewport(1280, 720, this.Camera);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-
-        float h = this.viewport.getWorldHeight(),
-              w = this.viewport.getWorldWidth();
-
-        batch.setProjectionMatrix(this.Camera.combined);
+        batch.setProjectionMatrix(this.v.getCamera().combined);
 
         batch.begin();
 
-        IDTrans t = new IDTrans();
-
-        Cell[][] cells = Level.room.getSpace();
-
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[0].length - 1; j++) {
-                for (String img : cells[i][j].getImgs()) {
-                    int[] cellPosition = t.IDToPos(cells[i][j].getID());
-                    this.batch.draw(new Texture(
-                                        Gdx.files.internal(img)),
-                                        cellPosition[1] * this.getImageSize(),
-                                        cellPosition[0] * this.getImageSize(),
-                                        this.getImageSize(),
-                                        this.getImageSize()
-                                    );
-                }
+        for (RenderStrategy[] collumn : Level.room.getCells()) {
+            for (RenderStrategy c : collumn) {
+                c.render(this.batch, this.getImageSize());
             }
         }
 
         batch.end();
+
+        float h = this.v.getWorldHeight(),
+                w = this.v.getWorldWidth();
 
         pauseMenu = new Rectangle(w/2 - 225, h/2 - 300, 450, 600);
         resumeButton = new Rectangle(w/2 - 130, h/2 - 51, 260, 102);
@@ -95,6 +71,7 @@ public class Level implements Screen {
 
     @Override
     public void render(float delta) {
+
         batch.begin();
         
         if (this.isGamePaused) {
@@ -109,18 +86,23 @@ public class Level implements Screen {
             this.isGamePaused = !this.isGamePaused;
         }
 
-        if (Gdx.input.justTouched()) {
-            this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            this.viewport.unproject(touchPosition);
-            if (this.isGamePaused) {
-                if (quitButton.contains(touchPosition.x, touchPosition.y)) {
-                    Level.curtain.changeToScreen(Level.curtain.getMenuScreen());
-                }
-                else if (resumeButton.contains(touchPosition.x, touchPosition.y) ||
-                            !pauseMenu.contains(touchPosition.x, touchPosition.y)) {
-                    this.pause();
+        if (this.isGamePaused){
+            if (Gdx.input.justTouched()) {
+                this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                this.v.unproject(touchPosition);
+                if (this.isGamePaused) {
+                    if (quitButton.contains(touchPosition.x, touchPosition.y)) {
+                        Level.c.callScreen(new Menu(Level.c, this.v));
+                    }
+                    else if (resumeButton.contains(touchPosition.x, touchPosition.y) ||
+                                !pauseMenu.contains(touchPosition.x, touchPosition.y)) {
+                        this.isGamePaused = false;
+                    }
                 }
             }
+        }
+        else {
+
         }
     }
 
@@ -132,16 +114,33 @@ public class Level implements Screen {
         quit.dispose();
     }
 
-    public void show() {}
+    public void show() {
+        v.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-    public void hide() {}
+        this.v.getCamera().update();
+        batch.setProjectionMatrix(this.v.getCamera().combined);
 
-    public void pause() {
-        this.isGamePaused = true;
+        this.Setup();
     }
 
-    public void resume() {}
+    public void hide() {
+        this.dispose();
+    }
 
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+        this.show();
+    }
+
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

@@ -17,8 +17,4 @@ public class MenuBrain {
         fc1.overwrite(fc2.toString());
     }
 
-    public void setLoading(String fileName, Curtain curtain){
-        curtain.loadGame(fileName);
-    }
-
 }

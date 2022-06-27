@@ -29,7 +29,7 @@ public class Settings implements Screen {
 
     private boolean setted = false;
     //------------------------------------------------------------------------------------
-    public Settings (Curtain game) {
+    public Settings (Curtain game, Viewport v) {
         this.curtain = game;
     }
     //------------------------------------------------------------------------------------
