@@ -1,8 +1,11 @@
 package com.badlogic.amnesia.Services.FileManagment;
 
+import com.badlogic.amnesia.Services.FileManagment.error.CopyFileException;
+import com.badlogic.amnesia.Services.FileManagment.error.ReadingFileException;
+import com.badlogic.amnesia.Services.FileManagment.error.WritingFileException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-//import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class FileController {
 
@@ -15,21 +18,38 @@ public class FileController {
    }
 
    public String toString() {
-      return this.fh.readString();
+      try {
+         return this.fh.readString();
+      } catch (GdxRuntimeException e) {
+         throw new ReadingFileException(fh.path(), e.getMessage());
+      }
    }
 
    public String[] getFileContent(){
-      String content = fh.readString();
+      String content;
+      try {
+         content = fh.readString();
+      } catch (GdxRuntimeException e) {
+         throw new ReadingFileException(this.fh.path(), e.getMessage());
+      }
       String[] contentSplitted = content.split(",");
       return contentSplitted;
    }
 
    public void copyFileContent (FileHandle fh){
-      fh.copyTo(this.fh);
+      try {
+         fh.copyTo(this.fh);
+      } catch (GdxRuntimeException e) {
+         throw new CopyFileException(this.fh.path(), fh.path(), e.getMessage());
+      }
    }
 
    public void overwrite(String content){
-      this.fh.writeString(content, false);
+      try {
+         this.fh.writeString(content, false);
+      } catch (GdxRuntimeException e) {
+         throw new WritingFileException(this.fh.path(), e.getMessage());
+      }
    }
 
 }

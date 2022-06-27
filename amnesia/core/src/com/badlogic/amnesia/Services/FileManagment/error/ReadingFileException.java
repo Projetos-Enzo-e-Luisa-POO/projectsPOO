@@ -1,9 +1,11 @@
 package com.badlogic.amnesia.Services.FileManagment.error;
 
-public class ReadingFileException extends Exception {
+import com.badlogic.gdx.utils.GdxRuntimeException;
+
+public class ReadingFileException extends GdxRuntimeException {
     
     public ReadingFileException (String filePath, String errorMessage) {
-        super("Cannot read content of file " + filePath + ": " + errorMessage);
+        super("Cannot find or read file " + filePath + ": " + errorMessage);
     }
-    
+
 }
