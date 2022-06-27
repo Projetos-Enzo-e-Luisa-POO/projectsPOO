@@ -20,4 +20,9 @@ public abstract class InteractableElement extends ViewElement implements Interac
 
 	@Override
 	public abstract boolean[] getStatus();
+
+	@Override
+    public String getClassName() {
+        return this.getClass().getSimpleName();
+    }
 }
