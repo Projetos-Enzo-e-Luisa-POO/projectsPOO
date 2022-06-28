@@ -6,22 +6,22 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces.
 import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces.screwOutI;
 
 public class TableSocket extends InteractableElement implements screwInI, screwOutI{
-
-    // rever questões da interface gráfica
-
+    
     private boolean state;
     private Interactable lampBulb;
 
-    public TableSocket(){
-        this.imgConnect("concreteElement/sockettile.png");
+    public TableSocket(Boolean[] state2, int posID){
+        this.imgConnect("concreteElement/sockettilewoutlamp.png");
         this.ID = 15;
+        this.posID = posID;
         this.state = false;
         this.lampBulb = null;
     }
 
-    public TableSocket(Interactable  lamp){
-        this.imgConnect("concreteElement/sockettile.png");
+    public TableSocket(Interactable  lamp, int posID){
+        this.imgConnect("concreteElement/sockettilewoutlamp.png");
         this.ID = 15;
+        this.posID = posID;
         this.screwIn(lamp);
     }
 

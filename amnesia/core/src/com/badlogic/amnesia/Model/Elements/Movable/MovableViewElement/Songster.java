@@ -5,6 +5,7 @@ import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.MoveAccess;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FlagManagment.SongsterFlags;
+import com.badlogic.gdx.utils.Array;
 
 /*
  * Protagonista
@@ -33,6 +34,7 @@ public class Songster extends MovableViewElement{
 	private Interactable activeItem;
 	private Inventory inventory;
 	private SongsterFlags f;
+	private Array<Integer> memory;
 
 	public Songster(String[] imgByOr, String[] movByOr, int direction, int[] pos, MoveAccess access1, SongsterFlags access2){
 		IDTrans t = new IDTrans();
@@ -44,7 +46,7 @@ public class Songster extends MovableViewElement{
 		this.roomConect(access1);
 		this.f = access2;
 		this.updateImg(false);
-		// inicializa elemento de visualização
+		this.memory = new Array<Integer>();
 		this.inventory = new Inventory();
 	}
 
@@ -63,9 +65,7 @@ public class Songster extends MovableViewElement{
 		this.f.setSongsterOrientation(this.getOrientation());
 		this.f.setSongsterPos(this.posID);
 		this.updateImg(true);
-		//chamada da animação recebendo (this.posID, this.getImg())
 		this.updateImg(false);
-		//chamada da animação recebendo (this.posID, this.getImg())
 	}
 
 	public void changeActiveSlot(int slot){
@@ -86,4 +86,11 @@ public class Songster extends MovableViewElement{
 		this.inventory.storeItem(item);
 	}
 
+	public void learnInterface(int i){
+		this.memory.add(i);
+	}
+
+	public boolean knows(int i){
+		return this.memory.contains(i, true);
+	}
 }

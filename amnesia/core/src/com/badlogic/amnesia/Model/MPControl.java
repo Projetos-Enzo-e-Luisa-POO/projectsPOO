@@ -80,20 +80,21 @@ public class MPControl implements SongsterView {
 			Array<String> interactions = new Array<String>();
 			int[] interfaces = item.getInterfaces();
 			for(int i : interfaces)
-				switch (i){
-					case 3: // Desligar
-						interactions.add("turnOn");
-					case 5: // Ligar
-						interactions.add("turnOff");
-					case 7: // Desrosquear
-						interactions.add("screwOut");
-					case 9: // Rosquear
-						interactions.add("screwIn");
-					case 11: // Colocar
-						interactions.add("put");
-					case 13: // Pegar
-						interactions.add("pick");
-				}
+				if (this.p.knows(i))
+					switch (i){
+						case 3: // Desligar
+							interactions.add("turnOn");
+						case 5: // Ligar
+							interactions.add("turnOff");
+						case 7: // Desrosquear
+							interactions.add("screwOut");
+						case 9: // Rosquear
+							interactions.add("screwIn");
+						case 11: // Colocar
+							interactions.add("put");
+						case 13: // Pegar
+							interactions.add("pick");
+					}
 			aux = interactions.toArray();
 		}
 		return aux;
@@ -113,4 +114,29 @@ public class MPControl implements SongsterView {
 	public void renderSongster(Batch batch, float imgSize) {
 		this.p.render(batch, imgSize);
 	}
+
+	public void learn(int i){
+		this.p.learnInterface(i);
+		switch (i){
+			case 3: // Desligar
+				this.p.learnInterface(5);
+				break;
+			case 5: // Ligar
+				this.p.learnInterface(3);
+				break;
+			case 7: // Desrosquear
+				this.p.learnInterface(9);
+				break;
+			case 9: // Rosquear
+				this.p.learnInterface(7);
+				break;
+			case 11: // Colocar
+				this.p.learnInterface(13);
+				break;
+			case 13: // Pegar
+				this.p.learnInterface(11);
+				break;
+		}
+	}
+
 }
