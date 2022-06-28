@@ -7,12 +7,10 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces.
 
 public class LampBulb extends InteractableElement implements pickI, putI{
 
-    // rever questões da interface gráfica
-
     private boolean state;
 
     public LampBulb(Boolean[] state2, int posID){
-        this.img = "concreteElement/lampbulb.png";
+        this.imgConnect("concreteElement/lampbulb.png");
         this.ID = 17;
         this.posID = posID;
         this.state = state2[0];

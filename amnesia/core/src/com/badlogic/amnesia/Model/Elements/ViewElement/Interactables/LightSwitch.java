@@ -6,8 +6,6 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces.
 
 public class LightSwitch extends InteractableElement implements turnOnI, turnOffI{
 
-    // rever questões da interface gráfica
-
     private boolean state;
 
     public LightSwitch(Boolean[] state2, int posID){
