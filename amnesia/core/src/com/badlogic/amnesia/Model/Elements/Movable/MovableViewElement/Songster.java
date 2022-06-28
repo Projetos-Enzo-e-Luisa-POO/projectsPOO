@@ -5,6 +5,7 @@ import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.MoveAccess;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FlagManagment.SongsterFlags;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Array;
 
 /*
@@ -92,5 +93,9 @@ public class Songster extends MovableViewElement{
 
 	public boolean knows(int i){
 		return this.memory.contains(i, true);
+	}
+
+	public void renderInventory(Batch batch, float imgSize){
+		this.inventory.render(batch, imgSize);
 	}
 }

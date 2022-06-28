@@ -151,4 +151,9 @@ public class MPControl implements SongsterView {
 				}
 	}
 
+	@Override
+	public void renderInventory(Batch batch, float imgSize) {
+		this.p.renderInventory(batch, imgSize);
+	}
+
 }

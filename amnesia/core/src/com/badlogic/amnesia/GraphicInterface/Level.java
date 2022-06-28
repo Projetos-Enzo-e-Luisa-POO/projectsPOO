@@ -79,6 +79,8 @@ public class Level implements Screen {
 
         Level.commandFacade.renderSongster(this.batch, this.getImageSize());
 
+        Level.commandFacade.renderInventory(batch, this.getImageSize());
+
         batch.end();
 
         float h = this.v.getWorldHeight(),
@@ -149,6 +151,7 @@ public class Level implements Screen {
         
         if (isInputKeyForCommand("free hand")) {
             Level.commandFacade.changeActiveSlot(-1);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("move up")) {
@@ -173,10 +176,12 @@ public class Level implements Screen {
 
         if (isInputKeyForCommand("first slot")){
             Level.commandFacade.changeActiveSlot(0);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("second slot")){
             Level.commandFacade.changeActiveSlot(1);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("select")){
