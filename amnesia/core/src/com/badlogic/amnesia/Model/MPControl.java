@@ -59,7 +59,7 @@ public class MPControl implements SongsterView {
 
 	public String[] interact(){
 		String[] aux = null;
-		this.deepInteract(this.getPossibleInteractable());
+		aux = this.deepInteract(this.getPossibleInteractable());
 		return aux;
 	}
 

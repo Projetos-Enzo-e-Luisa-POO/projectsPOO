@@ -6,6 +6,7 @@ import com.badlogic.amnesia.Model.ControlInterfaces.RenderAccess;
 import com.badlogic.amnesia.Model.ControlInterfaces.RenderStrategy;
 import com.badlogic.amnesia.Services.BindManagment.BindDepot;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,14 +27,19 @@ public class Level implements Screen {
     private BitmapFont font = new BitmapFont(Gdx.files.internal("font/pixelemulator.fnt"), Gdx.files.internal("font/pixelemulator.png"),false);
     public SpriteBatch batch = new SpriteBatch();
 
-    private Texture pauseMenuBackground = new Texture(Gdx.files.internal("pauseMenu/pauseMenuBackground.png")),
+    private Texture arrowBackground = new Texture(Gdx.files.internal("interactableMenu/arrow.png")),
+                    interactableMenuBackground = new Texture(Gdx.files.internal("interactableMenu/interactableMenuBackground.png")),
+                    pauseMenuBackground = new Texture(Gdx.files.internal("pauseMenu/pauseMenuBackground.png")),
                     resume = new Texture(Gdx.files.internal("pauseMenu/resumeButton.png")),
                     quit = new Texture(Gdx.files.internal("pauseMenu/quitButton.png"));
 
-    private Rectangle pauseMenu, resumeButton, quitButton;
+    private Rectangle interactableMenu, arrow, pauseMenu, resumeButton, quitButton;
+
+    private String[] interactableMenuOptions;
+    private int interactableIndexSelected = 0;
 
     private boolean renderPauseMenu = false,
-                    renderInteractMenu = true;
+                    renderInteractMenu = false;
     
     //----------------------------------------------------------------------------------------------------------------
 
@@ -78,6 +84,9 @@ public class Level implements Screen {
         float h = this.v.getWorldHeight(),
                 w = this.v.getWorldWidth();
 
+        interactableMenu = new Rectangle((3 * w)/4 - 230, h/2 - 300, 450, 600);
+        arrow = new Rectangle((3 * this.v.getWorldWidth()) / 5, (3 * this.v.getWorldHeight()) / 4 - this.v.getWorldHeight() / 5 - 30, 32, 32);
+
         pauseMenu = new Rectangle(w/2 - 225, h/2 - 300, 450, 600);
         resumeButton = new Rectangle(w/2 - 130, h/2 - 51, 260, 102);
         quitButton = new Rectangle(w/2 - 130, h/2 - 202, 260, 102);
@@ -85,6 +94,25 @@ public class Level implements Screen {
 
     private boolean isInputKeyForCommand (String command) {
         return Gdx.input.isKeyJustPressed(Level.bd.getKeyValueOf(command));
+    }
+
+    private void handleUpSelect() {
+        if (this.interactableIndexSelected != 0) {
+            --this.interactableIndexSelected;
+            this.arrow.y += this.v.getWorldWidth() / 10;
+        }
+    }
+
+    private void handleDownSelect() {
+        if (this.interactableIndexSelected != this.interactableMenuOptions.length - 1) {
+            ++this.interactableIndexSelected;
+            this.arrow.y -= this.v.getWorldWidth() / 10;
+        }
+    }
+
+    private void renderInteractMenu() {
+        this.renderInteractMenu = true;
+        this.Setup();
     }
 
     @Override
@@ -99,7 +127,17 @@ public class Level implements Screen {
         }
 
         if (this.renderInteractMenu) {
-            font.draw(batch, "Testando", this.v.getWorldWidth() / 2, this.v.getWorldHeight() / 2);
+            batch.draw(interactableMenuBackground, interactableMenu.x, interactableMenu.y, interactableMenu.width, interactableMenu.height);
+            font.draw(batch, "Select an", (33 * this.v.getWorldWidth()) / 50, (3 * this.v.getWorldHeight()) / 4);
+            font.draw(batch, "interaction", (32 * this.v.getWorldWidth()) / 50, (3 * this.v.getWorldHeight()) / 4 - this.v.getWorldHeight() / 20);
+            
+            float optionHeight = (3 * this.v.getWorldHeight()) / 4 - this.v.getWorldHeight() / 5;
+            for (String option : this.interactableMenuOptions) {
+                font.draw(batch, option, (33 * this.v.getWorldWidth()) / 50, optionHeight);
+                optionHeight -= this.v.getWorldWidth() / 10;
+            }
+
+            batch.draw(arrowBackground, arrow.x, arrow.y, arrow.width, arrow.height);
         }
 
         batch.end();
@@ -117,40 +155,34 @@ public class Level implements Screen {
             Level.commandFacade.move(0);
         }
 
-        else if (isInputKeyForCommand("quick interact")){
-            Level.commandFacade.quickInteract();
-        }
-
-        else if (isInputKeyForCommand("move left")){
+        if (isInputKeyForCommand("move left")){
             Level.commandFacade.move(1);
         }
 
-        else if (isInputKeyForCommand("move down")){
+        if (isInputKeyForCommand("move down")){
             Level.commandFacade.move(2);
         }
 
-        else if (isInputKeyForCommand("move right")){
+        if (isInputKeyForCommand("move right")){
             Level.commandFacade.move(3);
         }
 
-        else if (isInputKeyForCommand("select")){
-            Level.commandFacade.interact();
-        }
-
-        else if (isInputKeyForCommand("up select")){
-            
-        }
-
-        else if (isInputKeyForCommand("first slot")){
+        if (isInputKeyForCommand("first slot")){
             Level.commandFacade.changeActiveSlot(0);
         }
 
-        else if (isInputKeyForCommand("second slot")){
+        if (isInputKeyForCommand("second slot")){
             Level.commandFacade.changeActiveSlot(1);
         }
 
-        else if (isInputKeyForCommand("down select")){
-            
+        if (isInputKeyForCommand("select")){
+            this.interactableMenuOptions = Level.commandFacade.interact();
+            this.renderInteractMenu();
+        }
+
+        if (isInputKeyForCommand("quick interact")){
+            this.interactableMenuOptions = Level.commandFacade.quickInteract();
+            this.renderInteractMenu();
         }
 
         if (this.renderPauseMenu){
@@ -167,8 +199,21 @@ public class Level implements Screen {
                 }
             }
         }
-        else {
 
+        if (this.renderInteractMenu) {
+            if (isInputKeyForCommand("up select")){
+                this.handleUpSelect();
+            }
+
+            if (isInputKeyForCommand("down select")) {
+                this.handleDownSelect();
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                this.renderInteractMenu = false;
+                Level.commandFacade.executeInteraction(this.interactableMenuOptions[this.interactableIndexSelected]);
+                this.Setup();
+            }
         }
     }
 
@@ -176,6 +221,7 @@ public class Level implements Screen {
         batch.dispose();
         font.dispose();
         pauseMenuBackground.dispose();
+        interactableMenuBackground.dispose();
         resume.dispose();
         quit.dispose();
     }
