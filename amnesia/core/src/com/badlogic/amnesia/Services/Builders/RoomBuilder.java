@@ -70,19 +70,19 @@ public class RoomBuilder {
                 k++;
         }
         
-        while(k < source.length){
+        while(k < source.length && source[k] != null){
             int ID = Integer.parseInt(source[k]), posID = Integer.parseInt(source[k + 1]);
             String[] sSplit = source[k + 2].split(";");
             Boolean[] state = new Boolean[sSplit.length];
             int i = 0;
             while(sSplit.length > 1){
-                if (sSplit[0] == "false") state[i] = false;
-                else if (sSplit[0] == "true") state[i] = true;
+                if (sSplit[0].equals("false")) state[i] = false;
+                else if (sSplit[0].equals("true")) state[i] = true;
                 sSplit = sSplit[1].split(";", 2);
                 i++;
             }
-            if (sSplit[0] == "false") state[i] = false;
-            else if (sSplit[0] == "true") state[i] = true;
+            if (sSplit[0].equals("false")) state[i] = false;
+            else if (sSplit[0].equals("true")) state[i] = true;
             r.elementConnect(posID, interactableFactory(ID, state)); 
             k += 3;
         }
