@@ -1,5 +1,6 @@
 package com.badlogic.amnesia.Services.Builders;
 
+import com.badlogic.amnesia.GraphicInterface.StoryTeller;
 import com.badlogic.amnesia.Model.Room;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.Placeable;
@@ -23,10 +24,14 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.LightSwitch
 import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.TableSocket;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
+import com.badlogic.amnesia.Services.FlagManagment.ElementFlags;
 
 public class RoomBuilder {
 
     public RoomBuilder(){}
+
+    private ElementFlags ef;
+    private StoryTeller st;
 
     private static class Holder{
         static final RoomBuilder instance = new RoomBuilder();
@@ -36,7 +41,9 @@ public class RoomBuilder {
         return Holder.instance;
     }
 
-    public Room buildRoom(int roomNumber, String[] interactableData){
+    public Room buildRoom(int roomNumber, String[] interactableData, ElementFlags ef, StoryTeller st){
+        this.ef = ef;
+        this.st = st;
         //Prep
         String s;
         switch (roomNumber){
@@ -183,11 +190,11 @@ public class RoomBuilder {
              * 17: Lamp Bulb 1
              */
             case 13:
-                aux = new LightSwitch(state, posID);
+                aux = new LightSwitch(state, posID, this.ef);
                 break;
             case 15:
-                if (state[0]) aux = new TableSocket(new LampBulb(false, posID), posID);
-                else aux = new TableSocket(state, posID);
+                if (state[0]) aux = new TableSocket(new LampBulb(false, posID), posID, this.ef, this.st);
+                else aux = new TableSocket(state, posID, this.ef, this.st);
                 break;
             case 17:
                 aux = new LampBulb(state, posID);

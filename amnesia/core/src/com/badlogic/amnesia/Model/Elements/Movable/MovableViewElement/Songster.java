@@ -32,7 +32,6 @@ public class Songster extends MovableViewElement{
 	 */
 
 	// Elemento de visualização
-	private Interactable activeItem;
 	private Inventory inventory;
 	private SongsterFlags f;
 	private Array<Integer> memory;
@@ -71,16 +70,15 @@ public class Songster extends MovableViewElement{
 
 	public void changeActiveSlot(int slot){
 		this.inventory.setActiveSlot(slot);
-		this.activeItem = this.inventory.getActiveItem();
 	}
 
 	public Interactable getActiveItem(){
-		return this.activeItem;
+		return this.inventory.getActiveItem();
 	}
 
 	// método para colocar objetos no "chão"
 	public Interactable dropActiveItem(){
-		return this.inventory.dropItem(this.activeItem.getID());
+		return ((this.inventory.getActiveItem() != null) ? this.inventory.dropItem(this.inventory.getActiveItem().getID()) : null);
 	}
 
 	public void storeItem(Interactable item){

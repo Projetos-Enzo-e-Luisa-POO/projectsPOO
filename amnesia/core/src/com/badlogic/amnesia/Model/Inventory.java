@@ -13,7 +13,6 @@ public class Inventory implements RenderStrategy{
 
 	private Interactable[] slots;
 	private int activeSlot;
-	// Elemento de view do inventário
 
 	public Inventory() {
 		this.slots = new Interactable[2];
@@ -26,7 +25,7 @@ public class Inventory implements RenderStrategy{
 	}
 
 	public void storeItem(Interactable item){
-		if (this.slots[this.activeSlot] == null)
+		if (this.activeSlot > -1 && this.slots[this.activeSlot] == null)
 			this.slots[this.activeSlot] = item;
 		else {
 			if (this.activeSlot == -1 ||

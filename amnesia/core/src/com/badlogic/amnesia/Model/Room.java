@@ -29,9 +29,8 @@ public class Room implements MoveAccess, ControlAccess, RenderAccess {
 	public void elementConnect(int cellID, Interactable e){
 		IDTrans t = new IDTrans();
 		int[] aux = t.IDToPos(cellID);
-		if (e.isInteractable() && this.elements[aux[0]][aux[1]] == null)
+		if (e != null && e.isInteractable() && this.elements[aux[0]][aux[1]] == null)
 			this.elements[aux[0]][aux[1]] = e;
-		// else throw exception? erro de inicialização?
 	}
 
 	public Interactable getElement(int cellID){

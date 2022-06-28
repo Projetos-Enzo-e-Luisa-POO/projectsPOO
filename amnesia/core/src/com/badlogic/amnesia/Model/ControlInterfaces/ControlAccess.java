@@ -12,4 +12,6 @@ public interface ControlAccess extends SaveAccess{
 
 	public Interactable getElement(int cellID);
 
+	public void elementConnect(int cellID, Interactable e);
+
 }
