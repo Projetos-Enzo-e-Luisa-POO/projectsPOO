@@ -44,8 +44,8 @@ public class CompondViewElement extends Element implements RenderStrategy {
 			int[] cellPosition = t.IDToPos(this.ID);
 			batch.draw(new Texture(
 								Gdx.files.internal(img)),
-								cellPosition[1] * imgSize,
 								cellPosition[0] * imgSize,
+								cellPosition[1] * imgSize,
 								imgSize,
 								imgSize
 							);

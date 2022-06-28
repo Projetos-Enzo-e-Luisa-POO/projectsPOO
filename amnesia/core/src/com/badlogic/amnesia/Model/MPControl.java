@@ -25,7 +25,7 @@ public class MPControl implements SongsterView {
 	private int getNextCell(int orientation){
 		int next;
 		IDTrans t = new IDTrans();
-		int aux[] = t.IDToPos(this.posID); // Tornar posID private
+		int aux[] = t.IDToPos(this.p.getPosID());
 		int size[] = r.size();
 		switch(orientation){
 			case 0:
@@ -69,7 +69,7 @@ public class MPControl implements SongsterView {
 
 	public Interactable getPossibleInteractable(){
 		Interactable aux = null;
-		int ID = this.p.posID; //< tornar posID private
+		int ID = this.p.getPosID();
 		if (this.r.isInteractable(ID)) aux = this.r.getElement(ID);
 		else{
 			ID = this.getNextCell(this.p.getOrientation());

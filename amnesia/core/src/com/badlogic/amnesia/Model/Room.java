@@ -84,4 +84,5 @@ public class Room implements MoveAccess, ControlAccess, RenderAccess {
 	public RenderStrategy[][] getCells() {
 		return this.space;
 	}
+
 }

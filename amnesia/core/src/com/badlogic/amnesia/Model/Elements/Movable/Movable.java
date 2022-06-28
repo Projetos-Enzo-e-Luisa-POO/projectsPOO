@@ -12,7 +12,7 @@ import com.badlogic.amnesia.Model.Elements.Element;
 public class Movable extends Element {
 	protected boolean[] orientation = new boolean[4];
 	protected MoveAccess space;
-	public int posID;
+	protected int posID;
 
 	public void roomConect(MoveAccess a){
 		this.space = a;
@@ -25,8 +25,7 @@ public class Movable extends Element {
 	}
 
 	protected void moveToCell(int cellID) {
-		if(this.space.isWalkable(cellID))
-			this.posID = cellID;
+		if(this.space.isWalkable(cellID)) this.posID = cellID;
 	}
 	
 	public void move(int direction, int cellID) {
@@ -36,8 +35,11 @@ public class Movable extends Element {
 			direction == 3 && !this.orientation[3]
 			)
 			this.orientate(direction);
-		else
-			this.moveToCell(cellID);
+		else this.moveToCell(cellID);
+	}
+
+	public int getPosID(){
+		return this.posID;
 	}
     
 }
