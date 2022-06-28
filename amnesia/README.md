@@ -83,7 +83,7 @@ Projeto em Java, preferencialmente em Eclipse, incluindo todos os arquivos de da
 
 # Arquivo Executável do Jogo
 
-> []Amnésia.jar
+> [Amnésia.jar](https://github.com/Projetos-Enzo-e-Luisa-POO/projectsPOO/blob/main/amnesia/amnesia.jar)
 
 # Slides do Projeto
 
