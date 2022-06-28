@@ -98,3 +98,5 @@ Projeto em Java, preferencialmente em Eclipse, incluindo todos os arquivos de da
 ## Diagrama Geral da Arquitetura do Jogo
 
 > Apresente um diagrama geral da arquitetura do jogo. O formato é livre. A escolha de um ou mais estilos arquiteturais será considerado um diferencial.
+
+![alt text](assets/arquitetura.png)
