@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public abstract class InteractableElement extends ViewElement implements Interactable {
 
 	protected int posID;
+	protected boolean known;
 
 	public boolean isWalkable(){
 		return true;
@@ -37,7 +38,7 @@ public abstract class InteractableElement extends ViewElement implements Interac
 		IDTrans t = new IDTrans();
 		int[] cellPosition = t.IDToPos(this.posID);
 		batch.draw(new Texture(
-						Gdx.files.internal(this.getImg())),	
+						((this.known) ? Gdx.files.internal(this.getImg()) : Gdx.files.internal("concreteElement/unknownplainobject.png"))),	
 						cellPosition[1] * imgSize,
 						cellPosition[0] * imgSize,
 						imgSize,

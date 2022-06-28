@@ -75,7 +75,6 @@ public class RoomBuilder {
         while(k < source.length && source[k] != null){
             int ID = Integer.parseInt(source[k]), posID = Integer.parseInt(source[k + 1]);
             String[] sSplit = source[k + 2].split(";");
-            System.out.println(ID + " " + posID + " " + sSplit);
             Boolean[] state = new Boolean[sSplit.length];
             int i = 0;
             while(sSplit.length > 1){
@@ -86,7 +85,6 @@ public class RoomBuilder {
             }
             if (sSplit[0].equals("false")) state[i] = false;
             else if (sSplit[0].equals("true")) state[i] = true;
-            System.out.println("Making interactable!");
             r.elementConnect(posID, interactableFactory(ID, posID, state)); 
             k += 3;
         }
@@ -186,15 +184,12 @@ public class RoomBuilder {
              * 17: Lamp Bulb 1
              */
             case 13:
-                System.out.println("making a Light Switch");
                 aux = new LightSwitch(state, posID);
                 break;
             case 15:
-                System.out.println("making a Socket");
                 aux = new TableSocket(state, posID);
                 break;
             case 17:
-                System.out.println("making a LampBulb");
                 aux = new LampBulb(state, posID);
                 break;
         }
