@@ -6,7 +6,6 @@ import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FlagManagment.FlagConfig;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.utils.Array;
 
 public class MPControl implements SongsterView {
 
@@ -14,6 +13,7 @@ public class MPControl implements SongsterView {
 	private Songster p;
 	private castCenter c;
 	private int posID;
+	private boolean isQuick;
 
 	public MPControl(ControlAccess r, Songster p, int posID){
 		this.r = r;
@@ -58,6 +58,7 @@ public class MPControl implements SongsterView {
 	}
 
 	public String[] quickInteract(){
+		this.isQuick = true;
 		return this.deepInteract(p.getActiveItem());
 	}
 
@@ -81,33 +82,58 @@ public class MPControl implements SongsterView {
 	private String[] deepInteract(Interactable item){
 		String[] aux = null;
 		if (item != null){
-			Array<String> interactions = new Array<String>();
+			String[] interactions = new String[10];
+			//Array<String> interactions = new Array<String>();
 			int[] interfaces = item.getInterfaces();
-			for(int i : interfaces)
-				if (this.p.knows(i))
+			int k = 0;
+			for(int i : interfaces){
+				if (this.p.knows(i)){
 					switch (i){
 						case 3: // Desligar
-							interactions.add("turnOff");
+							interactions[k] = "turnOff";
+							break;
 						case 5: // Ligar
-							interactions.add("turnOn");
+							interactions[k] = "turnOn";
+							break;
 						case 7: // Desrosquear
-							interactions.add("screwOut");
+							interactions[k] = "screwOut";
+							break;
 						case 9: // Rosquear
-							interactions.add("screwIn");
+							interactions[k] = "screwIn";
+							break;
 						case 11: // Colocar
-							interactions.add("put");
+							interactions[k] = "put";
+							break;
 						case 13: // Pegar
-							interactions.add("pick");
+							interactions[k] = "pick";
+							break;
 					}
-			aux = interactions.toArray();
+					k++;
+				}
+			aux = interactions;
+			}
 		}
+		if (aux[0] == null) aux[0] = "investigate";
 		return aux;
 	}
 
 	public void executeInteraction(String action){
-		Interactable item = this.getPossibleInteractable();
+		Interactable item;
+		if(isQuick) item = this.p.getActiveItem();
+		else item = this.getPossibleInteractable();
+
+		System.out.println("Search in " + item.getClassName());
+
 		if (action.equals("investigate")) this.learn(item.getInterfaces());
-		else this.c.act(item, action);
+		else if (action.equals("turnOff") || action.equals("turnOn")) this.c.act(item, action, null);
+		else if (action.equals("screwOut") || action.equals("pick")) this.p.storeItem(this.c.act(item, action));
+		else if (action.equals("screwIn")) this.c.act(item, action, this.p.dropActiveItem());
+		else if (action.equals("put")){
+			this.c.act(item, action, this.p.getPosID());
+			this.r.elementConnect(this.p.getPosID(), this.p.dropActiveItem());
+		}
+
+		if(isQuick) this.isQuick = false;
 	}
 
 	public void saveGame(){
@@ -121,7 +147,7 @@ public class MPControl implements SongsterView {
 	}
 
 	public void learn(int[] newIs){
-		for(int i : newIs)
+		for(int i : newIs){
 			if (!this.p.knows(i))
 				switch (i){
 					case 3:
@@ -149,6 +175,12 @@ public class MPControl implements SongsterView {
 						this.p.learnInterface(13);
 						break;
 				}
+			}
+	}
+
+	@Override
+	public void renderInventory(Batch batch, float imgSize) {
+		this.p.renderInventory(batch, imgSize);
 	}
 
 }

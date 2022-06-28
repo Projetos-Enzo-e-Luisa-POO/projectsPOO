@@ -40,8 +40,8 @@ public abstract class InteractableElement extends ViewElement implements Interac
 		int[] cellPosition = t.IDToPos(this.posID);
 		batch.draw(new Texture(
 						((this.known) ? Gdx.files.internal(this.getImg()) : Gdx.files.internal("concreteElement/unknownplainobject.png"))),	
-						cellPosition[1] * imgSize,
 						cellPosition[0] * imgSize,
+						cellPosition[1] * imgSize,
 						imgSize,
 						imgSize
 					);

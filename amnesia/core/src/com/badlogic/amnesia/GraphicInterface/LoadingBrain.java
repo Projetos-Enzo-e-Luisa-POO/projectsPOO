@@ -35,15 +35,16 @@ public class LoadingBrain {
         RoomBuilder rb = RoomBuilder.getInstance();
         String[] aux = new String[10];//voltar
         if (source.length > 3)
-            System.arraycopy(source, 3, aux, 0, source.length - 3);  
-        Room r = rb.buildRoom(fr.getRoomNumber(), aux);
+            System.arraycopy(source, 3, aux, 0, source.length - 3);
+        StoryTeller st = new StoryTeller();
+        Room r = rb.buildRoom(fr.getRoomNumber(), aux, FlagDepot.getInstance(), st);
 
         String[] imgByOr = {"songster/Backward.png", "songster/Rightward.png", "songster/Foward.png", "songster/Leftward.png"},
                     movByOr = {"songster/bwcut.gif", "songster/rwcut.gif", "songster/fwcut.gif", "songster/lwcut.gif"};
         
         MPControl mpc = new MPControl(r, new Songster(imgByOr, movByOr, Integer.parseInt(source[2]), t.IDToPos(Integer.parseInt(source[1])), r, FlagDepot.getInstance()), Integer.parseInt(source[1]));
         
-        return new Level(this.c, r, v, mpc);
+        return new Level(this.c, r, v, mpc, st);
     }
     
 }

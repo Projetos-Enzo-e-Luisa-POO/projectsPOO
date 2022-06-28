@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 
-public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags{
+public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags, ElementFlags{
     private int roomNumber;
     private int songsterPos;
     private int songsterOrientation;
     private ArrayList<ElementMemento> status = new ArrayList<ElementMemento>();
 
     private FlagDepot(){}
-    
     private static class Holder{
         static final FlagDepot instance = new FlagDepot();
     }
@@ -68,5 +67,31 @@ public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags{
         this.mementoFactory(elements);
         return this.roomNumber + ',' + this.songsterPos + ',' + this.songsterOrientation + ',' + this.status.toString();
     }
+
+    private boolean isSwitchOn;
+    private boolean isLampScrewed;
+
+    @Override
+    public void setSwitchFlag(boolean b) {
+        this.isSwitchOn = b;
+    }
+
+    @Override
+    public void setLampScrewedFlag(boolean b) {
+        this.isLampScrewed = b;
+    }
+
+    @Override
+    public boolean getSwitchFlag() {
+        return this.isSwitchOn;
+    }
+
+    @Override
+    public boolean getLampScrewedFlag() {
+        return this.isLampScrewed;
+    }
+
+
+
 
 }

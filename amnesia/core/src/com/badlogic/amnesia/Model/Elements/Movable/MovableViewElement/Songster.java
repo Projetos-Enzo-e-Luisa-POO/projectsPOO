@@ -5,6 +5,7 @@ import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.ControlInterfaces.MoveAccess;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FlagManagment.SongsterFlags;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Array;
 
 /*
@@ -31,7 +32,6 @@ public class Songster extends MovableViewElement{
 	 */
 
 	// Elemento de visualização
-	private Interactable activeItem;
 	private Inventory inventory;
 	private SongsterFlags f;
 	private Array<Integer> memory;
@@ -70,16 +70,15 @@ public class Songster extends MovableViewElement{
 
 	public void changeActiveSlot(int slot){
 		this.inventory.setActiveSlot(slot);
-		this.activeItem = this.inventory.getActiveItem();
 	}
 
 	public Interactable getActiveItem(){
-		return this.activeItem;
+		return this.inventory.getActiveItem();
 	}
 
 	// método para colocar objetos no "chão"
 	public Interactable dropActiveItem(){
-		return this.inventory.dropItem(this.activeItem.getID());
+		return ((this.inventory.getActiveItem() != null) ? this.inventory.dropItem(this.inventory.getActiveItem().getID()) : null);
 	}
 
 	public void storeItem(Interactable item){
@@ -92,5 +91,9 @@ public class Songster extends MovableViewElement{
 
 	public boolean knows(int i){
 		return this.memory.contains(i, true);
+	}
+
+	public void renderInventory(Batch batch, float imgSize){
+		this.inventory.render(batch, imgSize);
 	}
 }

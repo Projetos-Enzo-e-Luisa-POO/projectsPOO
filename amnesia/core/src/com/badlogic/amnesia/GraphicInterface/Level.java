@@ -40,14 +40,16 @@ public class Level implements Screen {
 
     private boolean renderPauseMenu = false,
                     renderInteractMenu = false;
+    private StoryTeller st;
     
     //----------------------------------------------------------------------------------------------------------------
 
-    public Level(Curtain c, RenderAccess room, Viewport v, MPControl mpc) {
+    public Level(Curtain c, RenderAccess room, Viewport v, MPControl mpc, StoryTeller st) {
         Level.c = c;
         Level.room = room;
         this.v = v;
         Level.commandFacade = mpc;
+        this.st = st;
     }
 
     private int getImageSize() {
@@ -79,6 +81,12 @@ public class Level implements Screen {
 
         Level.commandFacade.renderSongster(this.batch, this.getImageSize());
 
+        Level.commandFacade.renderInventory(batch, this.getImageSize());
+
+        if (this.st.checkGame()){
+            font.draw(batch, "You Won!", (33 * this.v.getWorldWidth()) / 50, (3 * this.v.getWorldHeight()) / 4);
+        }
+
         batch.end();
 
         float h = this.v.getWorldHeight(),
@@ -104,13 +112,13 @@ public class Level implements Screen {
     }
 
     private void handleDownSelect() {
-        if (this.interactableIndexSelected != this.interactableMenuOptions.length - 1) {
+        if (this.interactableIndexSelected != this.interactableMenuOptions.length - 1 && this.arrow.y - this.v.getWorldWidth() / 10 > 0) {
             ++this.interactableIndexSelected;
             this.arrow.y -= this.v.getWorldWidth() / 10;
         }
     }
 
-    private void renderInteractMenu() {
+    private void interactMenuRender() {
         this.renderInteractMenu = true;
         this.Setup();
     }
@@ -119,8 +127,9 @@ public class Level implements Screen {
     public void render(float delta) {
 
         batch.begin();
-        
+
         if (this.renderPauseMenu) {
+
             batch.draw(pauseMenuBackground, pauseMenu.x, pauseMenu.y, pauseMenu.width, pauseMenu.height);
             batch.draw(resume, resumeButton.x, resumeButton.y, resumeButton.width, resumeButton.height);
             batch.draw(quit, quitButton.x, quitButton.y, quitButton.width, quitButton.height);
@@ -133,69 +142,76 @@ public class Level implements Screen {
             
             float optionHeight = (3 * this.v.getWorldHeight()) / 4 - this.v.getWorldHeight() / 5;
             for (String option : this.interactableMenuOptions) {
-                font.draw(batch, option, (33 * this.v.getWorldWidth()) / 50, optionHeight);
-                optionHeight -= this.v.getWorldWidth() / 10;
+                if (option != null){
+                    font.draw(batch, option, (33 * this.v.getWorldWidth()) / 50, optionHeight);
+                    optionHeight -= this.v.getWorldWidth() / 10;
+                }
             }
 
             batch.draw(arrowBackground, arrow.x, arrow.y, arrow.width, arrow.height);
         }
 
         batch.end();
-        
-        if (isInputKeyForCommand("pause")) {
-            this.renderPauseMenu = !this.renderPauseMenu;
-            this.Setup();
-        }
-        
-        if (isInputKeyForCommand("free hand")) {
-            Level.commandFacade.changeActiveSlot(-1);
-        }
 
-        if (isInputKeyForCommand("move up")) {
-            Level.commandFacade.move(0);
+        if (this.st.checkGame()){
             this.Setup();
         }
 
-        if (isInputKeyForCommand("move left")){
-            Level.commandFacade.move(3);
-            this.Setup();
-        }
+        if(!this.renderPauseMenu && !this.renderInteractMenu){
+            
+            if (isInputKeyForCommand("pause")) {
+                this.renderPauseMenu = !this.renderPauseMenu;
+                this.Setup();
+            }
+            
+            if (isInputKeyForCommand("free hand")) {
+                Level.commandFacade.changeActiveSlot(-1);
+                this.Setup();
+            }
 
-        if (isInputKeyForCommand("move down")){
-            Level.commandFacade.move(2);
-            this.Setup();
-        }
+            if (isInputKeyForCommand("move up")) {
+                Level.commandFacade.move(0);
+                this.Setup();
+            }
 
-        if (isInputKeyForCommand("move right")){
-            Level.commandFacade.move(1);
-            this.Setup();
-        }
+            if (isInputKeyForCommand("move left")){
+                Level.commandFacade.move(3);
+                this.Setup();
+            }
 
-        if (isInputKeyForCommand("first slot")){
-            Level.commandFacade.changeActiveSlot(0);
-        }
+            if (isInputKeyForCommand("move down")){
+                Level.commandFacade.move(2);
+                this.Setup();
+            }
 
-        if (isInputKeyForCommand("second slot")){
-            Level.commandFacade.changeActiveSlot(1);
-        }
+            if (isInputKeyForCommand("move right")){
+                Level.commandFacade.move(1);
+                this.Setup();
+            }
 
-        if (isInputKeyForCommand("select")){
-            if (Level.commandFacade.getPossibleInteractable() != null){
-                this.interactableMenuOptions = Level.commandFacade.interact();
-                if (this.interactableMenuOptions == null){
-                    this.interactableMenuOptions = new String[1];
-                    this.interactableMenuOptions[0] = "investigate";
+            if (isInputKeyForCommand("first slot")){
+                Level.commandFacade.changeActiveSlot(0);
+                this.Setup();
+            }
+
+            if (isInputKeyForCommand("second slot")){
+                Level.commandFacade.changeActiveSlot(1);
+                this.Setup();
+            }
+
+            if (isInputKeyForCommand("select")){
+                if (Level.commandFacade.getPossibleInteractable() != null){
+                    this.interactableMenuOptions = Level.commandFacade.interact();
+                    this.interactMenuRender();
                 }
-                this.renderInteractMenu();
+            }
+
+            if (isInputKeyForCommand("quick interact")){
+                this.interactableMenuOptions = Level.commandFacade.quickInteract();
+                this.interactMenuRender();
             }
         }
-
-        if (isInputKeyForCommand("quick interact")){
-            this.interactableMenuOptions = Level.commandFacade.quickInteract();
-            this.renderInteractMenu();
-        }
-
-        if (this.renderPauseMenu){
+        else if (this.renderPauseMenu){
             if (Gdx.input.justTouched()) {
                 this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
                 this.v.unproject(touchPosition);
@@ -209,8 +225,7 @@ public class Level implements Screen {
                 }
             }
         }
-
-        if (this.renderInteractMenu) {
+        else if (this.renderInteractMenu) {
             if (isInputKeyForCommand("up select")){
                 this.handleUpSelect();
             }
@@ -224,7 +239,12 @@ public class Level implements Screen {
                 Level.commandFacade.executeInteraction(this.interactableMenuOptions[this.interactableIndexSelected]);
                 this.Setup();
             }
+            if (isInputKeyForCommand("pause")) {
+                this.renderInteractMenu = !this.renderInteractMenu;
+                this.Setup();
+            }
         }
+
     }
 
     public void dispose() {
