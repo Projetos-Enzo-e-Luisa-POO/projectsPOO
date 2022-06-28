@@ -153,18 +153,22 @@ public class Level implements Screen {
 
         if (isInputKeyForCommand("move up")) {
             Level.commandFacade.move(0);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("move left")){
-            Level.commandFacade.move(1);
+            Level.commandFacade.move(3);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("move down")){
             Level.commandFacade.move(2);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("move right")){
-            Level.commandFacade.move(3);
+            Level.commandFacade.move(1);
+            this.Setup();
         }
 
         if (isInputKeyForCommand("first slot")){
@@ -176,8 +180,14 @@ public class Level implements Screen {
         }
 
         if (isInputKeyForCommand("select")){
-            this.interactableMenuOptions = Level.commandFacade.interact();
-            this.renderInteractMenu();
+            if (Level.commandFacade.getPossibleInteractable() != null){
+                this.interactableMenuOptions = Level.commandFacade.interact();
+                if (this.interactableMenuOptions == null){
+                    this.interactableMenuOptions = new String[1];
+                    this.interactableMenuOptions[0] = "investigate";
+                }
+                this.renderInteractMenu();
+            }
         }
 
         if (isInputKeyForCommand("quick interact")){

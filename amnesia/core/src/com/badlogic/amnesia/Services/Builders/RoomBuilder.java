@@ -174,7 +174,6 @@ public class RoomBuilder {
         return aux;
     }
 
-
     private Interactable interactableFactory(int n, int posID, Boolean[] state){
         Interactable aux = null;
         switch(n){
@@ -187,7 +186,8 @@ public class RoomBuilder {
                 aux = new LightSwitch(state, posID);
                 break;
             case 15:
-                aux = new TableSocket(state, posID);
+                if (state[0]) aux = new TableSocket(new LampBulb(false, posID), posID);
+                else aux = new TableSocket(state, posID);
                 break;
             case 17:
                 aux = new LampBulb(state, posID);

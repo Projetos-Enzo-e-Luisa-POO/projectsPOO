@@ -16,6 +16,13 @@ public class LampBulb extends InteractableElement implements pickI, putI{
         this.state = state2[0];
     }
 
+    public LampBulb(Boolean state, int posID){
+        this.imgConnect("concreteElement/lampbulb.png");
+        this.ID = 17;
+        this.posID = posID;
+        this.state = state;
+    }
+
     @Override
     public int[] getInterfaces() {
         int[] aux = new int[1];
@@ -26,10 +33,13 @@ public class LampBulb extends InteractableElement implements pickI, putI{
 
     public void pick(){
         this.state = true;
+        this.known = true;
     }
 
-    public Interactable put(){
+    public Interactable put(int posID){
         this.state = false;
+        this.posID = posID;
+        this.known = true;
         return this;
     }
 

@@ -16,6 +16,7 @@ public class LightSwitch extends InteractableElement implements turnOnI, turnOff
             this.turnOn();
         else
             this.turnOff();
+        this.known = false;
     }
 
     @Override
@@ -28,10 +29,12 @@ public class LightSwitch extends InteractableElement implements turnOnI, turnOff
 
     public void turnOn(){
         this.state = true;
+        this.known = true;
     }
 
     public void turnOff(){
         this.state = false;
+        this.known = true;
     }
 
     public boolean getState(){

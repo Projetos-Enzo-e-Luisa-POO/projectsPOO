@@ -35,6 +35,8 @@ public class TableSocket extends InteractableElement implements screwInI, screwO
 
     public void screwIn(Interactable lamp){
         this.lampBulb = lamp;
+        this.known = true;
+        this.imgConnect("concreteElement/sockettilewofflamp.png");
         this.state = true;
     }
 
@@ -42,6 +44,8 @@ public class TableSocket extends InteractableElement implements screwInI, screwO
         Interactable aux = this.lampBulb;
         this.lampBulb = null;
         this.state = false;
+        this.known = true;
+        this.imgConnect("concreteElement/sockettilewoutlamp.png");
         return aux;
     }
 
@@ -53,6 +57,14 @@ public class TableSocket extends InteractableElement implements screwInI, screwO
     public boolean[] getStatus() {
         boolean[] aux = {this.state};
         return aux;
+    }
+
+    public void illuminate(){
+        this.imgConnect("concreteElement/sockettilewonlamp.png");
+    }
+
+    public void unilluminate(){
+        this.imgConnect("concreteElement/sockettilewofflamp.png");
     }
 
 }

@@ -30,12 +30,16 @@ public class MPControl implements SongsterView {
 		switch(orientation){
 			case 0:
 				aux[1]++;
+				break;
 			case 1:
 				aux[0]++;
+				break;
 			case 2:
 				aux[1]--;
+				break;
 			case 3:
 				aux[0]--;
+				break;
 		}
 		if (aux[0] > -1 && aux[0] < size[0] && aux[1] > -1 && aux[1] < size[1])
 			next = t.posToID(aux);
@@ -63,7 +67,7 @@ public class MPControl implements SongsterView {
 		return aux;
 	}
 
-	private Interactable getPossibleInteractable(){
+	public Interactable getPossibleInteractable(){
 		Interactable aux = null;
 		int ID = this.p.posID; //< tornar posID private
 		if (this.r.isInteractable(ID)) aux = this.r.getElement(ID);
@@ -83,9 +87,9 @@ public class MPControl implements SongsterView {
 				if (this.p.knows(i))
 					switch (i){
 						case 3: // Desligar
-							interactions.add("turnOn");
-						case 5: // Ligar
 							interactions.add("turnOff");
+						case 5: // Ligar
+							interactions.add("turnOn");
 						case 7: // Desrosquear
 							interactions.add("screwOut");
 						case 9: // Rosquear
@@ -102,7 +106,8 @@ public class MPControl implements SongsterView {
 
 	public void executeInteraction(String action){
 		Interactable item = this.getPossibleInteractable();
-		this.c.act(item, action);
+		if (action.equals("investigate")) this.learn(item.getInterfaces());
+		else this.c.act(item, action);
 	}
 
 	public void saveGame(){
@@ -115,28 +120,35 @@ public class MPControl implements SongsterView {
 		this.p.render(batch, imgSize);
 	}
 
-	public void learn(int i){
-		this.p.learnInterface(i);
-		switch (i){
-			case 3: // Desligar
-				this.p.learnInterface(5);
-				break;
-			case 5: // Ligar
-				this.p.learnInterface(3);
-				break;
-			case 7: // Desrosquear
-				this.p.learnInterface(9);
-				break;
-			case 9: // Rosquear
-				this.p.learnInterface(7);
-				break;
-			case 11: // Colocar
-				this.p.learnInterface(13);
-				break;
-			case 13: // Pegar
-				this.p.learnInterface(11);
-				break;
-		}
+	public void learn(int[] newIs){
+		for(int i : newIs)
+			if (!this.p.knows(i))
+				switch (i){
+					case 3:
+						this.p.learnInterface(3);
+						this.p.learnInterface(5);
+						break;
+					case 5:
+						this.p.learnInterface(3);
+						this.p.learnInterface(5);
+						break;
+					case 7:
+						this.p.learnInterface(7);
+						this.p.learnInterface(9);
+						break;
+					case 9:
+						this.p.learnInterface(7);
+						this.p.learnInterface(9);
+						break;
+					case 11:
+						this.p.learnInterface(11);
+						this.p.learnInterface(13);
+						break;
+					case 13:
+						this.p.learnInterface(11);
+						this.p.learnInterface(13);
+						break;
+				}
 	}
 
 }
