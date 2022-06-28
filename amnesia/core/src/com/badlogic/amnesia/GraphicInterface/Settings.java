@@ -1,92 +1,103 @@
 package com.badlogic.amnesia.GraphicInterface;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Settings implements Screen {
-    //------------------------------------------------------------------------------------
-    private final Curtain curtain;
+public class Settings extends WidgetGroup implements Screen {
 
-    private Viewport viewport;
-    private Vector3 touchPosition = new Vector3();
-    private OrthographicCamera Camera = new OrthographicCamera();
+    private static Curtain curtain;
+    private static SettingsBrain sb = new SettingsBrain();
+
+    private Viewport v;
+    private SpriteBatch batch = new SpriteBatch();
 
     private BitmapFont font = new BitmapFont(Gdx.files.internal("font/pixelemulator.fnt"), Gdx.files.internal("font/pixelemulator.png"),false);
 
     private Texture backgroundImage = new Texture(Gdx.files.internal("settings/settingsBackground.png"));
 
-    private Rectangle background;
+    private ArrayList<TextField> textFields = new ArrayList<TextField>();
+    
+    private TextField.TextFieldStyle style = new TextField.TextFieldStyle();
 
-    private SettingsBrain sb = new SettingsBrain();
+    private String[] binds = Settings.sb.getCommandValues();    
 
-    private boolean setted = false;
-    //------------------------------------------------------------------------------------
-    public Settings (Curtain game, Viewport v) {
-        this.curtain = game;
-    }
-    //------------------------------------------------------------------------------------
-    public void Setup(){
-
-        this.Camera.position.set(0,0,0);
-        this.Camera.update();
-
-        this.viewport = new FitViewport(1280, 720, this.Camera);
+    private Stage stage;
+    
+    public Settings (Curtain curtain, Viewport v) {
+        Settings.curtain = curtain;
         
-        float   h = this.viewport.getWorldHeight(),
-                w = this.viewport.getWorldWidth();
+        this.v = v;
+        this.stage = new Stage(v);
 
-        //x, y, width, height
-        background = new Rectangle(0, h, w, h);
+        this.style.font = this.font;
+        this.style.fontColor = Color.WHITE;
     }
-    //------------------------------------------------------------------------------------
+    
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,1);
+        batch.begin();
 
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-        float   h = this.viewport.getWorldHeight(),
-                w = this.viewport.getWorldWidth();
+        float width = this.v.getWorldWidth();
+        float height = this.v.getWorldHeight() / 4;
 
-        this.Camera.update();
-        //gameControll.batch.setProjectionMatrix(this.Camera.combined);
+        batch.draw(this.backgroundImage, 0, 0);
 
-        //gameControll.batch.begin();
+        font.draw(this.batch, "Bind", width / 4 - width / 5, this.v.getWorldHeight() - height/ 4);
+        font.draw(this.batch, "Actual Value", width / 2 + width / 20 - width / 5, this.v.getWorldHeight() - height/ 4);
+        font.draw(this.batch, "New Value", width / 2 + width / 5, this.v.getWorldHeight() - height/ 4);
 
-        //gameControll.batch.draw(this.backgroundImage, background.x, background.y, background.width, background.height);
-        if (background.y > 0) background.y -= 9;
-        else this.setted = true;
+        for (int i = 0; i < binds.length; i++) {
+            font.draw(this.batch, this.binds[i], width / 4 - width / 5, ((2 + i) * height) / 4);
 
-        if (setted) {
-            //render menu
+            font.draw(this.batch, Input.Keys.toString(Settings.sb.getKeyValueOf(binds[i])), width / 2 + width / 10 - width / 5, ((2 + i) * height) / 4);
+
+            TextField tf = new TextField("", this.style);
+            tf.setX((3 * width) / 4);
+            tf.setY(((2 + i) * height) / 4 - height / 7);
+            tf.setWidth(width / 22);
+            tf.setColor(Color.WHITE);
+
+            this.textFields.add(tf);
+            stage.addActor(tf);
+
+            font.draw(this.batch, "-", (3 * width) / 4, ((2 + i) * height) / 4 - height / 10);
         }
 
-        //gameControll.batch.end();
+        font.draw(this.batch, ">>> Press ESCAPE to save and back to menu <<<", width / 16, 35);
 
-        if (Gdx.input.justTouched()) {
-            this.touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            this.viewport.unproject(touchPosition);
+        stage.draw();
+        stage.act();
 
-            if (background.contains(touchPosition.x, touchPosition.y)) {
-            }
+        batch.end();
+
+        Gdx.input.setInputProcessor(stage);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Settings.curtain.callScreen(new Menu(Settings.curtain, this.v));
+            Settings.sb.saveBindsFromFields(this.textFields);
         }
     }
 
     @Override
     public void dispose() {
         backgroundImage.dispose();
+        batch.dispose();
+        font.dispose();
     }
     
     @Override
     public void show() {
-        this.Setup();    
     }
 
     @Override
