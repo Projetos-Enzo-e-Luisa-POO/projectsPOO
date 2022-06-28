@@ -23,6 +23,7 @@ public class SettingsBrain {
     public void saveBindsFromFields(ArrayList<TextField> textFields) {
         int k = 0;
         for (TextField tf : textFields) {
+            if (k == 12) k = 0; //libGDX render limitation
             if (!tf.getText().isEmpty()) {
                 String enterCharacter = "" + tf.getText().toUpperCase().charAt(0);
                 this.changeBind(Input.Keys.valueOf(enterCharacter), k);
