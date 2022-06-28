@@ -6,7 +6,6 @@ import com.badlogic.amnesia.Model.Elements.Movable.MovableViewElement.Songster;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FlagManagment.FlagConfig;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.utils.Array;
 
 public class MPControl implements SongsterView {
 
@@ -81,25 +80,29 @@ public class MPControl implements SongsterView {
 	private String[] deepInteract(Interactable item){
 		String[] aux = null;
 		if (item != null){
-			Array<String> interactions = new Array<String>();
+			String[] interactions = new String[10];
+			//Array<String> interactions = new Array<String>();
 			int[] interfaces = item.getInterfaces();
+			int k = 0;
 			for(int i : interfaces)
-				if (this.p.knows(i))
+				if (this.p.knows(i)){
 					switch (i){
 						case 3: // Desligar
-							interactions.add("turnOff");
+							interactions[k] = "turnOff";
 						case 5: // Ligar
-							interactions.add("turnOn");
+							interactions[k] = "turnOn";
 						case 7: // Desrosquear
-							interactions.add("screwOut");
+							interactions[k] = "screwOut";
 						case 9: // Rosquear
-							interactions.add("screwIn");
+							interactions[k] = "screwIn";
 						case 11: // Colocar
-							interactions.add("put");
+							interactions[k] = "put";
 						case 13: // Pegar
-							interactions.add("pick");
+							interactions[k] = "pick";
 					}
-			aux = interactions.toArray();
+					k++;
+				}
+			aux = interactions;
 		}
 		return aux;
 	}
