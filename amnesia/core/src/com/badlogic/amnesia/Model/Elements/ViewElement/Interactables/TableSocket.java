@@ -12,16 +12,18 @@ public class TableSocket extends InteractableElement implements screwInI, screwO
     private boolean state;
     private Interactable lampBulb;
 
-    public TableSocket(){
+    public TableSocket(Boolean[] state2, int posID){
         this.imgConnect("concreteElement/sockettile.png");
         this.ID = 15;
+        this.posID = posID;
         this.state = false;
         this.lampBulb = null;
     }
 
-    public TableSocket(Interactable  lamp){
+    public TableSocket(Interactable  lamp, int posID){
         this.imgConnect("concreteElement/sockettile.png");
         this.ID = 15;
+        this.posID = posID;
         this.screwIn(lamp);
     }
 

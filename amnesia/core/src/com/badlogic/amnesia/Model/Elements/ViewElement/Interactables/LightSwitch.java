@@ -10,9 +10,10 @@ public class LightSwitch extends InteractableElement implements turnOnI, turnOff
 
     private boolean state;
 
-    public LightSwitch(Boolean[] state2){
+    public LightSwitch(Boolean[] state2, int posID){
         this.imgConnect("concreteElement/lightSwitch.png");
         this.ID = 13;
+        this.posID = posID;
         if (state2[0])
             this.turnOn();
         else

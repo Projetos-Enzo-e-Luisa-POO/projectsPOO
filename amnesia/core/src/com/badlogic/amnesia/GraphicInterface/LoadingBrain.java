@@ -40,7 +40,7 @@ public class LoadingBrain {
 
         String[] imgByOr = {"songster/Backward.png", "songster/Rightward.png", "songster/Foward.png", "songster/Leftward.png"},
                     movByOr = {"songster/bwcut.gif", "songster/rwcut.gif", "songster/fwcut.gif", "songster/lwcut.gif"};
-        System.out.println(t.IDToPos(Integer.parseInt(source[1]))[0] + " " + t.IDToPos(Integer.parseInt(source[1]))[1]);
+                    
         MPControl mpc = new MPControl(r, new Songster(imgByOr, movByOr, Integer.parseInt(source[2]), t.IDToPos(Integer.parseInt(source[1])), r, FlagDepot.getInstance()), Integer.parseInt(source[1]));
         
         return new Level(this.c, r, v, mpc);

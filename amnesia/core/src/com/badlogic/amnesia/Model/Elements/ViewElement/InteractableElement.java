@@ -3,13 +3,14 @@ import com.badlogic.amnesia.Model.ControlInterfaces.Interactable;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 /*
  * Classe mãe dos diferentes tipos de chão
  */
 public abstract class InteractableElement extends ViewElement implements Interactable {
+
+	protected int posID;
 
 	public boolean isWalkable(){
 		return true;
@@ -33,9 +34,9 @@ public abstract class InteractableElement extends ViewElement implements Interac
 
 	@Override
 	public void render(Batch batch, float imgSize){
-		System.out.println(this.getImg());
 		IDTrans t = new IDTrans();
-		int[] cellPosition = t.IDToPos(this.ID);
+		int[] cellPosition = t.IDToPos(this.posID);
+		System.out.println(this.getImg());
 		batch.draw(new Texture(
 						Gdx.files.internal(this.getImg())),	
 						cellPosition[1] * imgSize,

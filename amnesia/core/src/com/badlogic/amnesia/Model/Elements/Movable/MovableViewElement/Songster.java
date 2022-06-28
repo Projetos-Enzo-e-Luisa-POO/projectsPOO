@@ -41,7 +41,6 @@ public class Songster extends MovableViewElement{
 		this.movByOr = imgByOr;
 		this.orientate(direction);
 		this.posID = t.posToID(pos);
-		System.out.println(this.posID);
 		this.roomConect(access1);
 		this.f = access2;
 		this.updateImg(false);

@@ -18,7 +18,9 @@ import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.ULCorner
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.URCorner1;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.VoidElement;
 import com.badlogic.amnesia.Model.Elements.ViewElement.ConcreteElements.Wall1;
+import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.LampBulb;
 import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.LightSwitch;
+import com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.TableSocket;
 import com.badlogic.amnesia.Model.Toolkit.IDTrans;
 import com.badlogic.amnesia.Services.FileManagment.FileController;
 
@@ -83,7 +85,7 @@ public class RoomBuilder {
             }
             if (sSplit[0].equals("false")) state[i] = false;
             else if (sSplit[0].equals("true")) state[i] = true;
-            r.elementConnect(posID, interactableFactory(ID, state)); 
+            r.elementConnect(posID, interactableFactory(ID, posID, state)); 
             k += 3;
         }
         return r;
@@ -173,15 +175,20 @@ public class RoomBuilder {
     }
 
 
-    private Interactable interactableFactory(int n, Boolean[] state){
+    private Interactable interactableFactory(int n, int posID, Boolean[] state){
         Interactable aux = null;
         switch(n){
             /*
              * 13: light switch 1
+             * 15: Table socket 1
+             * 17: Lamp Bulb 1
              */
             case 13:
-                aux = new LightSwitch(state);
-                break;
+                aux = new LightSwitch(state, posID);
+            case 15:
+                aux = new TableSocket(state, posID);
+            case 17:
+                aux = new LampBulb(state, posID);
         }
         return aux;
     }

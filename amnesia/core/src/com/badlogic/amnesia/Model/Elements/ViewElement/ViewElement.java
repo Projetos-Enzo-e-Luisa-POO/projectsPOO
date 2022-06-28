@@ -7,7 +7,7 @@ import com.badlogic.amnesia.Model.Elements.Element;
  */
 public class ViewElement extends Element {
 
-	private String img;
+	protected String img;
 
 	public void imgConnect (String img){
 		this.img = img;

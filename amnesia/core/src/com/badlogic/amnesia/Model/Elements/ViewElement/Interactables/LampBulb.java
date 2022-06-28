@@ -11,9 +11,10 @@ public class LampBulb extends InteractableElement implements pickI, putI{
 
     private boolean state;
 
-    public LampBulb(Boolean[] state2){
-        this.imgConnect("concreteElement/lampbulb.png");
-        this.ID = 16;
+    public LampBulb(Boolean[] state2, int posID){
+        this.img = "concreteElement/lampbulb.png";
+        this.ID = 17;
+        this.posID = posID;
         this.state = state2[0];
     }
 

@@ -8,14 +8,12 @@ public class MenuBrain {
     public boolean saveExists() {
         FileHandle  fh1 = new FileHandle("SaveFile.csv"),
                     fh2 = new FileHandle("ResetSaveFile.csv");
-        System.out.println(fh1.file().compareTo(fh2.file()));
         return fh1.file().compareTo(fh2.file()) != 0;
     }
 
     public void overwriteSaveFile() {
         FileController  fc1 = new FileController("SaveFile.csv"),
                         fc2 = new FileController("ResetSaveFile.csv");
-        System.out.println(fc2.toString());
         fc1.overwrite(fc2.toString());
     }
 
