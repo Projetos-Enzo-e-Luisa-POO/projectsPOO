@@ -43,13 +43,13 @@ Desde as primeiras reuniões de planejamento de arquitetura, definimos que nossa
 - Implementação de um observador geral do jogo chamado “StoryTeller”, que seria responsável pela progressão do jogo, interações com o jogador e transições entre salas;
 - Implementação da arquitetura MVC, com ênfase no Model e nas diversas interfaces que cada componente interagível da sala implementaria, bem como nas suas interações com o protagonista e/ou sala do jogo
 
-### Primeiro diagrama geral do funcionamento do jogo
+## Primeiro diagrama geral do funcionamento do jogo
 
 ![Primeiro diagrama de fucionamento do projeto](assets/README/arquiteturaInicial.jpeg)
 
-## Primeiras dificuldades
+# Primeiras dificuldades
 
-### *Interface gráfica*
+## *Interface gráfica*
 
 Logo nos deparamos com o primeiro impasse no desenvolvimento do projeto: nosso Model estava praticamente pronto, mas não conseguíamos testá-lo pois ainda não tínhamos estruturado o básico da interface gráfica do jogo.
 
@@ -57,11 +57,7 @@ Nesse ponto, voltamos nossas atenções para o frontend. Percebendo que levaria 
 
 Foi aí que surgiu a estruturação das classes Curtain, Menu, Settings, Loading e Level, que chamamos internamente de “framework backbone" (“espinha dorsal do framework”).
 
-### Diagrama de herança e relações dos primeiros elementos implementados no Model
-
---
-
-### *Complexidade das salas do jogo*
+## *Complexidade das salas do jogo*
 
 Ao mesmo tempo, percebemos que a criação de uma sala despendia muito tempo, entre criação de interfaces, elementos interagíveis e, principalmente, as imagens características de cada objeto/elemento do jogo que decidimos fazer a mão, a fim de agregarmos valor à customização e exclusividade de nossa interface gráfica.
 
@@ -90,28 +86,104 @@ Conseguimos implantar a configuração de Binds na tela de Settings acessada via
 
 Entretando acabamos não conseguindo completar a função de save do estado atual do jogo, para que ele pudesse ser recuperado numa próxima partida. Na verdade, chegamos a desenvolver grande parte dessa função, mas não tivemos tempo suficiente para registrar o inventário do jogo em nosso banco de flags, nem para salvarmos uma lista com as interfaces descobertas pelo player.
 
-# Conclusões e Trabalhos Futuros
-
-Nossa maior lição foi perceber a importância de manejar melhor nosso tempo, bem como de adaptar melhor nossas ideias para o tempo disponível de desenvolvimento do projeto.
-
-Ter consciência e humildade para reconhecer nossas limitações técnicas também é de suma importância para o projeto. Saber exatamente quais são as ferramentas disponíveis para seu desenvolvimento desde o início direciona melhor o pensamento arquitetural, permitindo a estruturação detalhada dos componentes do projeto ou, ainda, a consideração da curva de aprendizado necessária para que consigamos usar uma nova ferramenta no projeto.
-
 # Diagramas finais
 
-Ao final do projeto, fizemos dois diagramas contemplando toda a arquitetura implementada.
+## Visão geral das classes do projeto
 
-O primeiro deles mostra as relações de herança e implementação de interfaces no jogo:
+![Diagrama de classes jogo](assets/README/arquitetura.png)
 
-<inserir diagrama aqui>
+## Detalhamento de classes e relações de herança
 
-Já o segundo mostra as relações entre componentes, sendo ele a versão completa dos diagramas apresentados nas seções finais:
+![Diagrama de classes e heranças](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
+Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1X-7fQ1iMEi5nYNSZk_TdOKMPpNhGyNo2/view?usp=sharing)
 
-<inserir diagrama aqui>
+## Componentes
 
-Recomendamos o acesso a esses diagramas apenas para consultas direcionadas em que você queira saber especificamente de que classes uma determinada subclasse herda, ou então com que classes/interfaces outra classe se relaciona.
+### Visão Geral
 
-Falamos isso porque, dada a complexidade do projeto, seus diagramas finais acabaram ficando bem poluídos.
-  
+![Diagrama de componentes](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
+Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1VhjFlJTeCbspr5oM_Vbhr68A83pBR4k5/view?usp=sharing)
+
+### Componente Cell
+
+> Armazena uma lista com os elementos presentes em uma célula do jogo, oferecendo os serviços de adicionar novos elementos à célula e, a partir da análise dos elementos já existentes nela, determinar se o protagonista do jogo pode se mover pela célula
+
+![Componente Cell](assets/README/diagramaCell.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell`
+Interfaces | Placeable
+
+### Componente Curtain
+
+> Responsável pela troca de telas no jogo
+
+![Componente Curtain](assets/README/diagramaCurtain.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.GraphicInterface.Curtain`
+Interfaces | Screen
+
+### Componente FlagDepot
+
+> Usado para salvar o estado do jogo. Consulta e salva num arquivo .csv as seguintes configurações: número da sala em que o jogador parou no jogo, posição e orientação do protagonista nessa sala, status do jogo, conjunto de elementos na sala
+
+![Componente FlagDepot](assets/README/diagramaFlagDepot.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.Services.FlagManagment.FlagDepot`
+Interfaces | ..
+
+### Componente Level
+
+> ...
+
+![Componente FlagDepot](assets/README/diagramaLevel.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `...`
+Interfaces | ..
+
+### Componente Room
+
+> ...
+
+![Componente FlagDepot](assets/README/diagramaRoom.jpeg)
+
+![Componente FlagDepot](assets/README/diagramaRoom2.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `...`
+Interfaces | ..
+
+## Detalhamento das Interfaces
+
+### Interface `ITableProducer`
+
+Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
+
+~~~java
+public interface ITableProducer {
+  String[] requestAttributes();
+  String[][] requestInstances();
+}
+~~~
+
+Método | Objetivo
+-------| --------
+`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
+`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
+
 # Destaques de código
   
 > Entremos agora em maiores detalhes sobre algumas implementações específicas
@@ -267,11 +339,15 @@ public class Level implements Screen {
 }
 ~~~
 
-## Herança nos elementos da sala (comentar ID)
+## Herança nos elementos da sala
 
 ### *Contexto de aplicação*
 
 Usamos a Herança para servir duas funções: Reúso organizado de código e Delegação de funções que mais de uma classe pode desejar possuir. Para o primeiro objetivo um excelente exemplo é a classe Element, que implementa somente a lógica de possuir um ID próprio, o qual todos os demais elementos possuem, para diversos propósitos, desde identificar o elemento na criação de sala a partir do arquivo .csv, até codificar a posição de uma célula na sala, codificação essa feita pela classe IDTrans. Para o segundo objetivo, exemplificamos a classe Movable, que implementa o movimento de um elemento no espaço celular, cuja função pode ser reutilizada caso queiramos implementar um novo elemento que também se move na sala. Também deixa as classes herdeiras mais simples, com métodos focados em suas implementações específicas.
+
+### Diagrama de Classes: Herança dos Elementos
+
+![Herança nos elementos da sala](assets/README/heranca.png)
 
 ### Exemplo de indexação e cálculo de IDs das células de uma sala
 ~~~
@@ -283,10 +359,6 @@ Usamos a Herança para servir duas funções: Reúso organizado de código e Del
 matriz[1][2] = ID 20 = 2 * (1 + 4 * 2 + 1)
 ID 20 = matriz[1][2] = matriz[((20 / 2) - 1) % 4][((20 / 2) - 1) / 4]
 ~~~
-
-### Diagrama de Classes: Herança dos Elementos
-
-![Herança nos elementos da sala](assets/README/heranca.png)
 
 ## Excertos de código das classes Element, IDTrans, Movable e Songster
 ~~~java
@@ -373,6 +445,10 @@ Achamos mais sucinto adotar o Strategy para a renderização dos elementos da sa
 
 ![Contexto de aplicação do strategy](assets/README/strategy2.png)
 
+### Diagrama
+
+![Diagrama Strategy](assets/README/diagramaStrategy.jpeg)
+
 ## Interface e Alguns métodos render
 ~~~java
 public interface RenderStrategy {
@@ -434,7 +510,7 @@ Para a função de save, nossa idéia original era armazenar todas as informaç�
 
 ### Diagrama para a geração de Save implementada
 
---
+![Diagrama Memento](assets/README/diagramaMemento.jpeg)
 
 ### ElementMemento e FlagDepot
 ~~~java
@@ -486,7 +562,7 @@ Citando também o método acima exemplificado, em determinados momentos, vimos a
 
 ### Classes e assinatura dos métodos
 
---
+![Diagrama Factory](assets/README/diagramaFactory.jpeg)
 
 ### Exemplo: interactableFactory
 ~~~java
@@ -526,7 +602,7 @@ Tendo um banco de flags atualizado sobre o estado do jogo, surgiu a ideia de um 
 
 ### Comunicação Implementada Level-StoryTeller-Flags
 
---
+![Diagrama Observer](assets/README/diagramaObserver.jpeg)
 
 ### StoryTeller
 ~~~java
@@ -548,90 +624,6 @@ public class StoryTeller implements connectOverload{
 }
 ~~~
 
-# Documentação dos Componentes
-
-## Diagrama Geral da Arquitetura do Jogo
-
-![Diagrama de classes jogo](assets/README/arquitetura.png)
-
-## Diagrama Geral de Componentes
-
-> Se você adotou componentes de software, apresente a documentação de componentes conforme o modelo.
-
-## Componente `<Nome do Componente>`
-
-> Resumo do papel do componente e serviços que ele oferece.
-
-![Componente](diagrama-componente.png)
-
-**Ficha Técnica**
-item | detalhamento
------ | -----
-Classe | `<caminho completo da classe com pacotes>` <br> Exemplo: `pt.c08componentes.s20catalog.s10ds.DataSetComponent`
-Autores | `<nome dos membros que criaram o componente>`
-Interfaces | `<listagem das interfaces do componente>`
-
-### Interfaces
-
-Interfaces associadas a esse componente:
-
-![Diagrama Interfaces](diagrama-interfaces.png)
-
-Interface agregadora do componente em Java:
-
-~~~java
-public interface IDataSet extends ITableProducer, IDataSetProperties {
-}
-~~~
-
-## Detalhamento das Interfaces
-
-### Interface `<nome da interface>`
-
-`<Resumo do papel da interface.>`
-
-~~~
-<Interface em Java.>
-~~~
-
-Método | Objetivo
--------| --------
-`<id do método em Java>` | `<objetivo do método e descrição dos parâmetros>`
-
-## Exemplo:
-
-### Interface `ITableProducer`
-
-Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
-
-~~~java
-public interface ITableProducer {
-  String[] requestAttributes();
-  String[][] requestInstances();
-}
-~~~
-
-Método | Objetivo
--------| --------
-`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
-`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
-
-### Interface `IDataSetProperties`
-
-Define o recurso (usualmente o caminho para um arquivo em disco) que é a fonte de dados.
-
-~~~java
-public interface IDataSetProperties {
-  public String getDataSource();
-  public void setDataSource(String dataSource);
-}
-~~~
-
-Método | Objetivo
--------| --------
-`getDataSource` | Retorna o caminho da fonte de dados.
-`setDataSource` | Define o caminho da fonte de dados, informado através do parâmetro `dataSource`.
-
 # Plano de Exceções
 
 ## Diagrama da hierarquia de exceções
@@ -648,3 +640,9 @@ Classe | Descrição
 DivisaoInvalida | Engloba todas as exceções de divisões não aceitas.
 DivisaoInutil | Indica que a divisão por 1 é inútil.
 DivisaoNaoInteira | Indica uma divisão não inteira.
+
+# Conclusões e Trabalhos Futuros
+
+Nossa maior lição foi perceber a importância de manejar melhor nosso tempo, bem como de adaptar melhor nossas ideias para o tempo disponível de desenvolvimento do projeto.
+
+Ter consciência e humildade para reconhecer nossas limitações técnicas também é de suma importância para o projeto. Saber exatamente quais são as ferramentas disponíveis para seu desenvolvimento desde o início direciona melhor o pensamento arquitetural, permitindo a estruturação detalhada dos componentes do projeto ou, ainda, a consideração da curva de aprendizado necessária para que consigamos usar uma nova ferramenta no projeto.
