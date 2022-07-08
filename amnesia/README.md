@@ -43,29 +43,9 @@ Desde as primeiras reuniões de planejamento de arquitetura, definimos que nossa
 - Implementação de um observador geral do jogo chamado “StoryTeller”, que seria responsável pela progressão do jogo, interações com o jogador e transições entre salas;
 - Implementação da arquitetura MVC, com ênfase no Model e nas diversas interfaces que cada componente interagível da sala implementaria, bem como nas suas interações com o protagonista e/ou sala do jogo
 
-## Primeiro diagrama geral do funcionamento do jogo
+### Primeiro diagrama geral do funcionamento do jogo
 
 ![Primeiro diagrama de fucionamento do projeto](assets/README/arquiteturaInicial.jpeg)
-
-## Diagrama de herança e relações dos primeiros elementos implementados no Model
-
---
-
-# Diagramas finais
-
-Ao final do projeto, fizemos dois diagramas contemplando toda a arquitetura implementada.
-
-O primeiro deles mostra as relações de herança e implementação de interfaces no jogo:
-
-<inserir diagrama aqui>
-
-Já o segundo mostra as relações entre classes, dadas por atributos, parâmetros, retornos de métodos e/ou chamadas runtime:
-
-<inserir diagrama aqui>
-
-Recomendamos o acesso a esses diagramas apenas para consultas direcionadas em que você queira saber especificamente de que classes uma determinada subclasse herda, ou então com que classes/interfaces outra classe se relaciona.
-
-Falamos isso porque, dada a complexidade do projeto, seu diagrama final acabou ficando bem poluído.
 
 ## Primeiras dificuldades
 
@@ -77,9 +57,13 @@ Nesse ponto, voltamos nossas atenções para o frontend. Percebendo que levaria 
 
 Foi aí que surgiu a estruturação das classes Curtain, Menu, Settings, Loading e Level, que chamamos internamente de “framework backbone" (“espinha dorsal do framework”).
 
+### Diagrama de herança e relações dos primeiros elementos implementados no Model
+
+--
+
 ### *Complexidade das salas do jogo*
 
-Ao mesmo tempo, percebemos que a criação de uma sala despendia muito tempo, pois ela abarngia a criação de interfaces, elementos interagíveis e, principalmente, das imagens características de cada objeto/elemento do jogo que decidimos fazer a mão, a fim de agregarmos valor à customização e exclusividade de nossa interface gráfica.
+Ao mesmo tempo, percebemos que a criação de uma sala despendia muito tempo, entre criação de interfaces, elementos interagíveis e, principalmente, as imagens características de cada objeto/elemento do jogo que decidimos fazer a mão, a fim de agregarmos valor à customização e exclusividade de nossa interface gráfica.
 
 Decidimos, então, focar nossos esforços na construção de uma sala “modelo”, que serviria somente para colocarmos em prática todos os recursos implementados. Isto é, ela foi nossa “proof of concept” (POC) sobre a arquitetura planejada para o jogo.
 
@@ -97,29 +81,40 @@ Por isso, acabamos refatorando nossos códigos de leitura e escrita de arquivo p
 
 Ao longo do desenvolvimento, também tivemos retrabalhos na renderização de imagens do jogo. Tivemos que testar diferentes formas de exibí-las na tela até que encontrássemos uma que nos permitisse ajustar as imagens às dimensões dinâmicas da tela do jogo, que mudavam a cada resize de janela.
 
-### *Problema do cast*
-Sem dúvidas, esse foi nosso maior desafio, cuja solução se deu através da criação de uma classe castCenter, detalhada <nesse destaque>
+### *"Problema do cast"*
+Sem dúvidas, esse foi nosso maior desafio, cuja solução se deu através da criação de uma classe castCenter, detalhada no destaque respectivo
 
 ### *Ausência da função de Save do jogo*
 
-Conseguimos implantar o save de configurações somente na tela de Settings, que permitiu a alteração de binds do jogo.
+Conseguimos implantar a configuração de Binds na tela de Settings acessada via Menu principal, que permitiu a alteração de binds do jogo.
 
-Mas ficou para trás a função de save do estado atual do jogo, para que ele pudesse ser recuperado numa próxima partida. Na verdade, chegamos a desenvolver grande parte dessa função, mas não tivemos tempo suficiente para registrar o inventário do jogo em nosso banco de flags, nem para salvarmos uma lista com as interfaces descobertas pelo player.
+Entretando acabamos não conseguindo completar a função de save do estado atual do jogo, para que ele pudesse ser recuperado numa próxima partida. Na verdade, chegamos a desenvolver grande parte dessa função, mas não tivemos tempo suficiente para registrar o inventário do jogo em nosso banco de flags, nem para salvarmos uma lista com as interfaces descobertas pelo player.
 
-# Destaques de Orientação a Objetos
+# Conclusões e Trabalhos Futuros
 
-## Diagrama de classes usadas no projeto
+Nossa maior lição foi perceber a importância de manejar melhor nosso tempo, bem como de adaptar melhor nossas ideias para o tempo disponível de desenvolvimento do projeto.
 
+Ter consciência e humildade para reconhecer nossas limitações técnicas também é de suma importância para o projeto. Saber exatamente quais são as ferramentas disponíveis para seu desenvolvimento desde o início direciona melhor o pensamento arquitetural, permitindo a estruturação detalhada dos componentes do projeto ou, ainda, a consideração da curva de aprendizado necessária para que consigamos usar uma nova ferramenta no projeto.
 
-## Encapsulamento da Room
+# Diagramas finais
 
-![Encapsulamento da Room](assets/README/encapsulamentoRoom.png)
+Ao final do projeto, fizemos dois diagramas contemplando toda a arquitetura implementada.
 
-## Herança nos elementos da sala (comentar ID)
+O primeiro deles mostra as relações de herança e implementação de interfaces no jogo:
 
-![Herança nos elementos da sala](assets/README/heranca.png)
+<inserir diagrama aqui>
 
+Já o segundo mostra as relações entre componentes, sendo ele a versão completa dos diagramas apresentados nas seções finais:
+
+<inserir diagrama aqui>
+
+Recomendamos o acesso a esses diagramas apenas para consultas direcionadas em que você queira saber especificamente de que classes uma determinada subclasse herda, ou então com que classes/interfaces outra classe se relaciona.
+
+Falamos isso porque, dada a complexidade do projeto, seus diagramas finais acabaram ficando bem poluídos.
+  
 # Destaques de código
+  
+> Entremos agora em maiores detalhes sobre algumas implementações específicas
 
 ## Leitor de arquivos e tratamento de exceções
 
@@ -171,9 +166,175 @@ Através de uma string “action” que contém o nome do método desejado, decl
 
 Com isso, o castCenter conseguiu buscar o método na interface desejada, e fazer um cast genérico para qualquer classe, prevendo os possíveis erros caso um método incoerente para a interface ou objeto em questão fosse chamado.
 
-### Código implementado
+### Exemplo de método sobrecarregado do castCenter, onde o método “action” retorna um Interactable e não tem nenhum outro parâmetro
 
-![Cast Center](assets/README/castCenter.png)
+~~~java
+public class castCenter {
+    …
+    public Interactable act(Interactable item, String action) {
+        Class<?> cRoot, cInterface;
+        Method method;
+        Interactable aux = null;
+        try {
+            cRoot = Class.forName("com.badlogic.amnesia.Model.Elements.ViewElement.Interactables." + item.getClassName());
+            cInterface = Class.forName("com.badlogic.amnesia.Model.Elements.ViewElement.Interactables.Interfaces." + action + "I");
+            method = cRoot.getDeclaredMethod(action);
+            aux = (Interactable) method.invoke(cInterface.cast(cRoot.cast(item)));
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | 
+                IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return aux;
+    }
+}
+~~~
+
+# Destaques de Orientação a Objetos
+
+## Encapsulamento da Room
+
+### *Contexto de aplicação*
+
+Prezamos pelo bom encapsulamento dos componentes no código, e um ótimo exemplo desse cuidado é a Classe Room, que implementa quatro diferentes interfaces que fornecem os métodos necessários para cada tipo de requisição que outras classes possam pedir, separados por objetivo. Segue o diagrama de classes que explica melhor a construção:
+
+### Diagrama de Classes: Room e interfaces
+![Encapsulamento da Room](assets/README/encapsulamentoRoom.png)
+
+## Alguns trechos das interfaces e classes que usam os métodos encapsulados e suas implementações na Room
+~~~java
+public interface MoveAccess{
+    …
+    public boolean isWalkable(int ID);
+}
+~~~
+~~~java
+public interface RenderAccess {
+    public RenderStrategy[][] getCells();
+}
+~~~
+~~~java
+public class Room implements MoveAccess, ControlAccess, RenderAccess {
+
+    private Cell[][] space;
+    …
+    public boolean isWalkable(int cellID){	
+        IDTrans t = new IDTrans();
+  	    int aux[] = t.IDToPos(cellID);
+  	    return this.space[aux[0]][aux[1]].isWalkable();
+    }
+    …
+    @Override
+    public RenderStrategy[][] getCells() {
+  	    return this.space;
+    }
+}
+~~~
+~~~java
+public class Movable extends Element {
+    …
+    protected MoveAccess space;
+    …
+    public void roomConect(MoveAccess a){
+  	    this.space = a;
+    }
+    …
+    protected void moveToCell(int cellID) {
+  	    if(this.space.isWalkable(cellID)) this.posID = cellID;
+    }
+    …
+}
+~~~
+~~~java
+public class Level implements Screen {
+    …
+    private static RenderAccess room;
+    …
+    public Level(..., RenderAccess room, ...) {
+        …
+        Level.room = room;
+        …
+    }
+    private void Setup() {
+        …
+        for (RenderStrategy[] collumn : Level.room.getCells()) {
+            for (RenderStrategy c : collumn) {
+                c.render(this.batch, this.getImageSize());
+            }
+        }
+        …
+    }
+    …
+}
+~~~
+
+## Herança nos elementos da sala (comentar ID)
+
+### *Contexto de aplicação*
+
+Usamos a Herança para servir duas funções: Reúso organizado de código e Delegação de funções que mais de uma classe pode desejar possuir. Para o primeiro objetivo um excelente exemplo é a classe Element, que implementa somente a lógica de possuir um ID próprio, o qual todos os demais elementos possuem, para diversos propósitos, desde identificar o elemento na criação de sala a partir do arquivo .csv, até codificar a posição de uma célula na sala, codificação essa feita pela classe IDTrans. Para o segundo objetivo, exemplificamos a classe Movable, que implementa o movimento de um elemento no espaço celular, cuja função pode ser reutilizada caso queiramos implementar um novo elemento que também se move na sala. Também deixa as classes herdeiras mais simples, com métodos focados em suas implementações específicas.
+
+### Exemplo de indexação e cálculo de IDs das células de uma sala
+~~~
+26  28  30  32
+18  20  22  24
+10  12  14  16
+2   4   6   8
+
+matriz[1][2] = ID 20 = 2 * (1 + 4 * 2 + 1)
+ID 20 = matriz[1][2] = matriz[((20 / 2) - 1) % 4][((20 / 2) - 1) / 4]
+~~~
+
+### Diagrama de Classes: Herança dos Elementos
+
+![Herança nos elementos da sala](assets/README/heranca.png)
+
+## Excertos de código das classes Element, IDTrans, Movable e Songster
+~~~java
+public class Element {
+
+    protected int ID;
+
+    public int getID() {
+        return this.ID;
+    }
+}
+~~~
+~~~java
+public class IDTrans { //IDTrans.l é a largura da sala, atributo estático da classe.
+    …
+    public int posToID(int[] pos){
+        return 2 * (pos[0] + IDTrans.l * pos[1] + 1);
+    }
+    public int[] IDToPos(int ID){
+        int[] aux = { ((ID / 2) - 1) % IDTrans.l, (((ID / 2) - 1) / IDTrans.l)};
+        return aux;
+    }
+}
+
+~~~
+~~~java
+public class Movable extends Element {
+    protected boolean[] orientation = new boolean[4];
+    …
+    protected void orientate(int direction) {
+        for (int i = 0; i < 4; i++)
+            this.orientation[i] = false;
+        this.orientation[direction] = true;
+    }
+    …
+}
+~~~
+~~~java
+public class Songster extends MovableViewElement{
+    …
+    @Override
+    public void move(int direction, int cellID) {
+        super.move(direction, cellID);
+        this.f.setSongsterOrientation(this.getOrientation());
+        …
+    }
+}
+~~~
 
 # Destaques de Pattern
 
@@ -208,53 +369,184 @@ Usado nas seguintes classes de inicialização do jogo, a fim de que elas fossem
 
 ### *Contexto de aplicação*
 
-Usamos o Strategy para que cada objeto do jogo tenha, em sua classe, um método de renderização chamado ```render```, com diferentes assinaturas e implementações a depender dos requisitos que cada objeto possui atrelado a sua renderização na tela.
+Achamos mais sucinto adotar o Strategy para a renderização dos elementos da sala, uma vez que cada um seria renderizado de acordo com características próprias, imagens sobrepostas, ou dependendo da orientação uma imagem diferente, etc. Seguem os elementos do Model que sabem renderizar-se e alguns exemplos de funções.
 
 ![Contexto de aplicação do strategy](assets/README/strategy2.png)
 
-### *Exemplo de código*
+## Interface e Alguns métodos render
+~~~java
+public interface RenderStrategy {
+    public void render(Batch batch, float imgSize);
+}
+~~~
+~~~java
+public class CompondViewElement extends Element implements RenderStrategy {
 
-Função de renderização de um elemento interagível na tela do jogo:
+    protected ArrayList<String> imgs;
+    …
+    public void render(Batch batch, float imgSize){
+        IDTrans t = new IDTrans();
+        for (String img : this.getImgs()) {
+            int[] cellPosition = t.IDToPos(this.ID);
+            batch.draw(new Texture(
+                                    Gdx.files.internal(img)),
+                                    cellPosition[0] * imgSize,
+                                    cellPosition[1] * imgSize,
+                                    imgSize,
+                                    imgSize
+                                    );
+        }
+    }
+}
+~~~
+~~~java
+public abstract class InteractableElement extends ViewElement implements Interactable {
 
-![Strategy](assets/README/strategy.png)
+    protected int posID;
+    protected boolean known;
+    …
+    @Override
+    public void render(Batch batch, float imgSize){
+        IDTrans t = new IDTrans();
+        int[] cellPosition = t.IDToPos(this.posID);
+        batch.draw(new Texture(
+                                ((this.known) ? Gdx.files.internal(this.getImg()) : Gdx.files.internal("concreteElement/unknownplainobject.png"))),	
+                                cellPosition[0] * imgSize,
+                                cellPosition[1] * imgSize,
+                                imgSize,
+                                imgSize
+                                );
+    }
+}
+~~~
 
-## Menções honrosas: patterns não desenvolvidos tradicionalmente
+Decidimos que o método teria assinatura “void render(batch, float)” pois assim cada elemento teria acesso ao batch, responsável por controlar a comunicação com a GPU e um float que constantemente é atualizado em função do tamanho da janela de modo que toda a tela do jogo adapta-se ao tamanho da janela. O pattern se valoriza nas diferentes implementações de métodos de renderização dentro de cada elemento, que conhece sua própria imagem, além das particularidades de cada um, sendo (a partir do diagrama): O protagonista deve saber qual sua orientação e exibir uma imagem correspondente; O inventário deve exibir sua imagem, a depender de qual compartimento está selecionado e caso contenha um objeto, exibir também sua imagem; Os elementos interagíveis devem exibir suas imagens a depender de seus estados e particularidades (aceso ou apagado, ligado ou desligado, etc) e a Célula deve renderizar os elementos contidos nela em ordem, sobrepostos (lajota, mesa, etc).
 
-### Factory
+## Menções honrosas: Memento, Factory e Observer
 
-### *Contexto de aplicação*
-
-Usado na inicialização de sala do jogo, quando lemos o conteúdo de um arquivo .csv e traduzimos cada caractere obtido para a instância de uma classe representativa de um tipo de objeto a ser disposto na sala em inicialização.
-
-Atualmente, a associação entre um caractere e uma instância de classe está hardcodada em nosso método ```pleaceableFactory```, que implementa o factory pattern.
-
-### *Exemplo de código*
-
-![Factory](assets/README/factory.png)
+> Decidimos comentar na documentação sobre alguns patterns que não foram concluídos ou que não estruturamos como pattern por completo, seja por falta de tempo, ou por termos implementado conhecendo pouco a respeito do pattern em si. Passemos brevemente por cada um deles:
 
 ### Memento
 
 ### *Contexto de aplicação*
 
-### *Exemplo de código*
+Para a função de save, nossa idéia original era armazenar todas as informações necessárias para restaurar o jogo a um determinado ponto na classe FlagDepot, que armazena a sala atual, a posição e orientação do protagonista, e informações sobre cada um dos elementos interagíveis da sala, a saber, seu ID, sua posição e um vetor de booleanas com seus estados, e por fim, informações do inventário do protagonista (não implementada). Logo surge a questão de como armazenar as informações dos interagíveis da sala para geração de um arquivo .csv, e o pattern Memento logo saltou aos olhos. Gerar uma classe que contém o último estado dos elementos a serem registrados era exatamente nossa necessidade, e o pattern foi aplicado, mas a feature não chegou à interface gráfica por muito pouco, faltando somente criar um memento para o inventário e adaptar a criação de sala para considerar as informações por ele geradas e armazenadas.
 
-![Memento](assets/README/memento.png)
+### Diagrama para a geração de Save implementada
+
+--
+
+### ElementMemento e FlagDepot
+~~~java
+public class ElementMemento {
+    private int ID;
+    private int posID;
+    private boolean[] status;
+
+    public ElementMemento(int ID, int posID, boolean[] stauts){
+        this.ID = ID;
+        this.posID = posID;
+        this.status = stauts;
+    }
+
+    public String toString(){
+        return this.ID + ',' + this.posID + ',' + this.status.toString().substring(1,this.status.toString().length() - 1) + ',';
+    }
+}
+~~~
+~~~java
+public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags, ElementFlags{
+    private int roomNumber;
+    private int songsterPos;
+    private int songsterOrientation;
+    private ArrayList<ElementMemento> status = new ArrayList<ElementMemento>();
+    …
+    private void mementoFactory(Interactable[][] elements){
+        for (int i = 0; i < elements.length; i++)
+            for (int j = 0; j < elements[i].length; j++)
+                if (elements[i][j] != null){
+                    IDTrans t = new IDTrans();
+                    Interactable a = elements[i][j];
+                    int[] pos = {i, j};
+                    this.status.add(new ElementMemento(a.getID(), t.posToID(pos), a.getStatus()));
+                }
+    }
+
+    public String toString(Interactable[][] elements){
+        this.mementoFactory(elements);
+        return this.roomNumber + ',' + this.songsterPos + ',' + this.songsterOrientation + ',' + this.status.toString();
+    }
+~~~
+
+### Factory
+
+### *Contexto de aplicação*
+
+Citando também o método acima exemplificado, em determinados momentos, vimos a necessidade de um método que instancia vários outros objetos de uma só vez a partir de um determinado critério (ou não, como vimos acima). Para isso chamamos Factory, que se assemelha ao pattern, mas por não termos nos aprofundado muito no mesmo, não nos preocupamos em garantir a genericidade e reusabilidade dos métodos, mas não deixa de ser notável a similaridade entre eles. São três os métodos: mementoFactory, placeableFactory e interactableFactory, os dois últimos, contidos na classe RoomBuilder, que será exposta nesta seção.
+
+### Classes e assinatura dos métodos
+
+--
+
+### Exemplo: interactableFactory
+~~~java
+public class RoomBuilder {
+    private ElementFlags ef;
+    private StoryTeller st;
+    …
+    private Interactable interactableFactory(int n, int posID, Boolean[] state){
+        Interactable aux = null;
+        switch(n){
+            /*
+             * 13: light switch 1
+             * 15: Table socket 1
+             * 17: Lamp Bulb 1
+             */
+            case 13:
+                aux = new LightSwitch(state, posID, this.ef);
+                break;
+            case 15:
+                if (state[0]) aux = new TableSocket(new LampBulb(false, posID), posID, this.ef, this.st);
+                else aux = new TableSocket(state, posID, this.ef, this.st);
+                break;
+            case 17:
+                aux = new LampBulb(state, posID);
+                break;
+            }
+            return aux;
+    }
+}
+~~~
 
 ### Observer
 
 ### *Contexto de aplicação*
 
-Por mais que não tenhamos tido tempo de finalizar nossa classe StoryTeller como pensado inicialmente, projetamos ela com base no padrão Observer, uma vez que a ideia por trás do StoryTeller seria justamente que ele deveria observar o estado do jogo e nosso banco de flags o tempo todo, para interagir com o jogador através do print de mensagens na tela e também ficar responsável pelo próprio controle de estados do jogo.
+Tendo um banco de flags atualizado sobre o estado do jogo, surgiu a ideia de um agente independente das ações do jogo mas que influenciaria no que o jogador veria e teria disponível para interagir, e esse seria o nosso StoryTeller, responsável por dialogar com o jogador, verificar se o protagonista já terminou o puzzle da sala e notificar a necessidade de renderizar a próxima sala, entre outras funções que deixariam o jogo mais imersivo. Para tal, o pattern Observer é ideal e sempre foi nosso alvo, pois sempre que um elemento da sala alterasse a flag respectiva a si, o StoryTeller perceberia, e daria os triggers necessários para seguir contando a história do jogo. Entretanto, com nossa decisão de manter somente uma sala de demonstração, a história do jogo em si não tinha mais tanta proporção quanto antes, e por isso não dedicamos tanto esforço no StoryTeller quanto era planejado inicialmente.
 
-### *Exemplo de código*
+### Comunicação Implementada Level-StoryTeller-Flags
 
-![Observer](assets/README/observer.png)
+--
 
-# Conclusões e Trabalhos Futuros
-
-Nossa maior lição foi perceber a importância de manejar melhor nosso tempo, bem como de adaptar melhor nossas ideias para o tempo disponível de desenvolvimento do projeto.
-
-Ter consciência e humildade para reconhecer nossas limitações técnicas também é de suma importância para o projeto. Saber exatamente quais são as ferramentas disponíveis para seu desenvolvimento desde o início direciona melhor o pensamento arquitetural, permitindo a estruturação detalhada dos componentes do projeto ou, ainda, a consideração da curva de aprendizado necessária para que consigamos usar uma nova ferramenta no projeto.
+### StoryTeller
+~~~java
+public class StoryTeller implements connectOverload{
+    private ElementFlags ef = FlagDepot.getInstance();
+    …
+    public boolean checkGame(){
+        boolean aux = false;
+        if (this.ef.getSwitchFlag() && this.ef.getLampScrewedFlag()){
+            this.ts.illuminate();
+            aux = true;
+        }
+        else {
+            this.ts.unilluminate();
+        }
+        return aux;
+    }
+    …
+}
+~~~
 
 # Documentação dos Componentes
 
