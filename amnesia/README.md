@@ -629,9 +629,9 @@ Para uma melhor visualização do diagrama, [consulte-o online](https://drive.go
 ![Diagrama de componentes](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
 Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1VhjFlJTeCbspr5oM_Vbhr68A83pBR4k5/view?usp=sharing)
 
-## Documentação dos Componentes
+# Documentação dos Componentes
 
-### Componente Cell
+## Componente Cell
 
 > Armazena uma lista com os elementos presentes em uma célula do jogo, oferecendo os serviços de adicionar novos elementos à célula e, a partir da análise dos elementos já existentes nela, determinar se o protagonista do jogo pode se mover pela célula
 
@@ -643,7 +643,7 @@ item | detalhamento
 Classe | `package com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell`
 Interfaces | Placeable
 
-### Componente Room
+## Componente Room
 
 > Gerencia os espaços matriciais do jogo (componentes Cell), inserindo, removendo ou consultando elementos neles. Também media os movimentos do protagonista pelas células do jogo e determina se ele pode se interagir com os elementos delas
 ![Componente Room](assets/README/diagramaRoom2.jpeg)
@@ -656,7 +656,7 @@ item | detalhamento
 Classe | `package com.badlogic.amnesia.Model.Room`
 Interfaces | MoveAccess, RenderAccess e ControlAccess
 
-### Componente Curtain
+## Componente Curtain
 
 > Responsável pela troca de telas no jogo
 
@@ -668,7 +668,7 @@ item | detalhamento
 Classe | `package com.badlogic.amnesia.GraphicInterface.Curtain`
 Interfaces | Screen
 
-### Componente Level
+## Componente Level
 
 > Responsável pela renderização de uma sala do jogo, o que inclui seus elementos (interagíveis e não interagíveis, chão e barreira) e o protagonista do jogo. Também é quem capta os inputs de teclado do jogador e os compara com as binds do jogo, delegando a execução de um de seus comandos para a classe MPControl caso uma bind seja pressionada. Com isso, ele atua como controle do jogo em cada uma de suas salas
 
@@ -680,7 +680,7 @@ item | detalhamento
 Classe | `package com.badlogic.amnesia.GraphicInterface.Level`
 Interfaces | RenderStrategy
 
-### Componente FlagDepot
+## Componente FlagDepot
 
 > Usado para salvar o estado do jogo. Consulta e salva num arquivo .csv as seguintes configurações: número da sala em que o jogador parou no jogo, posição e orientação do protagonista nessa sala, status do jogo, conjunto de elementos na sala
 
