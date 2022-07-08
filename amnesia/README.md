@@ -26,13 +26,13 @@ Quando isso acontece, o jogador avança para a próxima sala do jogo e segue nes
 
 # Relatório de Evolução
 
-## Nascimento da ideia do jogo
+## Ideia do jogo
 
 A ideia do jogo originou-se num brainstorm a respeito de conceitos básicos de Orientação de Objetos (OO), como abstração e interfaces, e de como poderíamos ilustrá-los num jogo lúdico e educativo.
 
 Inicialmente, pensamos em desenvolver três salas/puzzles que abusavam das várias possibilidades que a arquitetura planejada ofereceria: criação de vários objetos e interfaces; definição de diferentes objetivos e caminhos a serem seguidos numa mesma sala; “adaptabilidade” do jogo para dar ao player a liberdade de escolher como ele desejaria interagir com o ambiente ao seu redor.
 
-## Planejamento da arquitetura e da interface gráfica
+## Planejamento da arquitetura e interface gráfica
 
 Após algumas pesquisas iniciais, também decidimos usar o framework LibGDX no desenvolvimento do projeto. Mas como ele era desconhecido para nossa dupla e nós ainda não tínhamos praticado a construção de interfaces gráficas em Java, achamos mais interessante investir na construção de uma arquitetura mais focada no backend e no funcionamento interno do jogo.
 
@@ -43,13 +43,13 @@ Desde as primeiras reuniões de planejamento de arquitetura, definimos que nossa
 - Implementação de um observador geral do jogo chamado “StoryTeller”, que seria responsável pela progressão do jogo, interações com o jogador e transições entre salas;
 - Implementação da arquitetura MVC, com ênfase no Model e nas diversas interfaces que cada componente interagível da sala implementaria, bem como nas suas interações com o protagonista e/ou sala do jogo
 
-## Primeiro diagrama geral do funcionamento do jogo
+## Primeiro diagrama geral de funcionamento do jogo elaborado
 
 ![Primeiro diagrama de fucionamento do projeto](assets/README/arquiteturaInicial.jpeg)
 
-# Primeiras dificuldades
+## Primeiras dificuldades
 
-## *Interface gráfica*
+### *Interface gráfica*
 
 Logo nos deparamos com o primeiro impasse no desenvolvimento do projeto: nosso Model estava praticamente pronto, mas não conseguíamos testá-lo pois ainda não tínhamos estruturado o básico da interface gráfica do jogo.
 
@@ -57,13 +57,20 @@ Nesse ponto, voltamos nossas atenções para o frontend. Percebendo que levaria 
 
 Foi aí que surgiu a estruturação das classes Curtain, Menu, Settings, Loading e Level, que chamamos internamente de “framework backbone" (“espinha dorsal do framework”).
 
-## *Complexidade das salas do jogo*
+### *Complexidade das salas do jogo*
 
 Ao mesmo tempo, percebemos que a criação de uma sala despendia muito tempo, entre criação de interfaces, elementos interagíveis e, principalmente, as imagens características de cada objeto/elemento do jogo que decidimos fazer a mão, a fim de agregarmos valor à customização e exclusividade de nossa interface gráfica.
 
 Decidimos, então, focar nossos esforços na construção de uma sala “modelo”, que serviria somente para colocarmos em prática todos os recursos implementados. Isto é, ela foi nossa “proof of concept” (POC) sobre a arquitetura planejada para o jogo.
 
 ## Features adaptadas e/ou não finalizadas completamente
+
+### *Dimensionamento de imagens*
+
+Ao longo do desenvolvimento, também tivemos retrabalhos na renderização de imagens do jogo. Tivemos que testar diferentes formas de exibí-las na tela até que encontrássemos uma que nos permitisse ajustar as imagens às dimensões dinâmicas da tela do jogo, que mudavam a cada resize de janela.
+
+### *"Problema do cast"*
+Sem dúvidas, esse foi nosso maior desafio, cuja solução se deu através da criação de uma classe castCenter, detalhada no destaque respectivo
 
 ### *Leitura e escrita de arquivos*
 
@@ -73,120 +80,13 @@ Dias depois, no entanto, descobrimos que o framework libGDX também possui funç
 
 Por isso, acabamos refatorando nossos códigos de leitura e escrita de arquivo para substituirmos as classes nativas do Java pelas funções do libGDX - retrabalho que nos tomou tempo útil de desenvolvimento.
 
-### *Dimensionamento de imagens*
-
-Ao longo do desenvolvimento, também tivemos retrabalhos na renderização de imagens do jogo. Tivemos que testar diferentes formas de exibí-las na tela até que encontrássemos uma que nos permitisse ajustar as imagens às dimensões dinâmicas da tela do jogo, que mudavam a cada resize de janela.
-
-### *"Problema do cast"*
-Sem dúvidas, esse foi nosso maior desafio, cuja solução se deu através da criação de uma classe castCenter, detalhada no destaque respectivo
-
 ### *Ausência da função de Save do jogo*
 
 Conseguimos implantar a configuração de Binds na tela de Settings acessada via Menu principal, que permitiu a alteração de binds do jogo.
 
 Entretando acabamos não conseguindo completar a função de save do estado atual do jogo, para que ele pudesse ser recuperado numa próxima partida. Na verdade, chegamos a desenvolver grande parte dessa função, mas não tivemos tempo suficiente para registrar o inventário do jogo em nosso banco de flags, nem para salvarmos uma lista com as interfaces descobertas pelo player.
 
-# Diagramas finais
-
-## Visão geral das classes do projeto
-
-![Diagrama de classes jogo](assets/README/arquitetura.png)
-
-## Detalhamento de classes e relações de herança
-
-![Diagrama de classes e heranças](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
-Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1X-7fQ1iMEi5nYNSZk_TdOKMPpNhGyNo2/view?usp=sharing)
-
-## Componentes
-
-### Visão Geral
-
-![Diagrama de componentes](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
-Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1VhjFlJTeCbspr5oM_Vbhr68A83pBR4k5/view?usp=sharing)
-
-### Componente Cell
-
-> Armazena uma lista com os elementos presentes em uma célula do jogo, oferecendo os serviços de adicionar novos elementos à célula e, a partir da análise dos elementos já existentes nela, determinar se o protagonista do jogo pode se mover pela célula
-
-![Componente Cell](assets/README/diagramaCell.jpeg)
-
-**Ficha Técnica**
-item | detalhamento
------ | -----
-Classe | `package com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell`
-Interfaces | Placeable
-
-### Componente Curtain
-
-> Responsável pela troca de telas no jogo
-
-![Componente Curtain](assets/README/diagramaCurtain.jpeg)
-
-**Ficha Técnica**
-item | detalhamento
------ | -----
-Classe | `package com.badlogic.amnesia.GraphicInterface.Curtain`
-Interfaces | Screen
-
-### Componente FlagDepot
-
-> Usado para salvar o estado do jogo. Consulta e salva num arquivo .csv as seguintes configurações: número da sala em que o jogador parou no jogo, posição e orientação do protagonista nessa sala, status do jogo, conjunto de elementos na sala
-
-![Componente FlagDepot](assets/README/diagramaFlagDepot.jpeg)
-
-**Ficha Técnica**
-item | detalhamento
------ | -----
-Classe | `package com.badlogic.amnesia.Services.FlagManagment.FlagDepot`
-Interfaces | ..
-
-### Componente Level
-
-> ...
-
-![Componente FlagDepot](assets/README/diagramaLevel.jpeg)
-
-**Ficha Técnica**
-item | detalhamento
------ | -----
-Classe | `...`
-Interfaces | ..
-
-### Componente Room
-
-> ...
-
-![Componente FlagDepot](assets/README/diagramaRoom.jpeg)
-
-![Componente FlagDepot](assets/README/diagramaRoom2.jpeg)
-
-**Ficha Técnica**
-item | detalhamento
------ | -----
-Classe | `...`
-Interfaces | ..
-
-## Detalhamento das Interfaces
-
-### Interface `ITableProducer`
-
-Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
-
-~~~java
-public interface ITableProducer {
-  String[] requestAttributes();
-  String[][] requestInstances();
-}
-~~~
-
-Método | Objetivo
--------| --------
-`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
-`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
-
 # Destaques de código
-  
-> Entremos agora em maiores detalhes sobre algumas implementações específicas
 
 ## Leitor de arquivos e tratamento de exceções
 
@@ -200,11 +100,30 @@ Tal estrutura está exemplificada nos seguintes trechos de código referentes:
 
 1. Método ```getFileContent``` da classe ```FileManagment```, que lê e retorna o conteúdo de um arquivo separado por vírgulas:
 
-![Função de leitura de arquivos](assets/README/funcaoLeituraArquivo.png)
+~~~java
+public String[] getFileContent(){
+      String content;
+      try{
+         content = fh.readString();
+      } catch (GdxRuntimeException e) {
+         throw new ReadingFileException(this.fh.path(), e.getMessage());
+      }
+      String[] contentSplitted = content.split(",");
+      return contentSplitted;
+   }
+~~~
 
 2. Exception customizada disparada em caso de erros na execução do método ```getFileContent```:
 
-![Tratamento de exceções](assets/README/tratamentoErro.png)
+~~~java
+public class ReadingFileException extends GdxRuntimeException {
+    
+    public ReadingFileException (String filePath, String errorMessage) {
+        super("Cannot find or read file " + filePath + ": " + errorMessage);
+    }
+
+}
+~~~
 
 ## Settings e BindDepot
 
@@ -238,7 +157,8 @@ Através de uma string “action” que contém o nome do método desejado, decl
 
 Com isso, o castCenter conseguiu buscar o método na interface desejada, e fazer um cast genérico para qualquer classe, prevendo os possíveis erros caso um método incoerente para a interface ou objeto em questão fosse chamado.
 
-### Exemplo de método sobrecarregado do castCenter, onde o método “action” retorna um Interactable e não tem nenhum outro parâmetro
+### Implementação de código 
+Exemplo de método sobrecarregado do castCenter, onde o método “action” retorna um Interactable e não tem nenhum outro parâmetro
 
 ~~~java
 public class castCenter {
@@ -269,10 +189,10 @@ public class castCenter {
 
 Prezamos pelo bom encapsulamento dos componentes no código, e um ótimo exemplo desse cuidado é a Classe Room, que implementa quatro diferentes interfaces que fornecem os métodos necessários para cada tipo de requisição que outras classes possam pedir, separados por objetivo. Segue o diagrama de classes que explica melhor a construção:
 
-### Diagrama de Classes: Room e interfaces
+### *Diagrama de Classes: Room e interfaces*
 ![Encapsulamento da Room](assets/README/encapsulamentoRoom.png)
 
-## Alguns trechos das interfaces e classes que usam os métodos encapsulados e suas implementações na Room
+## *Alguns trechos das interfaces e classes que usam os métodos encapsulados e suas implementações na Room*
 ~~~java
 public interface MoveAccess{
     …
@@ -345,11 +265,11 @@ public class Level implements Screen {
 
 Usamos a Herança para servir duas funções: Reúso organizado de código e Delegação de funções que mais de uma classe pode desejar possuir. Para o primeiro objetivo um excelente exemplo é a classe Element, que implementa somente a lógica de possuir um ID próprio, o qual todos os demais elementos possuem, para diversos propósitos, desde identificar o elemento na criação de sala a partir do arquivo .csv, até codificar a posição de uma célula na sala, codificação essa feita pela classe IDTrans. Para o segundo objetivo, exemplificamos a classe Movable, que implementa o movimento de um elemento no espaço celular, cuja função pode ser reutilizada caso queiramos implementar um novo elemento que também se move na sala. Também deixa as classes herdeiras mais simples, com métodos focados em suas implementações específicas.
 
-### Diagrama de Classes: Herança dos Elementos
+### *Diagrama de Classes: Herança dos Elementos*
 
 ![Herança nos elementos da sala](assets/README/heranca.png)
 
-### Exemplo de indexação e cálculo de IDs das células de uma sala
+### *Exemplo de indexação e cálculo de IDs das células de uma sala*
 ~~~
 26  28  30  32
 18  20  22  24
@@ -360,7 +280,7 @@ matriz[1][2] = ID 20 = 2 * (1 + 4 * 2 + 1)
 ID 20 = matriz[1][2] = matriz[((20 / 2) - 1) % 4][((20 / 2) - 1) / 4]
 ~~~
 
-## Excertos de código das classes Element, IDTrans, Movable e Songster
+## *Excertos de código das classes Element, IDTrans, Movable e Songster*
 ~~~java
 public class Element {
 
@@ -424,6 +344,51 @@ Caso ele detecte o clique numa bind do jogo, o Level irá apenas delegar a execu
 
 ### *Exemplo de código*
 
+~~~java
+public class Level implements Screen {
+    ...
+    private static MPControl commandFacade;
+
+    public Level(MPControl mpc, [...]) {
+    ...
+    Level.commandFacade = mpc;
+    }
+
+    ...
+
+    @Override
+    public void render(float delta) {
+        ...
+        if(!this.renderPauseMenu && !this.renderInteractMenu){
+        
+            ...
+            
+            if (isInputKeyForCommand("move up")) {
+                Level.commandFacade.move(0);
+                this.Setup();
+            }
+
+            if (isInputKeyForCommand("first slot")){
+                Level.commandFacade.changeActiveSlot(0);
+                this.Setup();
+            }
+
+            if (isInputKeyForCommand("select")){
+                if (Level.commandFacade.getPossibleInteractable() != null){
+                    this.interactableMenuOptions = Level.commandFacade.interact();
+                    this.interactMenuRender();
+                }
+            }
+
+            if (isInputKeyForCommand("quick interact")){
+                this.interactableMenuOptions = Level.commandFacade.quickInteract();
+                this.interactMenuRender();
+            }
+        }
+    }
+}
+~~~
+
 ## Singleton
 
 ### *Contexto de aplicação*
@@ -432,10 +397,28 @@ Usado nas seguintes classes de inicialização do jogo, a fim de que elas fossem
 - BindDepot
 - FlagDepot
 - RoomBuilder
-
 ### *Exemplo de código*
 
-![Singleton](assets/README/singleton.png)
+~~~java
+public class BindDepot implements BindSetup, BindRead{
+
+    ...
+
+    private BindDepot(){
+        this.updateBinds();
+    }
+
+    private static class Holder{
+        static final BindDepot instance = new BindDepot();
+    }
+
+    public static BindDepot getInstance(){
+        return Holder.instance;
+    }
+
+    ...
+}
+~~~
 
 ## Strategy
 
@@ -445,11 +428,11 @@ Achamos mais sucinto adotar o Strategy para a renderização dos elementos da sa
 
 ![Contexto de aplicação do strategy](assets/README/strategy2.png)
 
-### Diagrama
+### *Diagrama de Classes*
 
 ![Diagrama Strategy](assets/README/diagramaStrategy.jpeg)
 
-## Interface e Alguns métodos render
+## *Exemplos de código*
 ~~~java
 public interface RenderStrategy {
     public void render(Batch batch, float imgSize);
@@ -502,17 +485,17 @@ Decidimos que o método teria assinatura “void render(batch, float)” pois as
 
 > Decidimos comentar na documentação sobre alguns patterns que não foram concluídos ou que não estruturamos como pattern por completo, seja por falta de tempo, ou por termos implementado conhecendo pouco a respeito do pattern em si. Passemos brevemente por cada um deles:
 
-### Memento
+## Memento
 
 ### *Contexto de aplicação*
 
 Para a função de save, nossa idéia original era armazenar todas as informações necessárias para restaurar o jogo a um determinado ponto na classe FlagDepot, que armazena a sala atual, a posição e orientação do protagonista, e informações sobre cada um dos elementos interagíveis da sala, a saber, seu ID, sua posição e um vetor de booleanas com seus estados, e por fim, informações do inventário do protagonista (não implementada). Logo surge a questão de como armazenar as informações dos interagíveis da sala para geração de um arquivo .csv, e o pattern Memento logo saltou aos olhos. Gerar uma classe que contém o último estado dos elementos a serem registrados era exatamente nossa necessidade, e o pattern foi aplicado, mas a feature não chegou à interface gráfica por muito pouco, faltando somente criar um memento para o inventário e adaptar a criação de sala para considerar as informações por ele geradas e armazenadas.
 
-### Diagrama para a geração de Save implementada
+### *Diagrama para a geração de Save implementada*
 
 ![Diagrama Memento](assets/README/diagramaMemento.jpeg)
 
-### ElementMemento e FlagDepot
+### *Exemplos de código: ElementMemento e FlagDepot*
 ~~~java
 public class ElementMemento {
     private int ID;
@@ -554,17 +537,17 @@ public class FlagDepot implements RoomFlag, FlagRead, SongsterFlags, ElementFlag
     }
 ~~~
 
-### Factory
+## Factory
 
 ### *Contexto de aplicação*
 
 Citando também o método acima exemplificado, em determinados momentos, vimos a necessidade de um método que instancia vários outros objetos de uma só vez a partir de um determinado critério (ou não, como vimos acima). Para isso chamamos Factory, que se assemelha ao pattern, mas por não termos nos aprofundado muito no mesmo, não nos preocupamos em garantir a genericidade e reusabilidade dos métodos, mas não deixa de ser notável a similaridade entre eles. São três os métodos: mementoFactory, placeableFactory e interactableFactory, os dois últimos, contidos na classe RoomBuilder, que será exposta nesta seção.
 
-### Classes e assinatura dos métodos
+### *Classes e assinatura dos métodos*
 
 ![Diagrama Factory](assets/README/diagramaFactory.jpeg)
 
-### Exemplo: interactableFactory
+### *Exemplo de código: interactableFactory*
 ~~~java
 public class RoomBuilder {
     private ElementFlags ef;
@@ -594,17 +577,17 @@ public class RoomBuilder {
 }
 ~~~
 
-### Observer
+## Observer
 
 ### *Contexto de aplicação*
 
 Tendo um banco de flags atualizado sobre o estado do jogo, surgiu a ideia de um agente independente das ações do jogo mas que influenciaria no que o jogador veria e teria disponível para interagir, e esse seria o nosso StoryTeller, responsável por dialogar com o jogador, verificar se o protagonista já terminou o puzzle da sala e notificar a necessidade de renderizar a próxima sala, entre outras funções que deixariam o jogo mais imersivo. Para tal, o pattern Observer é ideal e sempre foi nosso alvo, pois sempre que um elemento da sala alterasse a flag respectiva a si, o StoryTeller perceberia, e daria os triggers necessários para seguir contando a história do jogo. Entretanto, com nossa decisão de manter somente uma sala de demonstração, a história do jogo em si não tinha mais tanta proporção quanto antes, e por isso não dedicamos tanto esforço no StoryTeller quanto era planejado inicialmente.
 
-### Comunicação Implementada Level-StoryTeller-Flags
+### *Comunicação Implementada Level-StoryTeller-Flags*
 
 ![Diagrama Observer](assets/README/diagramaObserver.jpeg)
 
-### StoryTeller
+### *StoryTeller*
 ~~~java
 public class StoryTeller implements connectOverload{
     private ElementFlags ef = FlagDepot.getInstance();
@@ -624,25 +607,101 @@ public class StoryTeller implements connectOverload{
 }
 ~~~
 
-# Plano de Exceções
-
-## Diagrama da hierarquia de exceções
-> Elabore um diagrama com a hierarquia de exceções como detalhado a seguir.
-
-![Hierarquia Exceções](exception-hierarchy.png)
-
-## Descrição das classes de exceção
-
-> Monte uma tabela descritiva seguindo o exemplo:
-
-Classe | Descrição
------ | -----
-DivisaoInvalida | Engloba todas as exceções de divisões não aceitas.
-DivisaoInutil | Indica que a divisão por 1 é inútil.
-DivisaoNaoInteira | Indica uma divisão não inteira.
-
 # Conclusões e Trabalhos Futuros
 
 Nossa maior lição foi perceber a importância de manejar melhor nosso tempo, bem como de adaptar melhor nossas ideias para o tempo disponível de desenvolvimento do projeto.
 
 Ter consciência e humildade para reconhecer nossas limitações técnicas também é de suma importância para o projeto. Saber exatamente quais são as ferramentas disponíveis para seu desenvolvimento desde o início direciona melhor o pensamento arquitetural, permitindo a estruturação detalhada dos componentes do projeto ou, ainda, a consideração da curva de aprendizado necessária para que consigamos usar uma nova ferramenta no projeto.
+
+# Diagramas
+
+## Diagrama Geral da Arquitetura do Jogo
+
+![Diagrama de classes jogo](assets/README/arquitetura.png)
+
+## Diagrama Detalhado de Classes do Jogo
+
+![Diagrama de classes e heranças](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
+Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1X-7fQ1iMEi5nYNSZk_TdOKMPpNhGyNo2/view?usp=sharing)
+
+### Diagrama Geral de Componentes
+
+![Diagrama de componentes](assets/README/Amn%C3%A9siaUMLClassDiagram.drawio.png)
+Para uma melhor visualização do diagrama, [consulte-o online](https://drive.google.com/file/d/1VhjFlJTeCbspr5oM_Vbhr68A83pBR4k5/view?usp=sharing)
+
+## Documentação dos Componentes
+
+### Componente Cell
+
+> Armazena uma lista com os elementos presentes em uma célula do jogo, oferecendo os serviços de adicionar novos elementos à célula e, a partir da análise dos elementos já existentes nela, determinar se o protagonista do jogo pode se mover pela célula
+
+![Componente Cell](assets/README/diagramaCell.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.Model.Elements.CompondViewElement.Cell`
+Interfaces | Placeable
+
+### Componente Room
+
+> Gerencia os espaços matriciais do jogo (componentes Cell), inserindo, removendo ou consultando elementos neles. Também media os movimentos do protagonista pelas células do jogo e determina se ele pode se interagir com os elementos delas
+![Componente Room](assets/README/diagramaRoom2.jpeg)
+
+![Componente Room](assets/README/diagramaRoom.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.Model.Room`
+Interfaces | MoveAccess, RenderAccess e ControlAccess
+
+### Componente Curtain
+
+> Responsável pela troca de telas no jogo
+
+![Componente Curtain](assets/README/diagramaCurtain.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.GraphicInterface.Curtain`
+Interfaces | Screen
+
+### Componente Level
+
+> Responsável pela renderização de uma sala do jogo, o que inclui seus elementos (interagíveis e não interagíveis, chão e barreira) e o protagonista do jogo. Também é quem capta os inputs de teclado do jogador e os compara com as binds do jogo, delegando a execução de um de seus comandos para a classe MPControl caso uma bind seja pressionada. Com isso, ele atua como controle do jogo em cada uma de suas salas
+
+![Componente Level](assets/README/diagramaLevel.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.GraphicInterface.Level`
+Interfaces | RenderStrategy
+
+### Componente FlagDepot
+
+> Usado para salvar o estado do jogo. Consulta e salva num arquivo .csv as seguintes configurações: número da sala em que o jogador parou no jogo, posição e orientação do protagonista nessa sala, status do jogo, conjunto de elementos na sala
+
+![Componente FlagDepot](assets/README/diagramaFlagDepot.jpeg)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `package com.badlogic.amnesia.Services.FlagManagment.FlagDepot`
+Interfaces | RoomFlag, FlagRead, SongsterFlags e ElementFlags
+
+# Plano de Exceções
+
+## Diagrama da hierarquia de exceções
+
+![Hierarquia Exceções](assets/README/diagramaExcecoes.png)
+
+## Descrição das classes de exceção
+
+Classe | Descrição
+----- | -----
+CopyFileException | Engloba todas as exceções de erros na cópia de conteúdo entre arquivos
+ReadingFileException | Engloba todas as exceções na leitura de um arquivo
+WritingFileException | Engloba todas as exceções na escrita de arquivos
