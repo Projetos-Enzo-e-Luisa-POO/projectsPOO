@@ -1,8 +1,8 @@
-# ProjectsPOO
+# Bigger OO Projects
 
-Repositório para desenvolvimento conjunto de projetos para a disciplina de Programação Orientada a Objetos
+This repository was used for delivering collaborative projects for an undergrad OO couse at UNICAMP.
 
-Here you'll find 2 big projects applying some Object Orientated Programming concepts! UNICAMP stuff :) Fell free to explore and see our ideas for some problem solving!
+You will find the two projects in their respective folders, applying, on a bigger scale, OO concepts for architecture design. Feel free to explore and see our ideas (from 2022) on OO problem solving!
 
 ### Collaborators:
 [Frost](https://github.com/NuitJack),
